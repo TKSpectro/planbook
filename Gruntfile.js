@@ -22,7 +22,6 @@ module.exports = function (grunt) {
                     'assets/css/index.css': 'src/less/index.less',
                     'assets/css/signin.css': 'src/less/signin.less',
                     'assets/css/imprint.css': 'src/less/imprint.less',
-                    'assets/css/privacy.css': 'src/less/privacy.less',
                 },
             },
         },
@@ -37,7 +36,7 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['src/less/**', 'src/js/**', 'src/apidoc/**'],
-                tasks: ['less', 'uglify', 'copy', 'apidoc'],
+                tasks: ['less', 'uglify', 'copy'],
             },
         },
         apidoc: {

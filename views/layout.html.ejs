@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <title>
+        <%=title%>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% for (let index = 0; index < self.cssFiles.length; index++) { %>
+    <link rel="stylesheet" type="text/css" href="/assets/css/<%-self.cssFiles[index]%>.css">
+    <% } %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        window.io = io.connect();
+    </script>
+    <link rel="stylesheet" href="assets/libs/sceditor/minified/themes/default.min.css" />
+    <script src="assets/libs/sceditor/minified/sceditor.min.js"></script>
+    <script src="assets/libs/sceditor/minified/formats/bbcode.js"></script>
+</head>
+
+<body>
+    <%-body%>
+
+    <% if(self.req.user) { %>
+    <script>
+        let currentUserId = <%-self.req.user.id%>;
+    </script>
+    <% } %>
+    <% for (let index = 0; index < self.jsFiles.length; index++) { %>
+    <script src="/assets/js/<%-self.jsFiles[index]+(cfg.minify === true ? '.min' : '')%>.js"></script>
+    <% } %>
+</body>
+
+</html>

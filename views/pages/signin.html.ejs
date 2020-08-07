@@ -1,0 +1,34 @@
+<div class="logo">
+    <div class="signin-wrapper">
+        <form
+            id="signin-form"
+            action="<%-self.urlFor('api/users', 'signin', null, 'POST')%>"
+            method="POST"
+        >
+            <div class="input-wrapper">
+                <input
+                    id="email"
+                    name="email"
+                    value=""
+                    type="email"
+                    placeholder="E-Mail Address"
+                />
+            </div>
+
+            <div class="input-wrapper">
+                <input
+                    class="top"
+                    id="password"
+                    name="password"
+                    type="password"
+                    value=""
+                    placeholder="Password"
+                />
+            </div>
+
+            <button onclick="submitPressed(this); return false;">
+                Sign In
+            </button>
+        </form>
+    </div>
+</div>
