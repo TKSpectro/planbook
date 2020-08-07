@@ -18,6 +18,13 @@
         "url": "https://github.com/TKSpectro/planbook/issues"
     },
     "homepage": "https://github.com/TKSpectro/planbook#readme",
+    "apidoc": {
+        "title": "apiDoc - Planbook",
+        "header": {
+            "title": "General",
+            "filename": "./src/apidoc/general.md"
+        }
+    },
     "dependencies": {
         "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
