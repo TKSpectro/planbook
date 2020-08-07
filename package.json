@@ -4,6 +4,8 @@
     "description": "This is a household management tool",
     "main": "index.js",
     "scripts": {
+        "build": "grunt build && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+        "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
