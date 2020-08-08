@@ -31,8 +31,9 @@ class PagesController extends Controller {
     async actionIndex() {
         const self = this;
 
+        self.css('tailwind');
         self.js('index');
-        self.css('index');
+        //self.css('index');
 
         const users = await self.db.User.findAll();
 
