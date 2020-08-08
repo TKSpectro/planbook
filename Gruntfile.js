@@ -1,6 +1,30 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        postcss: {
+            options: {
+                map: true, // inline sourcemaps
+
+                // or
+                map: {
+                    inline: false, // save all sourcemaps as separate files...
+                    annotation: 'assets/css', // ...to the specified directory
+                },
+
+                processors: [
+                    require('pixrem')(), // add fallbacks for rem units
+                    require('autoprefixer')({
+                        overrideBrowserslist: 'last 2 versions',
+                    }), // add vendor prefixes
+                    require('cssnano')(), // minify the result
+                ],
+            },
+            dist: {
+                src: 'src/css/*.css',
+            },
+        },
+
         less: {
             development: {
                 options: {
@@ -18,10 +42,12 @@ module.exports = function (grunt) {
                         ' */\n',
                 },
                 files: {
+                    /*
                     'assets/css/layout.css': 'src/less/layout.less',
                     'assets/css/index.css': 'src/less/index.less',
                     'assets/css/signin.css': 'src/less/signin.less',
                     'assets/css/imprint.css': 'src/less/imprint.less',
+                    */
                 },
             },
         },
@@ -35,8 +61,13 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['src/less/**', 'src/js/**', 'src/apidoc/**'],
-                tasks: ['less', 'uglify', 'copy'],
+                files: [
+                    'src/less/**',
+                    'src/js/**',
+                    'src/apidoc/**',
+                    'src/css/**',
+                ],
+                tasks: ['less', 'uglify', 'copy', 'postcss'],
             },
         },
         apidoc: {
@@ -61,9 +92,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-apidoc');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-postcss');
 
     //register plugins
-    grunt.registerTask('build', ['less', 'uglify', 'copy', 'apidoc']);
+    grunt.registerTask('build', [
+        'less',
+        'uglify',
+        'copy',
+        'apidoc',
+        'postcss',
+    ]);
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('apiDoc', ['apidoc']);
 };
