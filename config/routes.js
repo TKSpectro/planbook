@@ -16,7 +16,7 @@ let routes = {
         actions: [
             { path: '/api/users', action: 'getAll', method: 'GET' },
             { path: '/api/users/:id', action: 'getOne', method: 'GET' },
-            { path: '/api/users', action: 'create', method: 'POST' },
+            { path: '/api/users', action: 'signup', method: 'POST' },
             { path: '/api/users/:id', action: 'update', method: 'PUT' },
             { path: '/api/users/:id', action: 'delete', method: 'DELETE' },
             { path: '/api/signin', action: 'signin', method: 'POST' },
