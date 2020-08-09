@@ -208,7 +208,7 @@ class ApiUsersController extends Controller {
                             {
                                 firstName: 'deleted',
                                 lastName: 'deleted',
-                                email: 'deleted',
+                                email: 'deleted' + updatedUser.id,
                                 passwordHash: 'deleted',
                                 updatedAt: new Date(),
                                 householdId: null,
