@@ -1,4 +1,3 @@
-const Passport = require('../core/passport.js');
 module.exports = function (Model, db) {
     Model.extendInclude = [
         {
