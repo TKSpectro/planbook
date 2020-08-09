@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "postcss src/css/tailwind.css -o assets/css/tailwind.css && grunt build && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+        "postcss": "postcss src/css/tailwind.css -o assets/css/tailwind.css",
         "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -26,7 +27,6 @@
         }
     },
     "dependencies": {
-        "autoprefixer": "^9.8.6",
         "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
         "cssnano": "^4.1.10",
@@ -40,10 +40,10 @@
         "sequelize": "^6.3.4",
         "sequelize-cli": "^6.2.0",
         "serve-favicon": "^2.5.0",
-        "socket.io": "^2.3.0",
-        "tailwindcss": "^1.6.2"
+        "socket.io": "^2.3.0"
     },
     "devDependencies": {
+        "autoprefixer": "^9.8.6",
         "grunt": "^1.2.1",
         "grunt-apidoc": "^0.11.0",
         "grunt-contrib-copy": "^1.0.0",
@@ -51,6 +51,7 @@
         "grunt-contrib-uglify-es": "git://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
         "grunt-contrib-watch": "^1.1.0",
         "grunt-postcss": "^0.9.0",
-        "less-plugin-autoprefix": "^2.0.0"
+        "less-plugin-autoprefix": "^2.0.0",
+        "tailwindcss": "^1.6.2"
     }
 }

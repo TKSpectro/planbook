@@ -2,26 +2,23 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        // PostCSS - Tailwindcss and Autoprefixer
         postcss: {
             options: {
                 map: true, // inline sourcemaps
-
-                // or
-                map: {
-                    inline: false, // save all sourcemaps as separate files...
-                    annotation: 'assets/css', // ...to the specified directory
-                },
-
                 processors: [
-                    require('pixrem')(), // add fallbacks for rem units
+                    require('tailwindcss')(),
                     require('autoprefixer')({
                         overrideBrowserslist: 'last 2 versions',
                     }), // add vendor prefixes
-                    require('cssnano')(), // minify the result
                 ],
             },
             dist: {
-                src: 'src/css/*.css',
+                expand: true,
+                cwd: 'src/css/',
+                src: ['**/*.css'],
+                dest: 'assets/css/',
+                ext: '.css',
             },
         },
 
@@ -51,6 +48,7 @@ module.exports = function (grunt) {
                 },
             },
         },
+
         uglify: {
             build: {
                 files: {
@@ -60,6 +58,13 @@ module.exports = function (grunt) {
             },
         },
         watch: {
+            postcss: {
+                files: 'src/css/**/*.css',
+                tasks: ['compile-tailwindcss'],
+                options: {
+                    interrupt: true,
+                },
+            },
             scripts: {
                 files: [
                     'src/less/**',
@@ -94,7 +99,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-postcss');
 
-    //register plugins
+    //register tasks
+    grunt.registerTask('compile-tailwindcss', ['postcss']);
     grunt.registerTask('build', [
         'less',
         'uglify',
