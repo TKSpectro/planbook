@@ -9,8 +9,8 @@ class ApiUsersController extends Controller {
 
         self.format = Controller.HTTP_FORMAT_JSON;
 
-        //user needs to be authorized, else he will get 401: unauthorized
-        //signin and signup can be called even when not authorized
+        // users have to signed in else they a 401 Unauthorized response
+        // signIn and Signup are exempt from this
         self.before(['*', '-signin', '-signup'], function (next) {
             if (self.req.authorized === true) {
                 next();
@@ -25,7 +25,7 @@ class ApiUsersController extends Controller {
         });
     }
 
-    async actionIndex() {
+    async actionGetAll() {
         const self = this;
 
         let users = [];
@@ -65,7 +65,7 @@ class ApiUsersController extends Controller {
         }
     }
 
-    async actionShow() {
+    async actionGetOne() {
         const self = this;
 
         let userId = self.param('id');
@@ -148,13 +148,7 @@ class ApiUsersController extends Controller {
         const self = this;
 
         //check if the logged in person has the permission to update accounts (admin) or owns the account which will be updated
-        if (
-            Helper.checkPermission(
-                Helper.canUpdateUser,
-                self.req.user.permission
-            ) ||
-            self.param('id') === self.req.user.id
-        ) {
+        if (self.param('id') === self.req.user.id) {
             //user should be a object with all the values (new and old)
             let remoteData = self.param('user');
             let userId = self.param('id');
@@ -227,13 +221,7 @@ class ApiUsersController extends Controller {
         const self = this;
 
         //check if the logged in person has the permission to delete accounts (admin) or owns the account which will be deleted
-        if (
-            Helper.checkPermission(
-                Helper.canDeleteUser,
-                self.req.user.permission
-            ) ||
-            self.param('id') === self.req.user.id
-        ) {
+        if (self.param('id') === self.req.user.id) {
             // user wont actually be deleted but will get anonymized
             // firstName -> 'deleted'
             // lastName -> 'deleted'
@@ -329,12 +317,6 @@ class ApiUsersController extends Controller {
                 throw new ApiError(
                     'Could not find user with this email or password.',
                     404
-                );
-            }
-            if (Helper.checkPermission(Helper.isUserDeleted, user.permission)) {
-                throw new ApiError(
-                    'Could not login. Account is marked as deleted.',
-                    403
                 );
             }
         } catch (err) {
