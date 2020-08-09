@@ -19,17 +19,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(255),
                 allowNull: true,
             },
-            permission: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: 0,
-                comment: 'bit mask of permission from 2^0 to 2^30',
-            },
         },
         {
             tableName: 'user',
         }
     );
-
     return User;
 };
