@@ -211,6 +211,7 @@ class ApiUsersController extends Controller {
                                 email: 'deleted',
                                 passwordHash: 'deleted',
                                 updatedAt: new Date(),
+                                householdId: null,
                             },
                             {
                                 where: {
