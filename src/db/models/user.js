@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'user',
         }
     );
-    Entry.associate = function (models) {
-        Entry.belongsTo(models.Household, {
+    User.associate = function (models) {
+        User.belongsTo(models.Household, {
             as: 'household',
             foreignKey: 'householdId',
         });
