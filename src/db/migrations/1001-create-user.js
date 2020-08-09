@@ -3,10 +3,18 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.createTable('user', {
             id: {
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER,
+            },
+            createdAt: {
+                type: Sequelize.DATE,
+                allowNull: false,
+            },
+            updatedAt: {
+                type: Sequelize.DATE,
+                allowNull: false,
             },
             firstName: {
                 type: Sequelize.STRING(70),
@@ -19,24 +27,12 @@ module.exports = {
             email: {
                 type: Sequelize.STRING(320),
                 allowNull: false,
+                isEmail: true,
+                unique: 'uniqueEmail',
             },
             passwordHash: {
-                type: Sequelize.STRING(255),
+                type: Sequelize.STRING(256),
                 allowNull: true,
-            },
-            permission: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                defaultVaulue: 0,
-                comment: 'bit mask of permission from 2^0 to 2^30',
-            },
-            createdAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
-            },
-            updatedAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
             },
         });
     },
