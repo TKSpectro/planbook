@@ -12,10 +12,6 @@ module.exports = function (Model, db) {
         return this.firstName + ' ' + this.lastName;
     };
 
-    Model.prototype.shortName = function () {
-        return this.firstName.charAt(0) + this.lastName.charAt(0);
-    };
-
     Model.prototype.writeRemotes = function (data) {
         const self = this;
 
@@ -37,39 +33,8 @@ module.exports = function (Model, db) {
             self.passwordHash = Passport.hashPassword(data.password);
         }
 
-        if (typeof data.permission !== 'undefined') {
-            self.permission = data.permission;
+        if (typeof data.householdId !== 'undefined') {
+            self.householdId = data.householdId;
         }
-
-        if (typeof data.taskCreated !== 'undefined') {
-            self.taskCreated = data.taskCreated;
-        }
-
-        if (typeof data.tasksAssignedTo !== 'undefined') {
-            self.tasksAssignedTo = data.tasksAssignedTo;
-        }
-    };
-
-    Model.prototype.findByID = async function () {
-        let user = await self.db.User.findOne({
-            where: {
-                email: email,
-            },
-        });
-
-        self.db.Message.create({
-            text: data.message,
-            fromId: socket.user.id,
-            toId: user.id,
-        });
-        self.io.emit('message', {
-            message: data.message,
-            from: {
-                displayName: socket.user.fullname(),
-                id: socket.user.id,
-            },
-            to: user.id,
-            time: new Date(),
-        });
     };
 };

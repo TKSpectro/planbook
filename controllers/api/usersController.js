@@ -103,52 +103,10 @@ class ApiUsersController extends Controller {
         }
     }
 
-    async actionCreate() {
-        const self = this;
-
-        let remoteData = self.param('user');
-
-        let user = null;
-        let error = null;
-
-        try {
-            user = await self.db.sequelize.transaction(async (t) => {
-                let newUser = self.db.User.build();
-                newUser.writeRemotes(remoteData);
-
-                await newUser.save({
-                    transaction: t,
-                    lock: true,
-                });
-
-                return newUser;
-            });
-            if (!user) {
-                throw new ApiError('Could not create user', 404);
-            }
-        } catch (err) {
-            error = err;
-        }
-
-        if (error) {
-            self.handleError(error);
-        } else {
-            self.render(
-                {
-                    user: user,
-                },
-                {
-                    statusCode: 201,
-                }
-            );
-        }
-    }
-
     async actionUpdate() {
         const self = this;
-
-        //check if the logged in person has the permission to update accounts (admin) or owns the account which will be updated
-        if (self.param('id') === self.req.user.id) {
+        //check if the logged in person owns the account which will be updated
+        if (self.param('id').toString() === self.req.user.id.toString()) {
             //user should be a object with all the values (new and old)
             let remoteData = self.param('user');
             let userId = self.param('id');
@@ -164,6 +122,7 @@ class ApiUsersController extends Controller {
                             where: {
                                 id: userId,
                             },
+                            include: self.db.User.extendInclude,
                         },
                         { transaction: t }
                     );
@@ -174,13 +133,13 @@ class ApiUsersController extends Controller {
                                 lastName: remoteData['lastName'],
                                 email: remoteData['email'],
                                 passwordHash: remoteData['passwordHash'],
-                                permission: remoteData['permission'],
                                 updatedAt: new Date(),
                             },
                             {
                                 where: {
                                     id: userId,
                                 },
+                                include: self.db.User.extendInclude,
                             },
                             { transaction: t, lock: true }
                         );
@@ -220,8 +179,8 @@ class ApiUsersController extends Controller {
     async actionDelete() {
         const self = this;
 
-        //check if the logged in person has the permission to delete accounts (admin) or owns the account which will be deleted
-        if (self.param('id') === self.req.user.id) {
+        //check if the logged in person owns the account which will be deleted
+        if (self.param('id').toString() === self.req.user.id.toString()) {
             // user wont actually be deleted but will get anonymized
             // firstName -> 'deleted'
             // lastName -> 'deleted'
@@ -251,7 +210,6 @@ class ApiUsersController extends Controller {
                                 lastName: 'deleted',
                                 email: 'deleted',
                                 passwordHash: 'deleted',
-                                permission: 1,
                                 updatedAt: new Date(),
                             },
                             {
@@ -356,6 +314,7 @@ class ApiUsersController extends Controller {
                     where: {
                         email: remoteData.email,
                     },
+                    include: self.db.User.extendInclude,
                     lock: true,
                     transaction: t,
                 });
@@ -365,13 +324,12 @@ class ApiUsersController extends Controller {
                 }
 
                 let newUser = self.db.User.build();
-                //give user the permission to create projects and tasks
-                remoteData['permission'] = 0b0000000000010010;
 
                 newUser.writeRemotes(remoteData);
                 await newUser.save({
                     transaction: t,
                     lock: true,
+                    include: self.db.User.extendInclude,
                 });
 
                 return newUser;
