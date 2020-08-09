@@ -2,17 +2,9 @@ const Passport = require('../core/passport.js');
 module.exports = function (Model, db) {
     Model.extendInclude = [
         {
-            model: db.Task,
-            as: 'taskCreated',
-            attributes: ['id', 'name', 'text'],
-            limit: 1,
-            separate: false,
-        },
-        {
-            model: db.Task,
-            as: 'tasksAssignedTo',
-            attributes: ['id', 'name', 'text'],
-            separate: false,
+            model: db.Household,
+            as: 'household',
+            attributes: ['id', 'name'],
         },
     ];
 

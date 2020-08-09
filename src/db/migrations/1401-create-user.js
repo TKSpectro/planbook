@@ -34,6 +34,16 @@ module.exports = {
                 type: Sequelize.STRING(256),
                 allowNull: true,
             },
+            householdId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'household',
+                    },
+                    key: 'id',
+                },
+                allowNull: false,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {

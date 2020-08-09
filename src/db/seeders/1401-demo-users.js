@@ -13,6 +13,7 @@ module.exports = {
                     email: 'tom@mail.com',
                     passwordHash:
                         '$2b$10$nsNf6L5XPv6wOHcC.oWzCuh/dDeFPuEmSYm5IZ4iJyOLe4OAsrIA2', // bCrypt 10 12345678
+                    householdId: 1,
                 },
             ],
             {}

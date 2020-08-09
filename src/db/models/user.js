@@ -24,5 +24,11 @@ module.exports = (sequelize, DataTypes) => {
             tableName: 'user',
         }
     );
+    Entry.associate = function (models) {
+        Entry.belongsTo(models.Household, {
+            as: 'household',
+            foreignKey: 'householdId',
+        });
+    };
     return User;
 };
