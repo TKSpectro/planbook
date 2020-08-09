@@ -7,7 +7,7 @@
         "build": "postcss src/css/tailwind.css -o assets/css/tailwind.css && grunt build && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "postcss": "postcss src/css/tailwind.css -o assets/css/tailwind.css",
         "start": "node index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"No Tests specified\" && exit 1"
     },
     "repository": {
         "type": "git",
