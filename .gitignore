@@ -10,4 +10,4 @@ package-lock.json
 /.env
 #ApiDoc
 /docs
-src/css/tailwind.css
+
