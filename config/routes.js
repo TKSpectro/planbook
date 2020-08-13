@@ -1,5 +1,6 @@
 const PagesController = require('../controllers/pagesController.js');
 const ApiUsersController = require('../controllers/api/usersController.js');
+const ApiInvitesController = require('../controllers/api/invitesController.js');
 
 let routes = {
     pages: {
@@ -22,6 +23,14 @@ let routes = {
             { path: '/api/signin', action: 'signin', method: 'POST' },
             { path: '/api/signup', action: 'signup', method: 'POST' },
             { path: '/api/signout', action: 'signout', method: 'GET' },
+        ],
+    },
+    'api/invites': {
+        controller: ApiInvitesController,
+        actions: [
+            { path: '/api/invites', action: 'getAll', method: 'GET' },
+            { path: '/api/invites/:id', action: 'getOne', method: 'GET' },
+            { path: '/api/invites/:email', action: 'create', method: 'POST' },
         ],
     },
 };

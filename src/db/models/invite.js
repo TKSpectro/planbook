@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     Invite.associate = function (models) {
-        Invite.hasOne(models.Household, {
+        Invite.belongsTo(models.Household, {
             as: 'household',
             foreignKey: 'householdId',
         });
