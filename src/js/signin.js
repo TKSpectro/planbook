@@ -18,7 +18,7 @@ function submitPressed(elm) {
                 elm.className = 'fine';
 
                 setTimeout(function () {
-                    window.location = '/project';
+                    window.location = '/';
                 }, 300);
             } else {
                 console.log('request failed');

@@ -11,7 +11,7 @@ class PagesController extends Controller {
 
         self.css('layout');
 
-        self.before(['*', '-imprint', '-signin', '-index'], (next) => {
+        self.before(['*', '-imprint', '-signin'], (next) => {
             if (self.req.authorized === true) {
                 next();
             } else {
