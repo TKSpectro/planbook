@@ -1,0 +1,45 @@
+<form
+    id="signup-form"
+    action="<%-self.urlFor('api/users', 'signup', null, 'POST')%>"
+    method="POST"
+>
+    <input
+        class="input"
+        id="firstName"
+        name="firstName"
+        type="text"
+        value=""
+        placeholder="FirstName"
+    />
+
+    <input
+        class="input"
+        id="lastName"
+        name="lastName"
+        type="text"
+        value=""
+        placeholder="LastName"
+    />
+
+    <input
+        class="input"
+        id="email"
+        name="email"
+        type="email"
+        value=""
+        placeholder="E-Mail Address"
+    />
+
+    <input
+        class="input"
+        id="password"
+        name="password"
+        type="password"
+        value=""
+        placeholder="Password"
+    />
+
+    <button class="btn" onclick="signupPressed(this); return false;">
+        Sign up
+    </button>
+</form>

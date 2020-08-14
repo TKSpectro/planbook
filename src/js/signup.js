@@ -1,5 +1,5 @@
-function signinPressed(elm) {
-    var form = document.getElementById('signin-form');
+function signupPressed(elm) {
+    var form = document.getElementById('signup-form');
 
     var xhr = new XMLHttpRequest();
     var start = new Date();
@@ -30,6 +30,8 @@ function signinPressed(elm) {
     xhr.send(
         JSON.stringify({
             user: {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value,
             },
