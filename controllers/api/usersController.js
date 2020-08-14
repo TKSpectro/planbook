@@ -36,11 +36,11 @@ class ApiUsersController extends Controller {
                 where: {},
                 attributes: [
                     'id',
+                    'createdAt',
+                    'updatedAt',
                     'firstName',
                     'lastName',
                     'email',
-                    'createdAt',
-                    'updatedAt',
                 ],
                 include: self.db.User.extendInclude,
             });
@@ -79,11 +79,11 @@ class ApiUsersController extends Controller {
                 },
                 attributes: [
                     'id',
+                    'createdAt',
+                    'updatedAt',
                     'firstName',
                     'lastName',
                     'email',
-                    'createdAt',
-                    'updatedAt',
                 ],
                 include: self.db.User.extendInclude,
             });
