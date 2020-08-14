@@ -54,6 +54,8 @@ module.exports = function (grunt) {
                 files: {
                     'assets/js/index.min.js': 'src/js/index.js',
                     'assets/js/signin.min.js': 'src/js/signin.js',
+                    'assets/js/signup.min.js': 'src/js/signup.js',
+                    'assets/js/dashboard.min.js': 'src/js/dashboard.js',
                 },
             },
         },
@@ -72,7 +74,7 @@ module.exports = function (grunt) {
                     'src/apidoc/**',
                     'src/css/**',
                 ],
-                tasks: ['less', 'uglify', 'copy', 'postcss'],
+                tasks: ['less', 'uglify', 'copy'],
             },
         },
         apidoc: {
