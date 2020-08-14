@@ -256,7 +256,6 @@ class ApiUsersController extends Controller {
     async actionSignin() {
         const self = this;
         let remoteData = self.param('user') || {};
-
         let user = null;
         let error = null;
 
@@ -305,7 +304,7 @@ class ApiUsersController extends Controller {
     async actionSignup() {
         const self = this;
 
-        let remoteData = self.param('user');
+        let remoteData = self.param('user') || {};
         let user = null;
         let error = null;
 

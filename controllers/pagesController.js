@@ -11,17 +11,20 @@ class PagesController extends Controller {
 
         self.css('layout');
 
-        self.before(['*', '-imprint', '-signin'], (next) => {
-            if (self.req.authorized === true) {
-                next();
-            } else {
-                self.redirect(self.urlFor('pages', 'signin'));
+        self.before(
+            ['*', '-imprint', '-signin', '-signup', '-index'],
+            (next) => {
+                if (self.req.authorized === true) {
+                    next();
+                } else {
+                    self.redirect(self.urlFor('pages', 'signin'));
+                }
             }
-        });
+        );
 
-        self.before(['signin'], (next) => {
+        self.before(['signin', 'signup'], (next) => {
             if (self.req.authorized === true) {
-                self.redirect(self.urlFor('pages', 'index'));
+                self.redirect(self.urlFor('pages', 'dashboard'));
             } else {
                 next();
             }
@@ -33,12 +36,11 @@ class PagesController extends Controller {
 
         self.css('tailwind');
         self.js('index');
-        //self.css('index');
 
         const users = await self.db.User.findAll();
 
         self.render({
-            title: 'INDEX',
+            title: 'Home',
             users: users,
         });
     }
@@ -46,7 +48,7 @@ class PagesController extends Controller {
     actionImprint() {
         const self = this;
 
-        self.css('imprint');
+        self.css('tailwind');
 
         self.render({
             title: 'Imprint',
@@ -57,11 +59,32 @@ class PagesController extends Controller {
         const self = this;
 
         self.js('signin');
-        self.css('signin');
+        self.css('tailwind');
 
         self.render({
             title: 'Login',
-            navigation: false,
+        });
+    }
+
+    actionSignup() {
+        const self = this;
+
+        self.js('signup');
+        self.css('tailwind');
+
+        self.render({
+            title: 'Register',
+        });
+    }
+
+    actionDashboard() {
+        const self = this;
+
+        self.js('dashboard');
+        self.css('tailwind');
+
+        self.render({
+            title: 'Dashboard',
         });
     }
 }

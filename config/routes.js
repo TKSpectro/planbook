@@ -9,7 +9,9 @@ let routes = {
             { path: '/', action: 'index', method: 'get' },
             { path: '/imprint', action: 'imprint', method: 'get' },
             { path: '/privacy', action: 'privacy', method: 'get' },
-            { path: '/signin', action: 'signin', method: 'get' },
+            { path: '/login', action: 'signin', method: 'get' },
+            { path: '/register', action: 'signup', method: 'get' },
+            { path: '/dashboard', action: 'dashboard', method: 'get' },
         ],
     },
     'api/users': {
