@@ -34,6 +34,7 @@ let routes = {
             { path: '/api/invites', action: 'getAll', method: 'GET' },
             { path: '/api/invites/:id', action: 'getOne', method: 'GET' },
             { path: '/api/invites/:email', action: 'create', method: 'POST' },
+            { path: '/api/invites/:email', action: 'delete', method: 'DELETE' },
         ],
     },
     'api/categories': {

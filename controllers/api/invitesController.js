@@ -57,27 +57,19 @@ class ApiInvitesController extends Controller {
     async actionGetOne() {
         const self = this;
 
-        let userId = self.param('id');
-        let user = null;
+        let inviteId = self.param('id');
+        let invite = null;
         let error = null;
 
         try {
-            user = await self.db.User.findOne({
+            invite = await self.db.Invite.findOne({
                 where: {
-                    id: userId,
+                    id: inviteId,
                 },
-                attributes: [
-                    'id',
-                    'firstName',
-                    'lastName',
-                    'email',
-                    'createdAt',
-                    'updatedAt',
-                ],
-                include: self.db.User.extendInclude,
+                include: self.db.Invite.extendInclude,
             });
-            if (!user) {
-                throw new ApiError('No user found with this id', 404);
+            if (!invite) {
+                throw new ApiError('No invite found with this id', 404);
             }
         } catch (err) {
             error = err;
@@ -87,7 +79,7 @@ class ApiInvitesController extends Controller {
             self.handleError(error);
         } else {
             self.render({
-                user: user,
+                invite: invite,
             });
         }
     }
@@ -149,6 +141,48 @@ class ApiInvitesController extends Controller {
                 },
                 {
                     statusCode: 201,
+                }
+            );
+        }
+    }
+
+    async actionDelete() {
+        const self = this;
+
+        let inviteEmail = self.param('email');
+        let invite = null;
+        let error = null;
+
+        // delete the category
+        try {
+            invite = await self.db.sequelize.transaction(async (t) => {
+                invite = await self.db.Invite.destroy(
+                    {
+                        where: {
+                            email: inviteEmail,
+                        },
+                    },
+                    { transaction: t, lock: true }
+                );
+
+                return invite;
+            });
+            // if no category was found with this id throw an error
+            if (!invite) {
+                throw new ApiError('Found no invite for given email', 404);
+            }
+        } catch (err) {
+            error = err;
+        }
+
+        // render either the error or 204 No-Content
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {},
+                {
+                    statusCode: 204,
                 }
             );
         }
