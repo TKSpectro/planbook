@@ -5,6 +5,11 @@ module.exports = function (Model, db) {
             as: 'household',
             attributes: ['id', 'name'],
         },
+        {
+            model: db.Category,
+            as: 'category',
+            attributes: ['id', 'name'],
+        },
     ];
 
     Model.prototype.writeRemotes = function (data) {
