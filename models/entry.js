@@ -1,29 +1,27 @@
 module.exports = function (Model, db) {
     Model.extendInclude = [
         {
-            model: db.Household,
-            as: 'household',
-            attributes: ['id', 'name'],
+            model: db.Entry,
+            as: 'entries',
+            attributes: [
+                'id',
+                'name',
+                'income',
+                'timeStamp',
+                'value',
+                'purpose',
+                'interval',
+                'householdId',
+                'categoryId',
+            ],
         },
     ];
 
     Model.prototype.writeRemotes = function (data) {
         const self = this;
 
-        if (typeof data.income !== 'undefined') {
-            self.income = data.income;
-        }
-        if (typeof data.timeStamp !== 'undefined') {
-            self.timeStamp = data.timeStamp;
-        }
-        if (typeof data.value !== 'undefined') {
-            self.value = data.value;
-        }
-        if (typeof data.purpose !== 'undefined') {
-            self.purpose = data.purpose;
-        }
-        if (typeof data.interval !== 'undefined') {
-            self.interval = data.interval;
+        if (typeof data.name !== 'undefined') {
+            self.name = data.name;
         }
     };
 };
