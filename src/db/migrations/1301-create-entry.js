@@ -33,7 +33,7 @@ module.exports = {
                 allowNull: false,
             },
             interval: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.ENUM('daily', 'weekly', 'monthly', 'quarterly', 'yearly'),
                 allowNull: true,
             },
             categoryId: {
