@@ -2,6 +2,7 @@ const PagesController = require('../controllers/pagesController.js');
 const ApiUsersController = require('../controllers/api/usersController.js');
 const ApiInvitesController = require('../controllers/api/invitesController.js');
 const ApiCategoriesController = require('../controllers/api/categoriesController.js');
+const ApiEntriesController = require('../controllers/api/entriesController.js');
 
 let routes = {
     pages: {
@@ -45,6 +46,16 @@ let routes = {
             //no put because categories should not be updated
             { path: '/api/categories', action: 'create', method: 'POST' },
             { path: '/api/categories/:id', action: 'delete', method: 'DELETE' },
+        ],
+    },
+    'api/entries': {
+        controller: ApiEntriesController,
+        actions: [
+            { path: '/api/entries', action: 'getAll', method: 'GET' },
+            { path: '/api/entries/:id', action: 'getOne', method: 'GET' },
+            { path: '/api/entries', action: 'create', method: 'POST' },
+            { path: '/api/entries/:id', action: 'update', method: 'PUT' },
+            { path: '/api/entries/:id', action: 'delete', method: 'DELETE' },
         ],
     },
 };
