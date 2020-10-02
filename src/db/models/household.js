@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     Household.associate = function (models) {
         Household.hasMany(models.Entry, {
             as: 'entries',
-            foreignKey: 'entryId',
+            foreignKey: 'id',
         });
     };
     return Household;

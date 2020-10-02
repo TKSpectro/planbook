@@ -18,8 +18,8 @@ module.exports = function (Model, db) {
         if (typeof data.income !== 'undefined') {
             self.income = data.income;
         }
-        if (typeof data.timeStamp !== 'undefined') {
-            self.timeStamp = data.timeStamp;
+        if (typeof data.endDate !== 'undefined') {
+            self.endDate = data.endDate;
         }
         if (typeof data.value !== 'undefined') {
             self.value = data.value;
@@ -29,6 +29,9 @@ module.exports = function (Model, db) {
         }
         if (typeof data.interval !== 'undefined') {
             self.interval = data.interval;
+        }
+        if (typeof data.householdId !== 'undefined') {
+            self.householdId = data.householdId;
         }
     };
 };

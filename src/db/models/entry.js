@@ -3,12 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     const Entry = sequelize.define(
         'Entry',
         {
+            endDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
             income: {
                 type: DataTypes.BOOLEAN,
-                allowNull: false,
-            },
-            timeStamp: {
-                type: DataTypes.DATE,
                 allowNull: false,
             },
             value: {
@@ -20,7 +20,13 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             interval: {
-                type: DataTypes.ENUM('daily', 'weekly', 'monthly', 'quarterly', 'yearly'),
+                type: DataTypes.ENUM(
+                    'daily',
+                    'weekly',
+                    'monthly',
+                    'quarterly',
+                    'yearly'
+                ),
                 allowNull: true,
                 comment:
                     'time of the recurring interval, if null then its not recurring',
@@ -35,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
             as: 'household',
             foreignKey: 'householdId',
         });
-        Entry.hasOne(models.Category, {
+        Entry.belongsTo(models.Category, {
             as: 'category',
             foreignKey: 'categoryId',
         });
