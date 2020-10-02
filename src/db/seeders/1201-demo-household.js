@@ -10,6 +10,12 @@ module.exports = {
                     updatedAt: new Date(),
                     name: 'MyHome',
                 },
+                {
+                    id: 2,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'NotMyHome',
+                },
             ],
             {}
         );
