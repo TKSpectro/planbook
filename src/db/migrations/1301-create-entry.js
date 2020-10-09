@@ -16,12 +16,16 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: false,
             },
-            income: {
-                type: Sequelize.BOOLEAN,
+            startDate: {
+                type: Sequelize.DATE,
                 allowNull: false,
             },
-            timeStamp: {
+            endDate: {
                 type: Sequelize.DATE,
+                allowNull: true,
+            },
+            income: {
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
             },
             value: {
@@ -33,7 +37,13 @@ module.exports = {
                 allowNull: false,
             },
             interval: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.ENUM(
+                    'daily',
+                    'weekly',
+                    'monthly',
+                    'quarterly',
+                    'yearly'
+                ),
                 allowNull: true,
             },
             categoryId: {

@@ -3,6 +3,7 @@ const ApiUsersController = require('../controllers/api/usersController.js');
 const ApiInvitesController = require('../controllers/api/invitesController.js');
 const ApiCategoriesController = require('../controllers/api/categoriesController.js');
 const ApiHouseholdsController = require('../controllers/api/householdsController.js');
+const ApiEntriesController = require('../controllers/api/entriesController.js');
 
 let routes = {
     pages: {
@@ -55,6 +56,14 @@ let routes = {
             { path: '/api/households/:id', action: 'getOne', method: 'GET' },
             { path: '/api/households', action: 'create', method: 'POST' },
             { path: '/api/households/:id', action: 'delete', method: 'DELETE' },
+    'api/entries': {
+        controller: ApiEntriesController,
+        actions: [
+            { path: '/api/entries', action: 'getAll', method: 'GET' },
+            { path: '/api/entries/:id', action: 'getOne', method: 'GET' },
+            { path: '/api/entries', action: 'create', method: 'POST' },
+            { path: '/api/entries/:id', action: 'update', method: 'PUT' },
+            { path: '/api/entries/:id', action: 'delete', method: 'DELETE' },
         ],
     },
 };
