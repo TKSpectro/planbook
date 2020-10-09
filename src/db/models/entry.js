@@ -3,6 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     const Entry = sequelize.define(
         'Entry',
         {
+            startDate: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
             endDate: {
                 type: DataTypes.DATE,
                 allowNull: true,

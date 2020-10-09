@@ -19,6 +19,9 @@ module.exports = function (Model, db) {
             self.income = data.income;
         }
         if (typeof data.endDate !== 'undefined') {
+            self.startDate = data.startDate;
+        }
+        if (typeof data.endDate !== 'undefined') {
             self.endDate = data.endDate;
         }
         if (typeof data.value !== 'undefined') {
