@@ -56,6 +56,8 @@ let routes = {
             { path: '/api/households/:id', action: 'getOne', method: 'GET' },
             { path: '/api/households', action: 'create', method: 'POST' },
             { path: '/api/households/:id', action: 'delete', method: 'DELETE' },
+        ],
+    },
     'api/entries': {
         controller: ApiEntriesController,
         actions: [
