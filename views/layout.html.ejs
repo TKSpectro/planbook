@@ -24,7 +24,7 @@
         </style>
     </head>
 
-    <body class="bg-primary font-sans">
+    <body>
         <%-include('./header.html.ejs');-%> <%-body%> <%if(self.req.user) { %>
         <script>
             let currentUserId = <%-self.req.user.id%>;
@@ -33,5 +33,7 @@
         %>
         <script src="/assets/js/<%-self.jsFiles[index]+(cfg.minify === true ? '.min' : '')%>.js"></script>
         <% } %>
+        <script src="/assets/js/jquery.slim.min.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
     </body>
 </html>

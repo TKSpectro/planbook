@@ -9,7 +9,7 @@ class PagesController extends Controller {
         super(...args);
         const self = this;
 
-        self.css('layout');
+        self.css('custom');
 
         self.before(
             ['*', '-imprint', '-signin', '-signup', '-index'],
@@ -34,7 +34,7 @@ class PagesController extends Controller {
     async actionIndex() {
         const self = this;
 
-        self.css('tailwind');
+        self.css('custom');
         self.js('index');
 
         const users = await self.db.User.findAll();
@@ -48,7 +48,7 @@ class PagesController extends Controller {
     actionImprint() {
         const self = this;
 
-        self.css('tailwind');
+        self.css('custom');
 
         self.render({
             title: 'Imprint',
@@ -58,8 +58,8 @@ class PagesController extends Controller {
     actionSignin() {
         const self = this;
 
+        self.css('custom');
         self.js('signin');
-        self.css('tailwind');
 
         self.render({
             title: 'Login',
@@ -69,8 +69,8 @@ class PagesController extends Controller {
     actionSignup() {
         const self = this;
 
+        self.css('custom');
         self.js('signup');
-        self.css('tailwind');
 
         self.render({
             title: 'Register',
@@ -80,8 +80,8 @@ class PagesController extends Controller {
     actionDashboard() {
         const self = this;
 
+        self.css('custom');
         self.js('dashboard');
-        self.css('tailwind');
 
         self.render({
             title: 'Dashboard',

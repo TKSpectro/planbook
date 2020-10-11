@@ -2,26 +2,6 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        // PostCSS - Tailwindcss and Autoprefixer
-        postcss: {
-            options: {
-                map: true, // inline sourcemaps
-                processors: [
-                    require('tailwindcss')(),
-                    require('autoprefixer')({
-                        overrideBrowserslist: 'last 2 versions',
-                    }), // add vendor prefixes
-                ],
-            },
-            dist: {
-                expand: true,
-                cwd: 'src/css/',
-                src: ['**/*.css'],
-                dest: 'assets/css/',
-                ext: '.css',
-            },
-        },
-
         less: {
             development: {
                 options: {
@@ -60,13 +40,6 @@ module.exports = function (grunt) {
             },
         },
         watch: {
-            postcss: {
-                files: 'src/css/**/*.css',
-                tasks: ['compile-tailwindcss'],
-                options: {
-                    interrupt: true,
-                },
-            },
             scripts: {
                 files: [
                     'src/less/**',
@@ -99,17 +72,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-apidoc');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-postcss');
 
     //register tasks
-    grunt.registerTask('compile-tailwindcss', ['postcss']);
-    grunt.registerTask('build', [
-        'less',
-        'uglify',
-        'copy',
-        'apidoc',
-        'postcss',
-    ]);
+    grunt.registerTask('build', ['less', 'uglify', 'copy', 'apidoc']);
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('apiDoc', ['apidoc']);
 };
