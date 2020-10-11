@@ -59,6 +59,7 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
+        self.css('signin');
         self.js('signin');
 
         self.render({
@@ -70,6 +71,7 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
+        self.css('signup');
         self.js('signup');
 
         self.render({

@@ -1,78 +1,61 @@
-<header class="lg:px-16 px-4 bg-white flex flex-wrap items-center lg:py-0 py-3">
-    <div class="flex-1 flex justify-between items-center">
-        <a href="/">
-            <img
-                src="../assets/images/logo.svg"
-                width="40"
-                height="42"
-            ></img>
-        </a>
-    </div>
-    <label for="menu-toggle" class="pointer-cursor lg:hidden block">
-        <svg
-            class="fill-current text-gray-900"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-        >
-            <title>menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-        </svg>
-    </label>
-    <input class="hidden" type="checkbox" id="menu-toggle" />
-
-    <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
-        <nav>
-            <ul
-                class="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0"
-            >
-                <li>
-                    <a
-                        class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
-                        href="#"
-                        >Features</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
-                        href="#"
-                        >Pricing</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400"
-                        href="#"
-                        >Documentation</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400 lg:mb-0 mb-2"
-                        href="#"
-                        >Support</a
-                    >
-                </li>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="">
+            <a <%if(!self.req.authorized) { %> href="/" <% } else { %> href="/dashboard" <% } %>>
+                <img
+                    src="../assets/images/logo.svg"
+                    width="40"
+                    height="42"
+                ></img>
+            </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
                 <%if(!self.req.authorized) { %>
-                    <div class="text-center m-2">
-                        <button class="btn" onclick="redirectLogin();">Login</button>
-                        <button class="btn" onclick="redirectRegister();">Register</button>
-                    </div>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 <% } else { %>
-                    <div class="text-center m-2">
-                        <button class="btn" onclick="logout();">Logout</button>
-                    </div>
+                    <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
                 <% } %>
-            </ul>
-        </nav>
-        <a
-            href="#"
-            class="lg:ml-4 flex items-center justify-start lg:mb-0 mb-4 pointer-cursor"
-        >
-        </a>
-    </div>
+            </li>
+            <!--
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="#">Features</a>
+                <a class="dropdown-item" href="#">Pricing</a>
+                <a class="dropdown-item" href="#">Documentation</a>
+              </div>
+            </li>
+            -->
+          </ul>
+          
+            <%if(!self.req.authorized) { %>
+                <div class="row">
+                    <div class="col-sm">
+                        <button class="btn btn-sm btn-primary btn-block" onclick="redirectLogin();">Login</button>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-sm btn-primary btn-block" onclick="redirectRegister();">Register</button>
+                    </div>
+                </div>
+            <% } else { %>
+                <div>
+                    <button class="btn btn-sm btn-primary btn-block" onclick="logout();">Logout</button>
+                </div>
+            <% } %>
+        </div>
+      </nav>
     <script>
         function logout() {
             document.cookie =
