@@ -28,31 +28,10 @@ class ApiEntriesController extends Controller {
     async actionGetAll() {
         const self = this;
 
-        // get filter attributes from the url params
-        const timeStampStart = self.param('start') || null;
-        const timeStampEnd = self.param('end') || null;
-        const category = self.param('category') || null;
-
         // define the where clause for the sql query
         let where = {
             householdId: self.req.user.householdId,
         };
-        // check if the user gave any further parameters
-        // add it to the query-where
-        if (timeStampStart) {
-            where['startDate'] = {
-                [Op.gte]: new Date(timeStampStart),
-            };
-        }
-        if (timeStampEnd) {
-            where['endDate'] = {
-                // endDate can be smaller than timeStampEnd or be null (there was no EndDate set)
-                [Op.or]: {
-                    [Op.lte]: new Date(timeStampEnd),
-                    [Op.eq]: null,
-                },
-            };
-        }
 
         let entries = [];
         let error = null;
@@ -63,13 +42,6 @@ class ApiEntriesController extends Controller {
                 where: where,
             });
             if (!entries.toString()) {
-                // throw a custom error if there were parameters set by the user
-                if (timeStampStart || timeStampEnd || category) {
-                    throw new ApiError(
-                        'No entries found with your set parameters:',
-                        404
-                    );
-                }
                 // throw a standard 404 nothing found
                 throw new ApiError('No entries found', 404);
             }
