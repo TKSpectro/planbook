@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 // define static content
 app.use('/assets', express.static('assets'));
-//app.use(favicon(__dirname + '/favicon.ico'));
+app.use(favicon(__dirname + '/favicon.ico'));
 app.use('/apidoc', express.static(__dirname + '/docs'));
 
 const socket = new SocketHandler(io, database);
