@@ -57,7 +57,6 @@ class SocketHandler {
         const self = this;
 
         self.io.on('connection', (socket) => {
-            console.log('new client connected', socket.id);
             self.sockets[socket.id] = socket;
 
             socket.on('disconnect', () => {
