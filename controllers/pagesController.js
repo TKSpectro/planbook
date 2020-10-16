@@ -83,6 +83,7 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
+        self.js('Chart');
         self.js('dashboard');
 
         self.render({
