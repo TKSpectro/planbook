@@ -11,10 +11,6 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: true,
             },
-            income: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-            },
             value: {
                 type: DataTypes.DOUBLE,
                 allowNull: false,

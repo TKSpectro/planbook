@@ -32,11 +32,6 @@ class ApiEntriesController extends Controller {
         let where = {
             householdId: self.req.user.householdId,
         };
-
-        const income = self.param('income');
-        if (income) {
-            where.income = income;
-        }
         const categoryId = self.param('categoryId');
         if (categoryId) {
             where.categoryId = categoryId;

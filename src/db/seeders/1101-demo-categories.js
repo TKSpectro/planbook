@@ -10,6 +10,30 @@ module.exports = {
                     updatedAt: new Date(),
                     name: 'Food',
                 },
+                {
+                    id: 2,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Entertainment',
+                },
+                {
+                    id: 3,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Gifts',
+                },
+                {
+                    id: 4,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Income',
+                },
+                {
+                    id: 5,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'General',
+                },
             ],
             {}
         );

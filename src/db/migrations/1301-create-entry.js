@@ -24,10 +24,6 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
-            income: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-            },
             value: {
                 type: Sequelize.DOUBLE,
                 allowNull: false,
@@ -54,7 +50,7 @@ module.exports = {
                     },
                     key: 'id',
                 },
-                allowNull: true,
+                allowNull: false,
             },
             householdId: {
                 type: Sequelize.INTEGER,
