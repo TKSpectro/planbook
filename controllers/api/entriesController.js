@@ -33,6 +33,19 @@ class ApiEntriesController extends Controller {
             householdId: self.req.user.householdId,
         };
 
+        const income = self.param('income');
+        if (income) {
+            where.income = income;
+        }
+        const categoryId = self.param('categoryId');
+        if (categoryId) {
+            where.categoryId = categoryId;
+        }
+        const interval = self.param('interval');
+        if (interval) {
+            where.interval = interval;
+        }
+
         let entries = [];
         let error = null;
 
