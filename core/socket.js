@@ -58,9 +58,7 @@ class SocketHandler {
 
         self.io.on('connection', (socket) => {
             self.sockets[socket.id] = socket;
-
             socket.on('disconnect', () => {
-                console.log('disconnected client', socket.id);
                 if (self.sockets[socket.id]) {
                     delete self.sockets[socket.id];
                 }
