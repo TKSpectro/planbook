@@ -2,33 +2,6 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        less: {
-            development: {
-                options: {
-                    paths: ['src/less'],
-                    compress: true,
-                    plugins: [
-                        new (require('less-plugin-autoprefix'))({
-                            browsers: ['last 2 versions', 'ie 9'],
-                        }),
-                    ],
-                    banner:
-                        '/*!\n' +
-                        ' * Created By Tom Käppler\n' +
-                        ' * @version 1.0.0\n' +
-                        ' */\n',
-                },
-                files: {
-                    /*
-                    'assets/css/layout.css': 'src/less/layout.less',
-                    'assets/css/index.css': 'src/less/index.less',
-                    'assets/css/signin.css': 'src/less/signin.less',
-                    'assets/css/imprint.css': 'src/less/imprint.less',
-                    */
-                },
-            },
-        },
-
         uglify: {
             build: {
                 files: {
@@ -41,13 +14,8 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: [
-                    'src/less/**',
-                    'src/js/**',
-                    'src/apidoc/**',
-                    'src/css/**',
-                ],
-                tasks: ['less', 'uglify', 'copy'],
+                files: ['src/js/**', 'src/apidoc/**', 'src/css/**'],
+                tasks: ['uglify', 'copy'],
             },
         },
         apidoc: {
@@ -59,22 +27,49 @@ module.exports = function (grunt) {
         copy: {
             main: {
                 files: [
-                    // includes files within path
-                    {},
+                    // copy bootstrap/jquery files
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['./node_modules/jquery/dist/jquery.slim.min.js'],
+                        dest: './assets/js',
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: [
+                            './node_modules/bootstrap/dist/js/bootstrap.min.js',
+                        ],
+                        dest: './assets/js',
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: [
+                            './node_modules/bootstrap/dist/js/bootstrap.min.js.map',
+                        ],
+                        dest: './assets/js',
+                    },
+                    // copy chart.js files
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['./node_modules/chart.js/dist/*.js'],
+                        dest: './assets/js',
+                    },
                 ],
             },
         },
     });
 
     //load plugins
-    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-apidoc');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     //register tasks
-    grunt.registerTask('build', ['less', 'uglify', 'copy', 'apidoc']);
+    grunt.registerTask('build', ['uglify', 'copy', 'apidoc']);
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('apiDoc', ['apidoc']);
 };
