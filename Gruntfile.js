@@ -9,6 +9,7 @@ module.exports = function (grunt) {
                     'assets/js/signin.min.js': 'src/js/signin.js',
                     'assets/js/signup.min.js': 'src/js/signup.js',
                     'assets/js/dashboard.min.js': 'src/js/dashboard.js',
+                    'assets/js/todo.min.js': 'src/js/todo.js',
                 },
             },
         },
@@ -55,6 +56,13 @@ module.exports = function (grunt) {
                         expand: true,
                         flatten: true,
                         src: ['./node_modules/chart.js/dist/*.js'],
+                        dest: './assets/js',
+                    },
+                    // copy non minified js for development
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['./src/js/*'],
                         dest: './assets/js',
                     },
                 ],
