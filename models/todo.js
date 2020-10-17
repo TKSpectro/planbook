@@ -19,5 +19,8 @@ module.exports = function (Model, db) {
         if (typeof data.done !== 'undefined') {
             self.done = data.done;
         }
+        if (typeof data.householdId !== 'undefined') {
+            self.householdId = data.householdId;
+        }
     };
 };
