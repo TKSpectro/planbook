@@ -14,14 +14,21 @@
         </button>
       
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <ul class="navbar-nav mr-auto">
                 <%if(!self.req.authorized) { %>
+                <li class="nav-item active">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
                 <% } else { %>
+                <li class="nav-item active">
                     <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/todo">Todo <span class="sr-only">(current)</span></a>
+                </li>
                 <% } %>
-            </li>
+            
+            
             <!--
             <li class="nav-item">
               <a class="nav-link" href="#">Link</a>

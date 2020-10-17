@@ -91,6 +91,17 @@ class PagesController extends Controller {
             title: 'Dashboard',
         });
     }
+
+    actionTodo() {
+        const self = this;
+
+        self.css('custom');
+        self.js('todo');
+
+        self.render({
+            title: 'Todo',
+        });
+    }
 }
 
 module.exports = PagesController;

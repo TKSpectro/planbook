@@ -15,6 +15,7 @@ let routes = {
             { path: '/login', action: 'signin', method: 'get' },
             { path: '/register', action: 'signup', method: 'get' },
             { path: '/dashboard', action: 'dashboard', method: 'get' },
+            { path: '/todo', action: 'todo', method: 'get' },
         ],
     },
     'api/users': {
