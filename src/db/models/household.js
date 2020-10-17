@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             as: 'entries',
             foreignKey: 'id',
         });
+        Household.hasMany(models.Todo, {
+            as: 'todos',
+            foreignKey: 'id',
+        });
     };
     return Household;
 };
