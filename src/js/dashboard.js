@@ -1,4 +1,4 @@
-var request = new XMLHttpRequest();
+/*var request = new XMLHttpRequest();
 
 request.open('GET', '/api/entries?income=0', true);
 request.onload = function () {
@@ -130,3 +130,64 @@ request3.onload = function () {
 };
 
 request3.send();
+*/
+var request4 = new XMLHttpRequest();
+
+request4.open('GET', '/api/entries', true);
+request4.onload = function () {
+    // Begin accessing JSON data here
+    var data = JSON.parse(this.response);
+    if (request4.status >= 200 && request4.status < 400) {
+    } else {
+        console.log('error');
+    }
+
+    var labels = [];
+    var values = [];
+    var backgroundColors = [];
+
+    // go through all entries and filter out multiple categories and add up the value in one category
+    data.entries.forEach((entry) => {
+        let category = entry.category;
+        if (labels.indexOf(category.name) == -1) {
+            labels.push(category.name);
+            values.push(entry.value);
+        } else {
+            values[labels.indexOf(category.name)] += entry.value;
+        }
+    });
+    // build the color array by looking for positive/negative values in the value array
+    values.forEach((value) => {
+        if (value >= 0) {
+            backgroundColors.push('#7CFC00');
+        } else {
+            backgroundColors.push('#F08080');
+        }
+    });
+
+    console.log(calcEntries(data.entries));
+
+    var ctx = canvas4.getContext('2d');
+    var config = {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    data: values,
+                    backgroundColor: backgroundColors,
+                },
+            ],
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Outgoing',
+            },
+        },
+    };
+
+    var chart4 = new Chart(ctx, config);
+};
+
+request4.send();
