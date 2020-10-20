@@ -1,5 +1,7 @@
 const Controller = require('../mainController.js');
 const ApiError = require('../../core/error.js');
+require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 class ApiInvitesController extends Controller {
     constructor(...args) {
@@ -125,6 +127,36 @@ class ApiInvitesController extends Controller {
                     lock: true,
                     include: self.db.Invite.extendInclude,
                 });
+
+                //The email account used to invite other users has to be given in the .env file
+                if (process.env.mailName && process.env.mailPassword) {
+                    //Send an email to the invited person
+                    var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: process.env.mailName,
+                            pass: process.env.mailPassword,
+                        },
+                    });
+
+                    var mailOptions = {
+                        from: process.env.mailName,
+                        to: data.email,
+                        subject: 'Invite for Planbook',
+                        text:
+                            'Greetings from Planbook. You just have been invited by ' +
+                            data.email +
+                            ' to join their household\nFor that you need to just register with this email on the website',
+                    };
+
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                        }
+                    });
+                }
 
                 return newInvite;
             });
