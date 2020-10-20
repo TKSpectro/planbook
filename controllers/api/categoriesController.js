@@ -8,7 +8,7 @@ class ApiCategoriesController extends Controller {
 
         self.format = Controller.HTTP_FORMAT_JSON;
 
-        // users have to signed in else they get a 401 Unauthorized response
+        //Users have to bw signed in else they get a 401 Unauthorized response
         self.before(['*'], function (next) {
             if (self.req.authorized === true) {
                 next();
@@ -23,7 +23,7 @@ class ApiCategoriesController extends Controller {
         });
     }
 
-    // GET for all categories, if a name is send with the request only the category with that name gets returned
+    //GET for all categories, if a name is send with the request only the category with that name gets returned
     async actionGetAll() {
         const self = this;
 
@@ -31,19 +31,18 @@ class ApiCategoriesController extends Controller {
         let category = null;
         let categories = [];
 
-        // look if a name param was send
         let categoryName = self.param('name');
-        // if it was then search for a category with this name
+        //If a name was given then search for a category with this name
         if (categoryName) {
             try {
-                // find one with the name
+                //Find one with the name
                 category = await self.db.Category.findOne({
                     where: {
                         name: categoryName,
                     },
-                    attributes: ['id', 'createdAt', 'updatedAt', 'name'],
+                    attributes: ['id', 'name'],
                 });
-                // no category was found
+                //No category was found
                 if (!category) {
                     throw new ApiError('No category found with this name', 404);
                 }
@@ -51,7 +50,7 @@ class ApiCategoriesController extends Controller {
                 error = err;
             }
 
-            // render either the error or the found category
+            //Render either the error or the found category
             if (error) {
                 self.handleError(error);
             } else {
@@ -59,13 +58,13 @@ class ApiCategoriesController extends Controller {
                     category: category,
                 });
             }
-            // no name given, find all categories and return them
+            //No name given, find all categories and return them
         } else {
             try {
-                // find all categories
+                //Find all categories
                 categories = await self.db.Category.findAll({
                     where: {},
-                    attributes: ['id', 'createdAt', 'updatedAt', 'name'],
+                    attributes: ['id', 'name'],
                 });
                 if (!categories) {
                     throw new ApiError('No categories found', 404);
@@ -73,7 +72,7 @@ class ApiCategoriesController extends Controller {
             } catch (err) {
                 error = err;
             }
-            // render either the error or the found categories
+            //Render either the error or the found categories
             if (error) {
                 self.handleError(error);
             } else {
@@ -98,12 +97,12 @@ class ApiCategoriesController extends Controller {
         let error = null;
 
         try {
-            // find the category with the given id
+            //Find the category with the given id
             category = await self.db.Category.findOne({
                 where: {
                     id: categoryId,
                 },
-                attributes: ['id', 'createdAt', 'updatedAt', 'name'],
+                attributes: ['id', 'name'],
             });
             if (!category) {
                 throw new ApiError('No category found with this id', 404);
@@ -112,7 +111,7 @@ class ApiCategoriesController extends Controller {
             error = err;
         }
 
-        // render either the error or the found category
+        //Render either the error or the found category
         if (error) {
             self.handleError(error);
         } else {
@@ -142,17 +141,20 @@ class ApiCategoriesController extends Controller {
                     where: {
                         name: remoteData.name,
                     },
-                    attributes: ['id', 'createdAt', 'updatedAt', 'name'],
+                    attributes: ['id', 'name'],
                     lock: true,
                     transaction: t,
                 });
-                // if it exists then throw an error
+                //If the category already exists then throw an error
                 if (sameName) {
-                    throw new ApiError('Name already in use', 400);
+                    throw new ApiError(
+                        'There is already a category with the same name',
+                        400
+                    );
                 }
 
                 let newCategory = self.db.Category.build();
-                // create the category
+                //Create the new Category and write it to the database
                 newCategory.writeRemotes(remoteData);
                 await newCategory.save({
                     transaction: t,
@@ -165,7 +167,7 @@ class ApiCategoriesController extends Controller {
             error = err;
         }
 
-        // render either the error or the created category
+        //Render either the error or the created category
         if (error) {
             self.handleError(error);
         } else {
@@ -180,7 +182,7 @@ class ApiCategoriesController extends Controller {
         }
     }
 
-    // delete the category with the given id
+    //Delete a category with the given id
     async actionDelete() {
         const self = this;
 
@@ -188,7 +190,7 @@ class ApiCategoriesController extends Controller {
         let category = null;
         let error = null;
 
-        // delete the category
+        //Delete the category from the database
         try {
             category = await self.db.sequelize.transaction(async (t) => {
                 category = await self.db.Category.destroy(
@@ -202,7 +204,7 @@ class ApiCategoriesController extends Controller {
 
                 return category;
             });
-            // if no category was found with this id throw an error
+            //If no category was found with this id throw an error
             if (!category) {
                 throw new ApiError('Found no category with given id', 404);
             }
@@ -210,7 +212,7 @@ class ApiCategoriesController extends Controller {
             error = err;
         }
 
-        // render either the error or 204 No-Content
+        //Render either the error or 204 No-Content
         if (error) {
             self.handleError(error);
         } else {
