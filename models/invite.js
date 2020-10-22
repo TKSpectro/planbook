@@ -1,20 +1,25 @@
 module.exports = function (Model, db) {
     Model.extendInclude = [
         {
-            model: db.Household,
-            as: 'household',
-            attributes: ['id', 'name'],
+            model: db.User,
+            as: 'sender',
+            attributes: ['id', 'firstName', 'lastName', 'householdId'],
         },
     ];
+
+    Model.prototype.writeUpdatedAt = function () {
+        const self = this;
+        self.updatedAt = new Date();
+    };
 
     Model.prototype.writeRemotes = function (data) {
         const self = this;
 
-        if (typeof data.email !== 'undefined') {
-            self.email = data.email;
+        if (typeof data.link !== 'undefined') {
+            self.link = data.link;
         }
-        if (typeof data.householdId !== 'undefined') {
-            self.householdId = data.householdId;
+        if (typeof data.senderId !== 'undefined') {
+            self.senderId = data.senderId;
         }
     };
 };

@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Invite = sequelize.define(
         'Invite',
         {
-            email: {
+            link: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     Invite.associate = function (models) {
-        Invite.belongsTo(models.Household, {
-            as: 'household',
-            foreignKey: 'householdId',
+        Invite.belongsTo(models.User, {
+            as: 'sender',
+            foreignKey: 'senderId',
         });
     };
     return Invite;

@@ -1,7 +1,10 @@
 const Controller = require('../mainController.js');
 const ApiError = require('../../core/error.js');
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
+const { up } = require('../../src/db/migrations/1501-create-invite.js');
 
 class ApiInvitesController extends Controller {
     constructor(...args) {
@@ -34,6 +37,9 @@ class ApiInvitesController extends Controller {
         try {
             invites = await self.db.Invite.findAll({
                 include: self.db.Invite.extendInclude,
+                where: {
+                    senderId: self.req.user.id,
+                },
             });
             if (!invites) {
                 throw new ApiError('No invites found', 404);
@@ -56,43 +62,13 @@ class ApiInvitesController extends Controller {
         }
     }
 
-    async actionGetOne() {
-        const self = this;
-
-        let inviteId = self.param('id');
-        let invite = null;
-        let error = null;
-
-        try {
-            invite = await self.db.Invite.findOne({
-                where: {
-                    id: inviteId,
-                },
-                include: self.db.Invite.extendInclude,
-            });
-            if (!invite) {
-                throw new ApiError('No invite found with this id', 404);
-            }
-        } catch (err) {
-            error = err;
-        }
-
-        if (error) {
-            self.handleError(error);
-        } else {
-            self.render({
-                invite: invite,
-            });
-        }
-    }
-
+    //Creating a new invite
     async actionCreate() {
         const self = this;
 
         let invitedEmail = self.param('email');
 
-        let invitedHouseholdId = self.req.user.householdId;
-        if (!invitedHouseholdId) {
+        if (!self.req.user.householdId) {
             throw new ApiError(
                 'You cant invite because you are not in a household',
                 400
@@ -101,31 +77,21 @@ class ApiInvitesController extends Controller {
 
         let invite = null;
         let error = null;
+        let link = uuidv4();
 
         try {
             invite = await self.db.sequelize.transaction(async (t) => {
-                let sameMail = await self.db.Invite.findOne({
-                    where: {
-                        email: invitedEmail,
-                    },
-                    transaction: t,
-                });
-
-                if (sameMail) {
-                    throw new ApiError('This EMail was already invited', 400);
-                }
-
                 let newInvite = self.db.Invite.build();
 
                 let data = {
-                    email: invitedEmail,
-                    householdId: invitedHouseholdId,
+                    senderId: self.req.user.id,
+                    link: link,
                 };
+                //newInvite.dataValues.senderId = self.req.user.id;
                 newInvite.writeRemotes(data);
                 await newInvite.save({
                     transaction: t,
                     lock: true,
-                    include: self.db.Invite.extendInclude,
                 });
 
                 //The email account used to invite other users has to be given in the .env file
@@ -141,12 +107,16 @@ class ApiInvitesController extends Controller {
 
                     var mailOptions = {
                         from: process.env.mailName,
-                        to: data.email,
+                        to: invitedEmail,
                         subject: 'Invite for Planbook',
                         text:
                             'Greetings from Planbook. You just have been invited by ' +
-                            data.email +
-                            ' to join their household\nFor that you need to just register with this email on the website',
+                            self.req.user.firstName +
+                            ' ' +
+                            self.req.user.lastName +
+                            ' to join their household\nFor that you need to just register with this inviteCode ' +
+                            newInvite.link +
+                            ' on the website',
                     };
 
                     transporter.sendMail(mailOptions, function (error, info) {
@@ -178,47 +148,129 @@ class ApiInvitesController extends Controller {
         }
     }
 
-    async actionDelete() {
+    //This route "uses" an invite link and sets the householdId of the user to the one which send the link
+    async actionUpdate() {
         const self = this;
 
-        let inviteEmail = self.param('email');
+        let link = self.param('link');
+        if (!link) {
+            throw new ApiError('no invite found with this token', 400);
+        }
+
         let invite = null;
         let error = null;
 
-        // delete the category
+        //get the old todo
         try {
             invite = await self.db.sequelize.transaction(async (t) => {
-                invite = await self.db.Invite.destroy(
+                let updateInvite = await self.db.Invite.findOne(
                     {
                         where: {
-                            email: inviteEmail,
+                            link: link,
                         },
                     },
-                    { transaction: t, lock: true }
+                    { transaction: t }
                 );
+                if (updateInvite) {
+                    //Check if the invite was already used
+                    if (
+                        updateInvite.createdAt.getTime() !==
+                        updateInvite.updatedAt.getTime()
+                    ) {
+                        throw new ApiError('Invite link was already used', 400);
+                    }
+                    //We now have to force updating only the updatedAt
+                    //Without this the updatedAt would not be updated
+                    updateInvite.changed('updatedAt', true);
 
-                return invite;
+                    await updateInvite.update(
+                        {
+                            updatedAt: new Date(),
+                        },
+                        {
+                            where: {
+                                link: link,
+                            },
+                        },
+                        { transaction: t, lock: true }
+                    );
+                }
+
+                return updateInvite;
             });
-            // if no category was found with this id throw an error
             if (!invite) {
-                throw new ApiError('Found no invite for given email', 404);
+                throw new ApiError('Invite could not be used', 404);
             }
+
+            //Set the household id of the current user to the householdId of the invite sender
+            //Get the sender.householdId
+            let senderHouseholdId = await self.db.sequelize.transaction(
+                async (t) => {
+                    let sender = await self.db.User.findOne(
+                        {
+                            where: {
+                                id: invite.senderId,
+                            },
+                        },
+                        { transaction: t }
+                    );
+                    if (!sender) {
+                        throw new ApiError(
+                            'There was no corresponding user found to this invite',
+                            404
+                        );
+                    }
+                    return sender.householdId;
+                }
+            );
+
+            //Now set the householdId of the current user to the one of the sender
+            let currentUser = await self.db.sequelize.transaction(async (t) => {
+                let updateUser = await self.db.User.findOne(
+                    {
+                        where: {
+                            id: self.req.user.id,
+                        },
+                    },
+                    { transaction: t }
+                );
+                if (!updateUser) {
+                    throw new ApiError(
+                        'There was an error and we could not find a user in our database with your id.\nPlease contact our support',
+                        404
+                    );
+                } else {
+                    await updateUser.update(
+                        {
+                            householdId: senderHouseholdId,
+                        },
+                        {
+                            where: {
+                                id: updateUser.id,
+                            },
+                        },
+                        { transaction: t, lock: true }
+                    );
+                }
+
+                return updateUser;
+            });
         } catch (err) {
             error = err;
         }
 
-        // render either the error or 204 No-Content
         if (error) {
             self.handleError(error);
         } else {
             self.render(
-                {},
                 {
-                    statusCode: 204,
+                    response: 'Yay, you have joined the Household',
+                },
+                {
+                    statusCode: 202,
                 }
             );
         }
     }
 }
-
 module.exports = ApiInvitesController;

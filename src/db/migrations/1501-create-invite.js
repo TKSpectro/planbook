@@ -16,17 +16,15 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: false,
             },
-            email: {
-                type: Sequelize.STRING(320),
+            link: {
+                type: Sequelize.STRING,
                 allowNull: false,
-                isEmail: true,
-                unique: 'uniqueInviteEmail',
             },
-            householdId: {
+            senderId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: {
-                        tableName: 'household',
+                        tableName: 'user',
                     },
                     key: 'id',
                 },
