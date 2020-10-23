@@ -3,14 +3,10 @@ const SocketHandler = require('./core/socket.js');
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
-var cors = require('cors');
 const io = require('socket.io')();
 const bodyParser = require('body-parser');
 const database = require('./core/database.js')();
 const favicon = require('serve-favicon');
-
-//Attach cors-middleware globally
-app.use(cors());
 
 //Attach socket.io
 io.attach(http);
