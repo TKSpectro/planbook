@@ -2,8 +2,6 @@
 
 IT-Praxisprojekt (4./5. Semester)
 
-# What is this?
-
 # TODO
 
 -   [x] setup
@@ -27,7 +25,8 @@ IT-Praxisprojekt (4./5. Semester)
     -   [ ] API routes with crud
     -   [ ] Webpage for todos
 -   [ ] Entries
-    -   [x] API routes
+    -   [ ] API routes
+        -   [ ] add some parameters(paging/filtering/sorting) for GET
     -   [ ] Webpages
         -   [ ] Dashboard
             -   [ ] Statistics with chart.js
