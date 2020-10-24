@@ -16,7 +16,7 @@ IT-Praxisprojekt (4./5. Semester)
     -   [x] Webpages
 -   [x] Categories
     -   [x] API routes
--   [x] Households
+-   [ ] Households
     -   [x] API routes
     -   [ ] Webpage (Who is in the household and statistics)
 -   [x] Invites
@@ -26,3 +26,11 @@ IT-Praxisprojekt (4./5. Semester)
     -   [x] Model/Database for todo
     -   [ ] API routes with crud
     -   [ ] Webpage for todos
+-   [ ] Entries
+    -   [x] API routes
+    -   [ ] Webpages
+        -   [ ] Dashboard
+            -   [ ] Statistics with chart.js
+            -   [ ] Filtering
+            -   [ ] Sorting
+-   [ ] API documentation
