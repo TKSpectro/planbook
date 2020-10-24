@@ -29,7 +29,6 @@ class Passport {
 
     static isAuthorized(req) {
         const self = this;
-
         let cookies = self.cookies(req);
         let token;
         if (cookies[cfg.cookieName]) {
@@ -37,8 +36,7 @@ class Passport {
         } else if (req.headers && req.headers.authorization) {
             token = req.headers.authorization.replace('Bearer ', '');
         }
-
-        if (token !== null && token !== 'null') {
+        if (token !== null && token !== 'null' && token !== undefined) {
             try {
                 let payload = jwt.verify(token, cfg.secret);
                 if (payload) {
