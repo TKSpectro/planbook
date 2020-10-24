@@ -1,6 +1,7 @@
 const Controller = require('../mainController.js');
 const Passport = require('../../core/passport.js');
 const ApiError = require('../../core/error.js');
+const https = require('https');
 
 class ApiUsersController extends Controller {
     constructor(...args) {
@@ -324,6 +325,48 @@ class ApiUsersController extends Controller {
                 }
 
                 let newUser = self.db.User.build();
+                //Check if a inviteLink was send
+                if (remoteData.link) {
+                    //Take the corresponding invite from the database
+                    let invite = await self.db.Invite.findOne({
+                        where: {
+                            link: remoteData.link,
+                        },
+                        include: self.db.Invite.extendInclude,
+                        transaction: t,
+                    });
+                    if (!invite) {
+                        throw new ApiError('Invite token does not exist', 400);
+                    }
+                    if (
+                        invite.createdAt.getTime() !==
+                        invite.updatedAt.getTime()
+                    ) {
+                        throw new ApiError(
+                            'Invite token was already used',
+                            400
+                        );
+                    }
+
+                    //Set the household id to the one from the invite sender
+                    let householdId = invite.dataValues.sender.householdId;
+                    remoteData.householdId = householdId;
+
+                    //Update the invite to mark as used
+                    invite.changed('updatedAt', true);
+
+                    await invite.update(
+                        {
+                            updatedAt: new Date(),
+                        },
+                        {
+                            where: {
+                                link: remoteData.link,
+                            },
+                        },
+                        { transaction: t, lock: true }
+                    );
+                }
 
                 newUser.writeRemotes(remoteData);
                 await newUser.save({

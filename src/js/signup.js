@@ -34,6 +34,7 @@ function signupPressed(elm) {
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value,
+                link: document.getElementById('link').value,
             },
         })
     );

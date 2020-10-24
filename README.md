@@ -11,6 +11,7 @@ IT-Praxisprojekt (4./5. Semester)
   - [x] integration of chart.js
 - [x] User/Login/Register
   - [x] API routes
+    - [x] use inviteLink for signUp
   - [x] Webpages
 - [x] Categories
   - [x] API routes
