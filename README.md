@@ -11,7 +11,6 @@ IT-Praxisprojekt (4./5. Semester)
   - [x] integration of chart.js
 - [x] User/Login/Register
   - [x] API routes
-    - [x] use inviteLink for signUp
   - [x] Webpages
 - [x] Categories
   - [x] API routes
@@ -19,18 +18,16 @@ IT-Praxisprojekt (4./5. Semester)
   - [x] API routes
   - [ ] Webpage (Who is in the household and statistics)
 - [x] Invites
-  - [x] use tokens/link for invites
-  - [x] sending tokens with a Email
+  - [x] API routes
+  - [x] Webpage (Add/Delete invites and some basic statistics)
 - [ ] Todos
-  - [x] Model/Database for todo
-  - [ ] API routes with crud
-  - [ ] Webpage for todos
+  - [ ] API routes
+  - [ ] Webpage
 - [ ] Entries
   - [ ] API routes
-    - [ ] add some parameters(paging/filtering/sorting) for GET
   - [ ] Webpages
     - [ ] Dashboard
       - [ ] Statistics with chart.js
-      - [ ] Filtering
-      - [ ] Sorting
+      - [ ] Filtering of entries
+      - [ ] Sorting of entries
 - [ ] API documentation
