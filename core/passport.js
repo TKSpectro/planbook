@@ -31,14 +31,14 @@ class Passport {
         const self = this;
 
         let cookies = self.cookies(req);
-        let token = null;
+        let token;
         if (cookies[cfg.cookieName]) {
             token = cookies[cfg.cookieName];
         } else if (req.headers && req.headers.authorization) {
             token = req.headers.authorization.replace('Bearer ', '');
         }
 
-        if (token !== null) {
+        if (token !== null && token !== 'null') {
             try {
                 let payload = jwt.verify(token, cfg.secret);
                 if (payload) {
