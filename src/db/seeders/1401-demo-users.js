@@ -13,6 +13,7 @@ module.exports = {
                     email: 'tom@mail.com',
                     passwordHash:
                         '$2b$10$nsNf6L5XPv6wOHcC.oWzCuh/dDeFPuEmSYm5IZ4iJyOLe4OAsrIA2', // bCrypt 10 12345678
+                    isAdmin: true,
                     householdId: 1,
                 },
                 {
@@ -24,6 +25,7 @@ module.exports = {
                     email: 'max@mail.com',
                     passwordHash:
                         '$2b$10$nsNf6L5XPv6wOHcC.oWzCuh/dDeFPuEmSYm5IZ4iJyOLe4OAsrIA2', // bCrypt 10 12345678
+                    isAdmin: false,
                     householdId: 2,
                 },
             ],

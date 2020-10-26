@@ -34,6 +34,11 @@ module.exports = {
                 type: Sequelize.STRING(256),
                 allowNull: true,
             },
+            isAdmin: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: false,
+            },
             householdId: {
                 type: Sequelize.INTEGER,
                 references: {

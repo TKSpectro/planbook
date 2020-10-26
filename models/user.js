@@ -33,6 +33,10 @@ module.exports = function (Model, db) {
             self.passwordHash = Passport.hashPassword(data.password);
         }
 
+        if (typeof data.isAdmin !== 'undefined') {
+            self.isAdmin = data.isAdmin;
+        }
+
         if (typeof data.householdId !== 'undefined') {
             self.householdId = data.householdId;
         }
