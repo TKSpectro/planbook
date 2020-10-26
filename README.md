@@ -19,7 +19,7 @@ IT-Praxisprojekt (4./5. Semester)
   - [ ] Webpage (Who is in the household and statistics)
 - [x] Invites
   - [x] API routes
-  - [x] Webpage (Add/Delete invites and some basic statistics)
+  - [ ] Webpage (Add/Delete invites and some basic statistics)
 - [ ] Todos
   - [ ] API routes
   - [ ] Webpage
