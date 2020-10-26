@@ -325,7 +325,7 @@ class ApiUsersController extends Controller {
                 }
 
                 let newUser = self.db.User.build();
-                //Check if a inviteLink was send
+                //If a inviteLink was send then use the invite
                 if (remoteData.link) {
                     //Take the corresponding invite from the database
                     let invite = await self.db.Invite.findOne({
@@ -366,6 +366,15 @@ class ApiUsersController extends Controller {
                         },
                         { transaction: t, lock: true }
                     );
+                } else {
+                    //Create a new household and set id in the new user
+                    let household = self.db.Household.build();
+                    household.name = 'New household';
+                    let newHousehold = await household.save({
+                        transaction: t,
+                        lock: true,
+                    });
+                    newUser.householdId = newHousehold.id;
                 }
 
                 newUser.writeRemotes(remoteData);
