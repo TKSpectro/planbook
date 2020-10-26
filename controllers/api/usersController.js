@@ -26,6 +26,7 @@ class ApiUsersController extends Controller {
         });
     }
 
+    //Get all users in the same household as the logged in user
     async actionGetAll() {
         const self = this;
 
@@ -34,15 +35,10 @@ class ApiUsersController extends Controller {
 
         try {
             users = await self.db.User.findAll({
-                where: {},
-                attributes: [
-                    'id',
-                    'createdAt',
-                    'updatedAt',
-                    'firstName',
-                    'lastName',
-                    'email',
-                ],
+                where: {
+                    householdId: self.req.user.householdId,
+                },
+                attributes: ['id', 'firstName', 'lastName', 'email'],
                 include: self.db.User.extendInclude,
             });
             if (!users) {
@@ -66,26 +62,26 @@ class ApiUsersController extends Controller {
         }
     }
 
+    //Get the user info of one person (if user is admin he can request every user else he can just request users in the same household)
     async actionGetOne() {
         const self = this;
 
-        let userId = self.param('id');
         let user = null;
         let error = null;
 
+        let where = {
+            id: self.param('id'),
+        };
+
+        //Check if logged in user is not admin and set the where
+        if (!self.req.user.isAdmin) {
+            where.householdId = self.req.user.householdId;
+        }
+
         try {
             user = await self.db.User.findOne({
-                where: {
-                    id: userId,
-                },
-                attributes: [
-                    'id',
-                    'createdAt',
-                    'updatedAt',
-                    'firstName',
-                    'lastName',
-                    'email',
-                ],
+                where: where,
+                attributes: ['id', 'firstName', 'lastName', 'email'],
                 include: self.db.User.extendInclude,
             });
             if (!user) {
