@@ -88,11 +88,6 @@ class ApiHouseholdsController extends Controller {
         }
     }
 
-    /* 
-    There is no update for categories, 
-    because only the name could be change and that is not really allowed
-    */
-
     // create the category with the send body (name)
     async actionCreate() {
         const self = this;
