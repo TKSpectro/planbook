@@ -32,6 +32,9 @@ class ApiTodosController extends Controller {
         try {
             todos = await self.db.Todo.findAll({
                 include: self.db.Todo.extendInclude,
+                where: {
+                    householdId: self.req.user.householdId,
+                },
             });
             if (!todos) {
                 throw new ApiError('No todos found', 404);
@@ -65,6 +68,7 @@ class ApiTodosController extends Controller {
             todo = await self.db.Todo.findOne({
                 where: {
                     id: todoId,
+                    householdId: self.req.user.householdId,
                 },
                 include: self.db.Todo.extendInclude,
             });
@@ -88,7 +92,7 @@ class ApiTodosController extends Controller {
         const self = this;
 
         let remoteData = self.param('todo');
-        remoteData['householdId'] = self.req.user.householdId;
+        remoteData.householdId = self.req.user.householdId;
         let todo = null;
         let error = null;
 
@@ -201,6 +205,7 @@ class ApiTodosController extends Controller {
                     {
                         where: {
                             id: todoId,
+                            householdId: self.req.user.householdId,
                         },
                     },
                     { transaction: t, lock: true }
