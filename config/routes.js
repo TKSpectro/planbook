@@ -56,6 +56,7 @@ let routes = {
             { path: '/api/households', action: 'getAll', method: 'GET' },
             { path: '/api/households/:id', action: 'getOne', method: 'GET' },
             { path: '/api/households', action: 'create', method: 'POST' },
+            { path: '/api/households', action: 'update', method: 'PUT' },
             { path: '/api/households/:id', action: 'delete', method: 'DELETE' },
         ],
     },

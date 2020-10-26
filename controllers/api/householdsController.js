@@ -146,6 +146,72 @@ class ApiHouseholdsController extends Controller {
         }
     }
 
+    //Update route for household
+    async actionUpdate() {
+        const self = this;
+
+        if (self.req.user.householdId) {
+            let remoteData = self.param('household');
+
+            let household = null;
+            let error = null;
+
+            //Get the household
+            try {
+                household = await self.db.sequelize.transaction(async (t) => {
+                    let updateHousehold = await self.db.Household.findOne(
+                        {
+                            where: {
+                                id: self.req.user.householdId,
+                            },
+                        },
+                        { transaction: t }
+                    );
+                    if (updateHousehold) {
+                        await updateHousehold.update(
+                            {
+                                name: remoteData.name,
+                            },
+                            {
+                                where: {
+                                    id: self.req.user.householdId,
+                                },
+                            },
+                            { transaction: t, lock: true }
+                        );
+                    }
+
+                    return updateHousehold;
+                });
+                if (!household) {
+                    throw new ApiError('Household could not be updated', 404);
+                }
+            } catch (err) {
+                error = err;
+            }
+
+            if (error) {
+                self.handleError(error);
+            } else {
+                self.render(
+                    {
+                        household: household,
+                    },
+                    {
+                        statusCode: 202,
+                    }
+                );
+            }
+        } else {
+            self.render(
+                {},
+                {
+                    statusCode: 403,
+                }
+            );
+        }
+    }
+
     // delete the category with the given id
     async actionDelete() {
         const self = this;
