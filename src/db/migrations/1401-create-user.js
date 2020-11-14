@@ -39,7 +39,7 @@ module.exports = {
                 allowNull: false,
                 defaultValue: false,
             },
-            householdId: {
+            /*householdId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: {
@@ -48,7 +48,7 @@ module.exports = {
                     key: 'id',
                 },
                 allowNull: true,
-            },
+            },*/
         });
     },
     down: (queryInterface, Sequelize) => {

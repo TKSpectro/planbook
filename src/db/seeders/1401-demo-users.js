@@ -14,7 +14,6 @@ module.exports = {
                     passwordHash:
                         '$2b$10$nsNf6L5XPv6wOHcC.oWzCuh/dDeFPuEmSYm5IZ4iJyOLe4OAsrIA2', // bCrypt 10 12345678
                     isAdmin: true,
-                    householdId: 1,
                 },
                 {
                     id: 2,
@@ -26,7 +25,6 @@ module.exports = {
                     passwordHash:
                         '$2b$10$nsNf6L5XPv6wOHcC.oWzCuh/dDeFPuEmSYm5IZ4iJyOLe4OAsrIA2', // bCrypt 10 12345678
                     isAdmin: false,
-                    householdId: 2,
                 },
             ],
             {}
