@@ -1,4 +1,5 @@
-/*var request = new XMLHttpRequest();
+/*
+var request = new XMLHttpRequest();
 
 request.open('GET', '/api/entries?income=0', true);
 request.onload = function () {
@@ -131,6 +132,7 @@ request3.onload = function () {
 
 request3.send();
 */
+
 var request4 = new XMLHttpRequest();
 
 request4.open('GET', '/api/entries', true);

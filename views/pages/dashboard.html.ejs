@@ -1,17 +1,27 @@
-<h1 class="m-2 text-center text-2xl font-bold text-accent">
-    PlanBook
-</h1>
 <!--
-    <div style="width: 10%;">
-        <canvas id="canvas" width="400" height="400"></canvas>
-    </div>
-    <div style="width: 10%;">
-        <canvas id="canvas2" width="400" height="400"></canvas>
-    </div>
-    <div style="width: 10%;">
-        <canvas id="canvas3" width="400" height="400"></canvas>
-    </div>
--->
-<div style="width: 20%;">
+<div style="width: 10%">
+    <canvas id="canvas" width="400" height="400"></canvas>
+</div>
+<div style="width: 10%;">
+    <canvas id="canvas2" width="400" height="400"></canvas>
+</div>
+<div style="width: 10%;">
+    <canvas id="canvas3" width="400" height="400"></canvas>
+</div>
+<div style="width: 20%">
     <canvas id="canvas4" width="400" height="400"></canvas>
+</div>
+-->
+<div class="container">
+    <div class="list-group">
+        <% entries.forEach(entry => { %>
+        <a href="#" class="list-group-item list-group-item-action active">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><%=entry.purpose%></h5>
+                <small><%=entry.value%></small>
+            </div>
+            <p class="mb-1"><%=entry.startDate.toDateString()%></p>
+        </a>
+        <% }); %>
+    </div>
 </div>

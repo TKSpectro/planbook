@@ -79,7 +79,7 @@ class PagesController extends Controller {
         });
     }
 
-    actionDashboard() {
+    async actionDashboard() {
         const self = this;
 
         self.css('custom');
@@ -87,19 +87,35 @@ class PagesController extends Controller {
         self.js('helper');
         self.js('dashboard');
 
+        const entries = await self.db.Entry.findAll({
+            where: {
+                householdId: self.req.user.id,
+            },
+            include: self.db.Entry.extendInclude,
+        });
+
         self.render({
             title: 'Dashboard',
+            entries: entries,
         });
     }
 
-    actionTodo() {
+    async actionTodo() {
         const self = this;
 
         self.css('custom');
         self.js('todo');
 
+        const todos = await self.db.Todo.findAll({
+            where: {
+                householdId: self.req.user.id,
+            },
+            include: self.db.Todo.extendInclude,
+        });
+
         self.render({
             title: 'Todo',
+            todos: todos,
         });
     }
 }
