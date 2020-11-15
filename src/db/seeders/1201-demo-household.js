@@ -9,12 +9,14 @@ module.exports = {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     name: 'MyHome',
+                    ownerId: 1,
                 },
                 {
                     id: 2,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     name: 'NotMyHome',
+                    ownerId: 2,
                 },
             ],
             {}
