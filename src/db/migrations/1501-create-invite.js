@@ -16,6 +16,18 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: false,
             },
+            validUntil: {
+                type: Sequelize.DATE,
+                allowNull: false,
+            },
+            wasUsed: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+            },
+            invitedEmail: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             link: {
                 type: Sequelize.STRING,
                 allowNull: false,

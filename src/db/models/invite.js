@@ -3,6 +3,18 @@ module.exports = (sequelize, DataTypes) => {
     const Invite = sequelize.define(
         'Invite',
         {
+            validUntil: {
+                type: DataTypes.DATE,
+                allowNull: false,
+            },
+            wasUsed: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+            },
+            invitedEmail: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             link: {
                 type: DataTypes.STRING,
                 allowNull: false,
