@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     Household.associate = function (models) {
+        Household.belongsToMany(models.User, {
+            through: 'household_user',
+        });
         Household.hasMany(models.Entry, {
             as: 'entries',
             foreignKey: 'id',

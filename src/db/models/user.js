@@ -30,9 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     User.associate = function (models) {
-        User.belongsTo(models.Household, {
-            as: 'household',
-            foreignKey: 'householdId',
+        User.belongsToMany(models.Household, {
+            through: 'household_user',
         });
     };
     return User;
