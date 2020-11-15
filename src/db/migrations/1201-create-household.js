@@ -20,6 +20,16 @@ module.exports = {
                 type: Sequelize.STRING(255),
                 allowNull: false,
             },
+            ownerId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'user',
+                    },
+                    key: 'id',
+                },
+                allowNull: false,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
