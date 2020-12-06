@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     );
     User.associate = function (models) {
         User.belongsToMany(models.Household, {
-            through: 'household_user',
+            through: 'householdUser',
         });
     };
     return User;

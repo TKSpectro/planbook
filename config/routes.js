@@ -3,6 +3,7 @@ const ApiUsersController = require('../controllers/api/usersController.js');
 const ApiInvitesController = require('../controllers/api/invitesController.js');
 const ApiCategoriesController = require('../controllers/api/categoriesController.js');
 const ApiHouseholdsController = require('../controllers/api/householdsController.js');
+const ApiHouseholdsUsersController = require('../controllers/api/householdsUsersController.js');
 const ApiEntriesController = require('../controllers/api/entriesController.js');
 const ApiTodosController = require('../controllers/api/todosController.js');
 
@@ -58,6 +59,23 @@ let routes = {
             { path: '/api/households', action: 'create', method: 'POST' },
             { path: '/api/households', action: 'update', method: 'PUT' },
             { path: '/api/households/:id', action: 'delete', method: 'DELETE' },
+        ],
+    },
+    'api/householdsUsers': {
+        controller: ApiHouseholdsUsersController,
+        actions: [
+            { path: '/api/householdsUsers', action: 'getAll', method: 'GET' },
+            { path: '/api/householdsUsers', action: 'create', method: 'POST' },
+            {
+                path: '/api/householdsUsers/:id',
+                action: 'update',
+                method: 'PUT',
+            },
+            {
+                path: '/api/householdsUsers/:id',
+                action: 'delete',
+                method: 'DELETE',
+            },
         ],
     },
     'api/entries': {

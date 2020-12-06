@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'id',
         });
         Household.belongsToMany(models.User, {
-            through: 'household_user',
+            through: 'householdUser',
         });
         Household.hasMany(models.Entry, {
             as: 'entries',

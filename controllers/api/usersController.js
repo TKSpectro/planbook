@@ -26,20 +26,24 @@ class ApiUsersController extends Controller {
         });
     }
 
-    //Get all users in the same household as the logged in user
+    //Get all users
+    //Need to be admin
     async actionGetAll() {
         const self = this;
+        if (!self.req.user.isAdmin) {
+            throw new ApiError(
+                'You are not allowed to access this endpoint',
+                403
+            );
+        }
 
         let users = [];
         let error = null;
 
         try {
             users = await self.db.User.findAll({
-                where: {
-                    householdId: self.req.user.householdId,
-                },
+                where: {},
                 attributes: ['id', 'firstName', 'lastName', 'email'],
-                include: self.db.User.extendInclude,
             });
             if (!users) {
                 throw new ApiError('No users found', 404);
@@ -62,27 +66,26 @@ class ApiUsersController extends Controller {
         }
     }
 
-    //Get the user info of one person (if user is admin he can request every user else he can just request users in the same household)
+    //Get one user with given id
+    // Need to be admin
     async actionGetOne() {
         const self = this;
+        if (!self.req.user.isAdmin) {
+            throw new ApiError(
+                'You are not allowed to access this endpoint',
+                403
+            );
+        }
 
         let user = null;
         let error = null;
 
-        let where = {
-            id: self.param('id'),
-        };
-
-        //Check if logged in user is not admin and set the where
-        if (!self.req.user.isAdmin) {
-            where.householdId = self.req.user.householdId;
-        }
-
         try {
             user = await self.db.User.findOne({
-                where: where,
+                where: {
+                    id: self.param('id'),
+                },
                 attributes: ['id', 'firstName', 'lastName', 'email'],
-                include: self.db.User.extendInclude,
             });
             if (!user) {
                 throw new ApiError('No user found with this id', 404);
@@ -208,7 +211,6 @@ class ApiUsersController extends Controller {
                                 email: 'deleted' + updatedUser.id,
                                 passwordHash: 'deleted',
                                 updatedAt: new Date(),
-                                householdId: null,
                             },
                             {
                                 where: {

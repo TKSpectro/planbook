@@ -1,12 +1,6 @@
 const Passport = require('../core/passport.js');
 module.exports = function (Model, db) {
-    Model.extendInclude = [
-        {
-            model: db.Household,
-            as: 'households',
-            attributes: ['id', 'name'],
-        },
-    ];
+    Model.extendInclude = [];
 
     Model.prototype.fullname = function () {
         return this.firstName + ' ' + this.lastName;
