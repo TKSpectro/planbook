@@ -19,6 +19,14 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            senderId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            householdId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
         },
         {
             tableName: 'invite',
@@ -28,6 +36,12 @@ module.exports = (sequelize, DataTypes) => {
         Invite.belongsTo(models.User, {
             as: 'sender',
             foreignKey: 'senderId',
+        });
+    };
+    Invite.associate = function (models) {
+        Invite.belongsTo(models.Household, {
+            as: 'household',
+            foreignKey: 'householdId',
         });
     };
     return Invite;

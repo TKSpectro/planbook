@@ -3,7 +3,7 @@ module.exports = function (Model, db) {
         {
             model: db.User,
             as: 'sender',
-            attributes: ['id', 'firstName', 'lastName', 'householdId'],
+            attributes: ['id', 'firstName', 'lastName'],
         },
     ];
 
@@ -15,11 +15,20 @@ module.exports = function (Model, db) {
     Model.prototype.writeRemotes = function (data) {
         const self = this;
 
+        if (typeof data.validUntil !== 'undefined') {
+            self.validUntil = data.validUntil;
+        }
+        if (typeof data.wasUsed !== 'undefined') {
+            self.wasUsed = data.wasUsed;
+        }
+        if (typeof data.invitedEmail !== 'undefined') {
+            self.invitedEmail = data.invitedEmail;
+        }
         if (typeof data.link !== 'undefined') {
             self.link = data.link;
         }
-        if (typeof data.senderId !== 'undefined') {
-            self.senderId = data.senderId;
+        if (typeof data.householdId !== 'undefined') {
+            self.householdId = data.householdId;
         }
     };
 };

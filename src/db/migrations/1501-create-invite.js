@@ -42,6 +42,16 @@ module.exports = {
                 },
                 allowNull: false,
             },
+            householdId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'household',
+                    },
+                    key: 'id',
+                },
+                allowNull: false,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {

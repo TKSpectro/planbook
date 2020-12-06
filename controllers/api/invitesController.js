@@ -67,6 +67,9 @@ class ApiInvitesController extends Controller {
         const self = this;
 
         let invitedEmail = self.param('email');
+        // Set valid until either from param or set it to 1 day
+        let validUntil =
+            self.param('validUntil') || new Date() + 1000 * 60 * 60 * 1;
 
         if (!self.req.user.householdId) {
             throw new ApiError(
@@ -85,6 +88,9 @@ class ApiInvitesController extends Controller {
 
                 let data = {
                     senderId: self.req.user.id,
+                    validUntil: validUntil,
+                    wasUsed: false,
+                    invitedEmail: invitedEmail,
                     link: link,
                 };
                 //newInvite.dataValues.senderId = self.req.user.id;
@@ -94,6 +100,7 @@ class ApiInvitesController extends Controller {
                     lock: true,
                 });
 
+                // SEND OUT AN EMAIL
                 //The email account used to invite other users has to be given in the .env file
                 if (process.env.mailName && process.env.mailPassword) {
                     //Send an email to the invited person
@@ -127,7 +134,7 @@ class ApiInvitesController extends Controller {
                         }
                     });
                 }
-
+                // END EMAIL SENDING
                 return newInvite;
             });
         } catch (err) {
@@ -186,6 +193,7 @@ class ApiInvitesController extends Controller {
                     await updateInvite.update(
                         {
                             updatedAt: new Date(),
+                            wasUsed: true,
                         },
                         {
                             where: {
@@ -204,57 +212,30 @@ class ApiInvitesController extends Controller {
 
             //Set the household id of the current user to the householdId of the invite sender
             //Get the sender.householdId
-            let senderHouseholdId = await self.db.sequelize.transaction(
+            let householdUser = await self.db.sequelize.transaction(
                 async (t) => {
-                    let sender = await self.db.User.findOne(
-                        {
-                            where: {
-                                id: invite.senderId,
-                            },
-                        },
-                        { transaction: t }
-                    );
-                    if (!sender) {
+                    let newHouseholdUser = self.db.HouseholdUser.build();
+
+                    let data = {
+                        timeJoined: new Date(),
+                        householdId: invite.householdId,
+                        userId: self.req.user.id,
+                    };
+                    //newInvite.dataValues.senderId = self.req.user.id;
+                    newHouseholdUser.writeRemotes(data);
+                    await newHouseholdUser.save({
+                        transaction: t,
+                        lock: true,
+                    });
+                    if (!newHouseholdUser) {
                         throw new ApiError(
-                            'There was no corresponding user found to this invite',
+                            'Could not associate user with household',
                             404
                         );
                     }
                     return sender.householdId;
                 }
             );
-
-            //Now set the householdId of the current user to the one of the sender
-            let currentUser = await self.db.sequelize.transaction(async (t) => {
-                let updateUser = await self.db.User.findOne(
-                    {
-                        where: {
-                            id: self.req.user.id,
-                        },
-                    },
-                    { transaction: t }
-                );
-                if (!updateUser) {
-                    throw new ApiError(
-                        'There was an error and we could not find a user in our database with your id.\nPlease contact our support',
-                        404
-                    );
-                } else {
-                    await updateUser.update(
-                        {
-                            householdId: senderHouseholdId,
-                        },
-                        {
-                            where: {
-                                id: updateUser.id,
-                            },
-                        },
-                        { transaction: t, lock: true }
-                    );
-                }
-
-                return updateUser;
-            });
         } catch (err) {
             error = err;
         }

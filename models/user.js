@@ -3,7 +3,7 @@ module.exports = function (Model, db) {
     Model.extendInclude = [
         {
             model: db.Household,
-            as: 'household',
+            as: 'households',
             attributes: ['id', 'name'],
         },
     ];
@@ -35,10 +35,6 @@ module.exports = function (Model, db) {
 
         if (typeof data.isAdmin !== 'undefined') {
             self.isAdmin = data.isAdmin;
-        }
-
-        if (typeof data.householdId !== 'undefined') {
-            self.householdId = data.householdId;
         }
     };
 };

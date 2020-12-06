@@ -33,6 +33,7 @@ class ApiHouseholdsController extends Controller {
         try {
             // find all categories
             households = await self.db.Household.findAll({
+                attributes: ['id', 'createdAt', 'updatedAt', 'name', 'ownerId'],
                 where: {},
             });
             if (!households) {
@@ -67,6 +68,7 @@ class ApiHouseholdsController extends Controller {
         try {
             // find the household with the given id
             household = await self.db.Household.findOne({
+                attributes: ['id', 'createdAt', 'updatedAt', 'name', 'ownerId'],
                 where: {
                     id: householdId,
                 },
@@ -88,7 +90,7 @@ class ApiHouseholdsController extends Controller {
         }
     }
 
-    // create the category with the send body (name)
+    // create the household with the send body (name)
     async actionCreate() {
         const self = this;
 
@@ -97,23 +99,9 @@ class ApiHouseholdsController extends Controller {
         let error = null;
 
         try {
-            // check if there already exists a category with the same name
             household = await self.db.sequelize.transaction(async (t) => {
-                let sameName = await self.db.Household.findOne({
-                    where: {
-                        name: remoteData.name,
-                    },
-                    attributes: ['id', 'createdAt', 'updatedAt', 'name'],
-                    lock: true,
-                    transaction: t,
-                });
-                // if it exists then throw an error
-                if (sameName) {
-                    throw new ApiError('Name already in use', 400);
-                }
-
                 let newHousehold = self.db.Household.build();
-                // create the category
+                // create the household
                 newHousehold.writeRemotes(remoteData);
                 await newHousehold.save({
                     transaction: t,
@@ -126,7 +114,7 @@ class ApiHouseholdsController extends Controller {
             error = err;
         }
 
-        // render either the error or the created category
+        // render either the error or the created household
         if (error) {
             self.handleError(error);
         } else {
@@ -145,93 +133,89 @@ class ApiHouseholdsController extends Controller {
     async actionUpdate() {
         const self = this;
 
-        if (self.req.user.householdId) {
-            let remoteData = self.param('household');
+        let remoteData = self.param('household');
 
-            let household = null;
-            let error = null;
+        let household = null;
+        let error = null;
 
-            //Get the household
-            try {
-                household = await self.db.sequelize.transaction(async (t) => {
-                    let updateHousehold = await self.db.Household.findOne(
+        //Get the household
+        try {
+            household = await self.db.sequelize.transaction(async (t) => {
+                let updateHousehold = await self.db.Household.findOne(
+                    {
+                        where: {
+                            id: remoteData.id,
+                            ownerId: self.req.user.id,
+                        },
+                    },
+                    { transaction: t }
+                );
+                if (updateHousehold) {
+                    await updateHousehold.update(
+                        {
+                            name: remoteData.name,
+                            ownerId: remoteData.ownerId,
+                        },
                         {
                             where: {
-                                id: self.req.user.householdId,
+                                id: remoteData.id,
                             },
                         },
-                        { transaction: t }
+                        { transaction: t, lock: true }
                     );
-                    if (updateHousehold) {
-                        await updateHousehold.update(
-                            {
-                                name: remoteData.name,
-                            },
-                            {
-                                where: {
-                                    id: self.req.user.householdId,
-                                },
-                            },
-                            { transaction: t, lock: true }
-                        );
-                    }
-
-                    return updateHousehold;
-                });
-                if (!household) {
-                    throw new ApiError('Household could not be updated', 404);
                 }
-            } catch (err) {
-                error = err;
-            }
 
-            if (error) {
-                self.handleError(error);
-            } else {
-                self.render(
-                    {
-                        household: household,
-                    },
-                    {
-                        statusCode: 202,
-                    }
-                );
+                return updateHousehold;
+            });
+            if (!household) {
+                throw new ApiError('Household could not be updated', 404);
             }
+        } catch (err) {
+            error = err;
+        }
+
+        if (error) {
+            self.handleError(error);
         } else {
             self.render(
-                {},
                 {
-                    statusCode: 403,
+                    household: household,
+                },
+                {
+                    statusCode: 202,
                 }
             );
         }
     }
 
-    // delete the category with the given id
+    // delete the household with the given id
     async actionDelete() {
         const self = this;
 
-        let categoryId = self.param('id');
-        let category = null;
+        let householdId = self.param('id');
         let error = null;
 
-        // delete the category
+        // delete the household
         try {
-            category = await self.db.sequelize.transaction(async (t) => {
-                category = await self.db.Category.destroy(
+            household = await self.db.sequelize.transaction(async (t) => {
+                household = await self.db.Household.destroy(
                     {
                         where: {
-                            id: categoryId,
+                            id: householdId,
+                            ownerId: self.req.user.id,
                         },
                     },
                     { transaction: t, lock: true }
                 );
 
-                return category;
+                return household;
             });
-            // if no category was found with this id throw an error
-            if (!category) {
-                throw new ApiError('Found no category with given id', 404);
+            // if no household was found with this id throw an error
+            if (!household) {
+                throw new ApiError(
+                    'Found no household with given id or you do not have permissions',
+                    404
+                );
             }
         } catch (err) {
             error = err;

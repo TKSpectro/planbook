@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            ownerId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
         },
         {
             tableName: 'household',
@@ -15,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     Household.associate = function (models) {
         Household.belongsTo(models.User, {
             as: 'owner',
-            foreignKey: 'userId',
+            foreignKey: 'id',
         });
         Household.belongsToMany(models.User, {
             through: 'household_user',
