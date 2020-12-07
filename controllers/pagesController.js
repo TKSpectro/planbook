@@ -83,20 +83,42 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
+
+        const userHouseholds = await self.db.HouseholdUser.findAll({
+            where: {
+                userId: self.req.user.id,
+            },
+        });
+
+        let households = [];
+        let i = 0;
+
+        for (const userHousehold of userHouseholds) {
+            households[i] = await self.db.Household.findByPk(
+                userHousehold.householdId
+            );
+            i++;
+        }
+        self.render({
+            title: 'Dashboard',
+            households: households,
+        });
+    }
+
+    async actionDashboardOne() {
+        const self = this;
+
+        self.css('custom');
         self.js('Chart');
         self.js('helper');
         self.js('dashboard');
 
-        const entries = await self.db.Entry.findAll({
-            where: {
-                householdId: self.req.user.id,
-            },
-            include: self.db.Entry.extendInclude,
-        });
+        let entryId = self.param('id');
+        const household = await self.db.Household.findByPk(entryId);
 
         self.render({
-            title: 'Dashboard',
-            entries: entries,
+            title: 'Dashboard ' + household.name,
+            household: household,
         });
     }
 

@@ -18,6 +18,13 @@ module.exports = {
                     name: 'NotMyHome',
                     ownerId: 2,
                 },
+                {
+                    id: 3,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'WG #1',
+                    ownerId: 1,
+                },
             ],
             {}
         );

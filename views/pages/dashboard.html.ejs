@@ -14,14 +14,16 @@
 -->
 <div class="container">
     <div class="list-group">
-        <% entries.forEach(entry => { %>
-        <a href="#" class="list-group-item list-group-item-action active">
+        <% for (let i = 0; i < households.length; i++) { ;%>
+        <a
+            href="/dashboard/<%=households[i].id%>"
+            class="list-group-item list-group-item-action active"
+        >
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1"><%=entry.purpose%></h5>
-                <small><%=entry.value%></small>
+                <h5 class="mb-1"><%=households[i].name%></h5>
+                <small><%=households[i].owner%></small>
             </div>
-            <p class="mb-1"><%=entry.startDate.toDateString()%></p>
         </a>
-        <% }); %>
+        <% }; %>
     </div>
 </div>

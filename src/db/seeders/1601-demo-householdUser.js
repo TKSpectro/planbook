@@ -20,6 +20,14 @@ module.exports = {
                     userId: 2,
                     householdId: 2,
                 },
+                {
+                    id: 3,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    timeJoined: new Date(),
+                    userId: 1,
+                    householdId: 3,
+                },
             ],
             {}
         );
