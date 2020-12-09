@@ -1,13 +1,35 @@
 <div class="text-center">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <form class="form-signin" id="signin-form" action="<%-self.urlFor('api/users', 'signin', null, 'POST')%>" method="POST">
-        
+    <h1 class="h3 mb-3 font-weight-normal text-primary">Please sign in</h1>
+    <form
+        class="form-signin"
+        id="signin-form"
+        action="<%-self.urlFor('api/users', 'signin', null, 'POST')%>"
+        method="POST"
+    >
         <label for="email" class="sr-only">Email address</label>
-        <input type="email" id="email" class="form-control" placeholder="E-Mail address" required autofocus/>
-        
+        <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="E-Mail address"
+            required
+            autofocus
+        />
+
         <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="Password" required/>
-        
-        <button class="btn btn-lg btn-primary btn-block" onclick="signinPressed(this); return false;">Sign In</button>
+        <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            required
+        />
+
+        <button
+            class="btn btn-lg btn-primary btn-block"
+            onclick="signinPressed(this); return false;"
+        >
+            Sign In
+        </button>
     </form>
 </div>

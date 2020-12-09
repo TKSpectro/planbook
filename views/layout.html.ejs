@@ -1,8 +1,6 @@
 <html>
     <head>
-        <title>
-            <%=title%>
-        </title>
+        <title><%=title%></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <% for (let index = 0; index < self.cssFiles.length; index++) { %>
@@ -24,8 +22,9 @@
         </style>
     </head>
 
-    <body>
-        <%-include('./header.html.ejs');-%> <%-body%> <%if(self.req.user) { %>
+    <body class="bg-dark">
+        <%-include('./header.html.ejs');-%>
+        <div class="container pt-4"><%-body%> <%if(self.req.user) { %></div>
         <script>
             let currentUserId = <%-self.req.user.id%>;
         </script>

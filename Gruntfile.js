@@ -16,7 +16,7 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['src/js/**', 'src/apidoc/**', 'src/css/**'],
+                files: ['src/js/**', 'src/apidoc/**', 'assets/css/**'],
                 tasks: ['uglify', 'copy'],
             },
         },
