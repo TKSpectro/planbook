@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Define static content
-app.use('/assets', express.static('assets'));
+app.use('/assets', express.static(__dirname + '/assets'));
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use('/apidoc', express.static(__dirname + '/docs'));
 

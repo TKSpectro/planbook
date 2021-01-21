@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config();
 
 module.exports = function () {
     const sequelize = new Sequelize(
