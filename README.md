@@ -31,3 +31,8 @@ IT-Praxisprojekt (4./5. Semester)
       - [ ] Filtering of entries
       - [ ] Sorting of entries
 - [ ] API documentation
+
+## Commands
+### Dev
+- npx nodemon
+- npx grunt

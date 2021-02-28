@@ -17,8 +17,8 @@ module.exports = function () {
                 acquire: 30000,
                 idle: 10000,
             },
-            logging: process.env.databaseLogging || false,
-            logQueryParameters: process.env.databaseLogging || false,
+            logging: process.env.databaseLogging == 'true' || false,
+            logQueryParameters: process.env.databaseLogging == 'true' || false,
         }
     );
 

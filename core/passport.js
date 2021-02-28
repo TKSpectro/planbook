@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const cfg = require('../config/config');
 
 class Passport {
     static generatePassword(length = 18) {
