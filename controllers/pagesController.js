@@ -115,10 +115,13 @@ class PagesController extends Controller {
 
         let entryId = self.param('id');
         const household = await self.db.Household.findByPk(entryId);
-
+        const members = await self.db.HouseholdUser.findAll({
+            where: { householdId: entryId },
+        });
         self.render({
             title: 'Dashboard ' + household.name,
             household: household,
+            members: members,
         });
     }
 

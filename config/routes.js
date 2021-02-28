@@ -82,11 +82,15 @@ let routes = {
     'api/entries': {
         controller: ApiEntriesController,
         actions: [
-            { path: '/api/entries', action: 'getAll', method: 'GET' },
-            { path: '/api/entries/:id', action: 'getOne', method: 'GET' },
-            { path: '/api/entries', action: 'create', method: 'POST' },
-            { path: '/api/entries/:id', action: 'update', method: 'PUT' },
-            { path: '/api/entries/:id', action: 'delete', method: 'DELETE' },
+            {
+                path: '/api/entries/:householdId',
+                action: 'getAll',
+                method: 'GET',
+            },
+            //{ path: '/api/entries/:id', action: 'getOne', method: 'GET' },
+            //{ path: '/api/entries', action: 'create', method: 'POST' },
+            //{ path: '/api/entries/:id', action: 'update', method: 'PUT' },
+            //{ path: '/api/entries/:id', action: 'delete', method: 'DELETE' },
         ],
     },
     'api/todos': {

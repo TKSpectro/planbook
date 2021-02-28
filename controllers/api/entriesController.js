@@ -30,7 +30,7 @@ class ApiEntriesController extends Controller {
 
         // define the where clause for the sql query
         let where = {
-            householdId: self.req.user.householdId,
+            householdId: self.param('householdId'),
         };
         const categoryId = self.param('categoryId');
         if (categoryId) {

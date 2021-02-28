@@ -133,13 +133,21 @@ request3.onload = function () {
 request3.send();
 */
 
-var request4 = new XMLHttpRequest();
+const householdSaldoElement = document.getElementById('householdSaldo');
+let saldoValue = 0;
 
-request4.open('GET', '/api/entries', true);
-request4.onload = function () {
+// Get the household id from the url
+const pathArray = window.location.pathname.split('/');
+const householdId = pathArray[2];
+
+// Setup the request
+var entryRequest = new XMLHttpRequest();
+
+entryRequest.open('GET', '/api/entries/' + householdId, true);
+entryRequest.onload = function () {
     // Begin accessing JSON data here
     var data = JSON.parse(this.response);
-    if (request4.status >= 200 && request4.status < 400) {
+    if (entryRequest.status >= 200 && entryRequest.status < 400) {
     } else {
         console.log('error');
     }
@@ -160,14 +168,15 @@ request4.onload = function () {
     });
     // build the color array by looking for positive/negative values in the value array
     values.forEach((value) => {
+        // Add the value to the money as we also want to set it
+        saldoValue += value;
+
         if (value >= 0) {
             backgroundColors.push('#7CFC00');
         } else {
             backgroundColors.push('#F08080');
         }
     });
-
-    console.log(calcEntries(data.entries));
 
     var ctx = canvas4.getContext('2d');
     var config = {
@@ -183,13 +192,18 @@ request4.onload = function () {
         },
         options: {
             title: {
-                display: true,
+                display: false,
                 text: 'Outgoing',
+            },
+            legend: {
+                position: 'bottom',
             },
         },
     };
 
-    var chart4 = new Chart(ctx, config);
+    var chart = new Chart(ctx, config);
+
+    householdSaldoElement.innerHTML = 'Saldo ' + saldoValue.toString() + '€';
 };
 
-request4.send();
+entryRequest.send();

@@ -1,1 +1,17 @@
-HelloWorld
+<div class="text-center">
+    <span id="householdSaldo" class="text-primary"></span>
+</div>
+<div class="mx-auto" style="width: 35%">
+    <canvas id="canvas4" width="400" height="400"></canvas>
+</div>
+
+<!-- Household Members -->
+<div class="container" style="width: 60%">
+    <div class="list-group">
+        <% for (let i = 0; i < members.length; i++) { ;%>
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1"><%=members[i].firstname%></h5>
+        </div>
+        <% }; %>
+    </div>
+</div>
