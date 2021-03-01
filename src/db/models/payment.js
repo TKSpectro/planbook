@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
             as: 'category',
             foreignKey: 'categoryId',
         });
-        Payment.belongsTo(models.Entry, {
-            as: 'entry',
-            foreignKey: 'entryId',
+        Payment.belongsTo(models.RecurringPayment, {
+            as: 'recurringPayment',
+            foreignKey: 'recurringPaymentId',
         });
     };
 

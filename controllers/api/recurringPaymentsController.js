@@ -2,7 +2,7 @@ const Controller = require('../mainController.js');
 const ApiError = require('../../core/error.js');
 const { Op } = require('sequelize');
 
-class ApiEntriesController extends Controller {
+class ApiRecurringPaymentsController extends Controller {
     constructor(...args) {
         super(...args);
         const self = this;
@@ -255,4 +255,4 @@ class ApiEntriesController extends Controller {
     }
 }
 
-module.exports = ApiEntriesController;
+module.exports = ApiRecurringPaymentsController;

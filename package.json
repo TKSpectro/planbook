@@ -6,6 +6,7 @@
     "scripts": {
         "build": "node-sass src/scss -o assets/css && grunt build && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "database": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+        "databaseReset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "start": "node index.js",
         "sass": "node-sass -w src/scss -o assets/css",
         "test": "echo \"No Tests specified\" && exit 1"

@@ -11,8 +11,8 @@ module.exports = function (Model, db) {
             attributes: ['id', 'name'],
         },
         {
-            model: db.Entry,
-            as: 'entry',
+            model: db.RecurringPayment,
+            as: 'recurringPayment',
             attributes: ['id', 'purpose', 'value'],
         },
     ];

@@ -4,7 +4,7 @@ const ApiInvitesController = require('../controllers/api/invitesController.js');
 const ApiCategoriesController = require('../controllers/api/categoriesController.js');
 const ApiHouseholdsController = require('../controllers/api/householdsController.js');
 const ApiHouseholdsUsersController = require('../controllers/api/householdsUsersController.js');
-const ApiEntriesController = require('../controllers/api/entriesController.js');
+const ApiRecurringPaymentsController = require('../controllers/api/recurringPaymentsController.js');
 const ApiTodosController = require('../controllers/api/todosController.js');
 const ApiPaymentsController = require('../controllers/api/paymentsController.js');
 const ApiCronController = require('../controllers/api/cronController.js');
@@ -19,7 +19,11 @@ let routes = {
             { path: '/login', action: 'signin', method: 'get' },
             { path: '/register', action: 'signup', method: 'get' },
             { path: '/dashboard', action: 'dashboard', method: 'get' },
-            { path: '/dashboard/:id', action: 'dashboardOne', method: 'get' },
+            {
+                path: '/dashboard/:householdId',
+                action: 'dashboardOne',
+                method: 'get',
+            },
             { path: '/todo', action: 'todo', method: 'get' },
         ],
     },
@@ -82,10 +86,10 @@ let routes = {
         ],
     },
     'api/entries': {
-        controller: ApiEntriesController,
+        controller: ApiRecurringPaymentsController,
         actions: [
             {
-                path: '/api/entries/:householdId',
+                path: '/api/recurringPayments/:householdId',
                 action: 'getAll',
                 method: 'GET',
             },

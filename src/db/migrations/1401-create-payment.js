@@ -44,11 +44,11 @@ module.exports = {
                 },
                 allowNull: false,
             },
-            entryId: {
+            recurringPaymentId: {
                 type: Sequelize.INTEGER,
                 references: {
                     model: {
-                        tableName: 'entry',
+                        tableName: 'recurringPayment',
                     },
                     key: 'id',
                 },

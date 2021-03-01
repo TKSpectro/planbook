@@ -141,13 +141,13 @@ const pathArray = window.location.pathname.split('/');
 const householdId = pathArray[2];
 
 // Setup the request
-var entryRequest = new XMLHttpRequest();
+var paymentRequest = new XMLHttpRequest();
 
-entryRequest.open('GET', '/api/entries/' + householdId, true);
-entryRequest.onload = function () {
+paymentRequest.open('GET', '/api/payments/' + householdId, true);
+paymentRequest.onload = function () {
     // Begin accessing JSON data here
     var data = JSON.parse(this.response);
-    if (entryRequest.status >= 200 && entryRequest.status < 400) {
+    if (paymentRequest.status >= 200 && paymentRequest.status < 400) {
     } else {
         householdSaldoElement.innerHTML = 'No entries found';
         document.getElementById('mainChart').hidden = true;
@@ -160,13 +160,13 @@ entryRequest.onload = function () {
     var backgroundColors = [];
 
     // go through all entries and filter out multiple categories and add up the value in one category
-    data.entries.forEach((entry) => {
-        let category = entry.category;
+    data.entries.forEach((payment) => {
+        let category = payment.category;
         if (labels.indexOf(category.name) == -1) {
             labels.push(category.name);
-            values.push(entry.value);
+            values.push(payment.value);
         } else {
-            values[labels.indexOf(category.name)] += entry.value;
+            values[labels.indexOf(category.name)] += payment.value;
         }
     });
     // build the color array by looking for positive/negative values in the value array
@@ -209,4 +209,4 @@ entryRequest.onload = function () {
     householdSaldoElement.innerHTML = 'Saldo ' + saldoValue.toString() + '€';
 };
 
-entryRequest.send();
+paymentRequest.send();

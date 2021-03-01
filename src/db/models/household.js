@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         Household.belongsToMany(models.User, {
             through: 'householdUser',
         });
-        Household.hasMany(models.Entry, {
+        Household.hasMany(models.RecurringPayment, {
             as: 'entries',
             foreignKey: 'id',
         });

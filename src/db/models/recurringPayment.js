@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-    const Entry = sequelize.define(
-        'Entry',
+    const RecurringPayment = sequelize.define(
+        'RecurringPayment',
         {
             startDate: {
                 type: DataTypes.DATE,
@@ -33,19 +33,19 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: 'entry',
+            tableName: 'recurringPayment',
         }
     );
-    Entry.associate = function (models) {
-        Entry.belongsTo(models.Household, {
+    RecurringPayment.associate = function (models) {
+        RecurringPayment.belongsTo(models.Household, {
             as: 'household',
             foreignKey: 'householdId',
         });
-        Entry.belongsTo(models.Category, {
+        RecurringPayment.belongsTo(models.Category, {
             as: 'category',
             foreignKey: 'categoryId',
         });
     };
 
-    return Entry;
+    return RecurringPayment;
 };
