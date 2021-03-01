@@ -24,7 +24,9 @@
 
     <body class="bg-dark">
         <%-include('./header.html.ejs');-%>
-        <div class="container pt-4"><%-body%> <%if(self.req.user) { %></div>
+        <div class="container pt-4 text-primary">
+            <%-body%> <%if(self.req.user) { %>
+        </div>
         <script>
             let currentUserId = <%-self.req.user.id%>;
         </script>

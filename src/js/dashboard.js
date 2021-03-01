@@ -149,7 +149,10 @@ entryRequest.onload = function () {
     var data = JSON.parse(this.response);
     if (entryRequest.status >= 200 && entryRequest.status < 400) {
     } else {
-        console.log('error');
+        householdSaldoElement.innerHTML = 'No entries found';
+        document.getElementById('mainChart').hidden = true;
+        console.log('error: no entries found');
+        return;
     }
 
     var labels = [];
@@ -178,7 +181,7 @@ entryRequest.onload = function () {
         }
     });
 
-    var ctx = canvas4.getContext('2d');
+    var ctx = mainChart.getContext('2d');
     var config = {
         type: 'doughnut',
         data: {
