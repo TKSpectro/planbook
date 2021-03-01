@@ -15,7 +15,7 @@ module.exports = function (Model, db) {
     Model.prototype.writeRemotes = function (data) {
         const self = this;
 
-        if (typeof data.endDate !== 'undefined') {
+        if (typeof data.startDate !== 'undefined') {
             self.startDate = data.startDate;
         }
         if (typeof data.endDate !== 'undefined') {
