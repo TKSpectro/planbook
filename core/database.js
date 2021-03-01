@@ -4,23 +4,29 @@ const fs = require('fs');
 require('dotenv').config();
 
 module.exports = function () {
-    const sequelize = new Sequelize(
-        process.env.DB_NAME || 'planbook',
-        process.env.DB_USER || 'root',
-        process.env.DB_PASSWORD || '',
-        {
-            host: process.env.DB_HOST || 'localhost',
-            dialect: 'mysql',
-            pool: {
-                max: 5,
-                min: 0,
-                acquire: 30000,
-                idle: 10000,
-            },
-            logging: process.env.databaseLogging == 'true' || false,
-            logQueryParameters: process.env.databaseLogging == 'true' || false,
-        }
-    );
+    let sequelize;
+    if (process.env.SEQUELIZE_URL) {
+        sequelize = new Sequelize(process.env.SEQUELIZE_URL);
+    } else {
+        sequelize = new Sequelize(
+            process.env.DB_NAME || 'planbook',
+            process.env.DB_USER || 'root',
+            process.env.DB_PASSWORD || '',
+            {
+                host: process.env.DB_HOST || 'localhost',
+                dialect: 'mysql',
+                pool: {
+                    max: 5,
+                    min: 0,
+                    acquire: 30000,
+                    idle: 10000,
+                },
+                logging: process.env.databaseLogging == 'true' || false,
+                logQueryParameters:
+                    process.env.databaseLogging == 'true' || false,
+            }
+        );
+    }
 
     const db = {
         Sequelize: Sequelize,
