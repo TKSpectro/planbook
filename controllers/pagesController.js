@@ -129,11 +129,15 @@ class PagesController extends Controller {
             },
             limit: 10,
         });
+
+        const categories = await self.db.Category.findAll();
+
         self.render({
             title: 'Dashboard ' + household.name,
             household: household,
             members: members,
             lastPayments: lastPayments,
+            categories: categories,
         });
     }
 
