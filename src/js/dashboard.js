@@ -160,7 +160,7 @@ paymentRequest.onload = function () {
     var backgroundColors = [];
 
     // go through all entries and filter out multiple categories and add up the value in one category
-    data.entries.forEach((payment) => {
+    data.payments.forEach((payment) => {
         let category = payment.category;
         if (labels.indexOf(category.name) == -1) {
             labels.push(category.name);
