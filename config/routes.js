@@ -136,7 +136,7 @@ let routes = {
             {
                 path: '/api/cron/bookRecurringPayments',
                 action: 'bookRecurringPayments',
-                method: 'GET',
+                method: 'POST',
             },
         ],
     },

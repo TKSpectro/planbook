@@ -2,7 +2,8 @@
 const SocketHandler = require('./core/socket.js');
 const express = require('express');
 const app = express();
-const http = require('http').createServer(app);
+const http = require('http');
+const server = http.createServer(app);
 const io = require('socket.io')();
 const bodyParser = require('body-parser');
 const database = require('./core/database.js')();
@@ -10,7 +11,7 @@ const favicon = require('serve-favicon');
 const cron = require('node-cron');
 
 //Attach socket.io
-io.attach(http);
+io.attach(server);
 
 //Write global configuration
 global.cfg = require('./config/config.js');
@@ -34,11 +35,31 @@ router.setup();
 
 // Cronjob
 cron.schedule('0 6 * * *', () => {
-    console.log('running a task every day at 6am');
-    //TODO Add api call
+    const url = process.env.URL + 'api/cron/bookRecurringPayments';
+    const data = JSON.stringify({
+        cron_password: process.env.CRON_PASSWORD,
+    });
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length,
+        },
+    };
+
+    const req = http.request(url, options, (res) => {
+        res.on('data', (d) => {});
+    });
+
+    req.on('error', (error) => {
+        console.error(error);
+    });
+
+    req.write(data);
+    req.end();
 });
 
 //Start the webserver
-http.listen(process.env.PORT || 3000, function () {
+server.listen(process.env.PORT || 3000, function () {
     console.log('App started on Port ' + (process.env.PORT || 3000));
 });

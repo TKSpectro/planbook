@@ -11,7 +11,7 @@ class ApiCronController extends Controller {
 
         // users have to be signed in else they a 401 Unauthorized response
         self.before(['*'], function (next) {
-            if (self.req.authorized === true) {
+            if (self.param('cron_password') === process.env.CRON_PASSWORD) {
                 next();
             } else {
                 self.render(
