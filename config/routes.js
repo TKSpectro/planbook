@@ -6,6 +6,8 @@ const ApiHouseholdsController = require('../controllers/api/householdsController
 const ApiHouseholdsUsersController = require('../controllers/api/householdsUsersController.js');
 const ApiEntriesController = require('../controllers/api/entriesController.js');
 const ApiTodosController = require('../controllers/api/todosController.js');
+const ApiPaymentsController = require('../controllers/api/paymentsController.js');
+const ApiCronController = require('../controllers/api/cronController.js');
 
 let routes = {
     pages: {
@@ -101,6 +103,41 @@ let routes = {
             { path: '/api/todos', action: 'create', method: 'POST' },
             { path: '/api/todos/:id', action: 'update', method: 'PUT' },
             { path: '/api/todos/:id', action: 'delete', method: 'DELETE' },
+        ],
+    },
+    'api/payments': {
+        controller: ApiPaymentsController,
+        actions: [
+            {
+                path: '/api/payments/:householdId',
+                action: 'getAll',
+                method: 'GET',
+            },
+            {
+                path: '/api/payments/:householdId/:id',
+                action: 'getOne',
+                method: 'GET',
+            },
+            {
+                path: '/api/payments/:householdId',
+                action: 'create',
+                method: 'POST',
+            },
+            {
+                path: '/api/payments/bookRecurringPayments',
+                action: 'bookRecurringPayments',
+                method: 'GET',
+            },
+        ],
+    },
+    'api/cron': {
+        controller: ApiCronController,
+        actions: [
+            {
+                path: '/api/cron/bookRecurringPayments',
+                action: 'bookRecurringPayments',
+                method: 'GET',
+            },
         ],
     },
 };
