@@ -7,6 +7,7 @@ const io = require('socket.io')();
 const bodyParser = require('body-parser');
 const database = require('./core/database.js')();
 const favicon = require('serve-favicon');
+const cron = require('node-cron');
 
 //Attach socket.io
 io.attach(http);
@@ -30,6 +31,12 @@ const routes = require('./config/routes.js');
 const Router = require('./core/router.js');
 const router = new Router(app, routes, database);
 router.setup();
+
+// Cronjob
+cron.schedule('0 6 * * *', () => {
+    console.log('running a task every day at 6am');
+    //TODO Add api call
+});
 
 //Start the webserver
 http.listen(process.env.PORT || 3000, function () {
