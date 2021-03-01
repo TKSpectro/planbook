@@ -4,7 +4,7 @@
     "description": "This is a household management tool",
     "main": "index.js",
     "scripts": {
-        "build": "node-sass src/scss -o assets/css && grunt build && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+        "build": "node-sass src/scss -o assets/css && grunt build",
         "database": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "databaseReset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "start": "node index.js",
