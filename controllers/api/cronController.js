@@ -45,6 +45,8 @@ class ApiCronController extends Controller {
                     (typeof payment.endDate !== 'undefined' ||
                         payment.endDate > today) &&
                     (payment.interval === 'daily' ||
+                        (payment.interval === 'weekly' &&
+                            payment.startDate.getDay() === today.getDay()) ||
                         (payment.interval === 'monthly' &&
                             payment.startDate.getDate() === today.getDate()) ||
                         (payment.interval === 'quarterly' &&

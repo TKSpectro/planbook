@@ -40,7 +40,7 @@ module.exports = {
                     'quarterly',
                     'yearly'
                 ),
-                allowNull: true,
+                allowNull: false,
             },
             categoryId: {
                 type: Sequelize.INTEGER,
