@@ -34,7 +34,7 @@ const router = new Router(app, routes, database);
 router.setup();
 
 // Cronjob
-cron.schedule('0 6 * * *', () => {
+cron.schedule('55 23 * * *', () => {
     const url = process.env.URL + 'api/cron/bookRecurringPayments';
     const data = JSON.stringify({
         cron_password: process.env.CRON_PASSWORD,

@@ -20,13 +20,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             interval: {
-                type: DataTypes.ENUM(
-                    'daily',
-                    'weekly',
-                    'monthly',
-                    'quarterly',
-                    'yearly'
-                ),
+                type: DataTypes.ENUM('daily', 'monthly', 'quarterly', 'yearly'),
                 allowNull: true,
                 comment:
                     'time of the recurring interval, if null then its not recurring',
