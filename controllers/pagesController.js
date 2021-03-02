@@ -113,16 +113,25 @@ class PagesController extends Controller {
         self.js('helper');
         self.js('dashboard');
 
-        let householdId = self.param('householdId');
+        const householdId = self.param('householdId');
         const household = await self.db.Household.findByPk(householdId);
         const householdUsers = await self.db.HouseholdUser.findAll({
             where: {
                 householdId: householdId,
             },
         });
+        let isUserPartOfHousehold = false;
         const members = [];
         for (let user of householdUsers) {
+            if (self.req.user.id == user.id) {
+                isUserPartOfHousehold = true;
+                console.log('YES');
+            }
             members.push(await self.db.User.findByPk(user.id));
+        }
+
+        if (!isUserPartOfHousehold) {
+            self.next();
         }
 
         const lastPayments = await self.db.Payment.findAll({
