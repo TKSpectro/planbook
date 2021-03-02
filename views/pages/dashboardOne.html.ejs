@@ -1,37 +1,49 @@
-<div class="text-center">
-    <span id="householdSaldo"></span>
-</div>
-<div class="mx-auto pt-4" style="width: 35%">
-    <canvas id="mainChart" width="400" height="400"></canvas>
-</div>
-
-<!-- Household Members -->
-<div class="mx-auto pt-4" style="width: 60%">
-    <span>Members:</span>
-    <div class="list-group">
-        <% for (let i = 0; i < members.length; i++) { ;%>
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1"><%=members[i].firstName%></h5>
-        </div>
-        <% }; %>
+<div class="mx-auto" style="width: 80%">
+    <div class="text-center">
+        <span id="householdSaldo"></span>
     </div>
-</div>
+    <div class="pt-4 mx-auto" style="width: 20em">
+        <canvas id="mainChart" width="400" height="400"></canvas>
+    </div>
 
-<div class="mx-auto pt-4">
-    <%-include('../modals/addPaymentModal.html.ejs');-%>
-</div>
-
-<div class="card bg-dark mx-auto pt-4" style="width: 60%">
-    <span>Last payments</span>
-    <div class="list-group">
-        <% for (let i = 0; i < lastPayments.length; i++) { ;%>
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1"><%=lastPayments[i].purpose%></h5>
-            <h5 class="mb-1">
-                <%if(lastPayments[i].value >
-                0){%>+<%}%><%=lastPayments[i].value%>€
-            </h5>
+    <!-- Household Members -->
+    <div class="pt-4">
+        <span>Members:</span>
+        <div class="list-group">
+            <% for (let i = 0; i < members.length; i++) { ;%>
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><%=members[i].firstName%></h5>
+            </div>
+            <% }; %>
         </div>
-        <% }; %>
+    </div>
+
+    <div class="pt-4">
+        <%-include('../modals/addPaymentModal.html.ejs');-%>
+        <%-include('../modals/addRecurringPaymentModal.html.ejs');-%>
+    </div>
+    <div class="pt-4">
+        <label>Last payments</label>
+        <table class="table table-hover table-dark bg-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Purpose</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < lastPayments.length; i++) { ;%>
+                <tr>
+                    <th scope="row"><%=lastPayments[i].id%></th>
+                    <td><%=lastPayments[i].purpose%></td>
+                    <td>
+                        <%if(lastPayments[i].value > 0){ %>+<% }%>
+                        <%=lastPayments[i].value%>€
+                    </td>
+                </tr>
+                <% }; %>
+            </tbody>
+        </table>
     </div>
 </div>
