@@ -42,6 +42,11 @@
         <a href="/payments?hid=<%=household.id%>" class="btn btn-primary"
             >All payments</a
         >
+        <a
+            href="/recurringPayments?hid=<%=household.id%>"
+            class="btn btn-primary"
+            >All recurring payments</a
+        >
 
         <%-include('../modals/addPaymentModal.html.ejs');-%>
         <%-include('../modals/addRecurringPaymentModal.html.ejs');-%>

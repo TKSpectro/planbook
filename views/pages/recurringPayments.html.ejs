@@ -1,0 +1,38 @@
+<div class="mx-auto" style="width: 80%">
+    <a href="/dashboard?hid=<%=household.id%>" class="btn btn-primary"
+        >Go Back</a
+    >
+    <div class="pt-4">
+        <label>All recurring payments</label>
+        <table class="table table-hover table-dark bg-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Purpose</th>
+                    <th scope="col">StartDate</th>
+                    <th scope="col">EndDate</th>
+                    <th scope="col">Interval</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < recurringPayments.length; i++) { ;%>
+                <tr>
+                    <th scope="row"><%=i+1%></th>
+                    <td><%=recurringPayments[i].purpose%></td>
+                    <td><%=recurringPayments[i].startDate.toDateString()%></td>
+                    <td>
+                        <% if(recurringPayments[i].endDate) { %>
+                        <%=recurringPayments[i].endDate.toDateString() %> <%}%>
+                    </td>
+                    <td><%=recurringPayments[i].interval%></td>
+                    <td>
+                        <%if(recurringPayments[i].value > 0){ %>+<% }
+                        %><%=recurringPayments[i].value%>€
+                    </td>
+                </tr>
+                <% } ;%>
+            </tbody>
+        </table>
+    </div>
+</div>

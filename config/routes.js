@@ -21,6 +21,11 @@ let routes = {
             { path: '/dashboard', action: 'dashboard', method: 'get' },
             { path: '/todo', action: 'todo', method: 'get' },
             { path: '/payments', action: 'payments', method: 'get' },
+            {
+                path: '/recurringPayments',
+                action: 'recurringPayments',
+                method: 'get',
+            },
         ],
     },
     'api/users': {

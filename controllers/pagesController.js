@@ -17,28 +17,31 @@ class PagesController extends Controller {
             }
         );
 
-        self.before(['dashboard', 'payments'], async (next) => {
-            if (self.param('hid')) {
-                const householdUsers = await self.db.HouseholdUser.findAll({
-                    where: {
-                        householdId: self.param('hid'),
-                    },
-                });
-                let isInHousehold;
-                for (let user of householdUsers) {
-                    if (self.req.user.id == user.id) {
-                        isInHousehold = true;
+        self.before(
+            ['dashboard', 'payments', 'recurringPayments'],
+            async (next) => {
+                if (self.param('hid')) {
+                    const householdUsers = await self.db.HouseholdUser.findAll({
+                        where: {
+                            householdId: self.param('hid'),
+                        },
+                    });
+                    let isInHousehold;
+                    for (let user of householdUsers) {
+                        if (self.req.user.id == user.id) {
+                            isInHousehold = true;
+                        }
                     }
-                }
-                if (isInHousehold) {
-                    next();
+                    if (isInHousehold) {
+                        next();
+                    } else {
+                        self.redirect(self.urlFor('pages', 'dashboard'));
+                    }
                 } else {
-                    self.redirect(self.urlFor('pages', 'dashboard'));
+                    next();
                 }
-            } else {
-                next();
             }
-        });
+        );
 
         self.before(['signin', 'signup'], (next) => {
             if (self.req.authorized === true) {
@@ -187,6 +190,31 @@ class PagesController extends Controller {
             title: 'Payments',
             household: household,
             payments: payments,
+        });
+    }
+
+    async actionRecurringPayments() {
+        const self = this;
+
+        self.css('custom');
+        self.js('Chart');
+
+        const householdId = self.param('hid');
+        const household = await self.db.Household.findByPk(householdId);
+
+        // Get all the recurringPayments from the household in reverse order -> newest is first
+        const recurringPayments = await self.db.RecurringPayment.findAll({
+            include: self.db.RecurringPayment.extendInclude,
+            order: [['createdAt', 'DESC']],
+            where: {
+                householdId: householdId,
+            },
+        });
+
+        self.render({
+            title: 'Payments',
+            household: household,
+            recurringPayments: recurringPayments,
         });
     }
 
