@@ -101,7 +101,7 @@ class ApiPaymentsController extends Controller {
     async actionCreate() {
         const self = this;
 
-        let remoteData = self.param('entry');
+        let remoteData = self.param('payment');
         let payment = null;
         let error = null;
 
