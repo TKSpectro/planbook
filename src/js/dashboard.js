@@ -137,8 +137,8 @@ const householdSaldoElement = document.getElementById('householdSaldo');
 let saldoValue = 0;
 
 // Get the household id from the url
-const pathArray = window.location.pathname.split('/');
-const householdId = pathArray[2];
+const urlParams = new URLSearchParams(window.location.search);
+const householdId = urlParams.get('hid');
 
 // Setup the request
 var paymentRequest = new XMLHttpRequest();

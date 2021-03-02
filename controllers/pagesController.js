@@ -82,75 +82,72 @@ class PagesController extends Controller {
     async actionDashboard() {
         const self = this;
 
-        self.css('custom');
+        if (!self.param('hid')) {
+            self.css('custom');
 
-        const userHouseholds = await self.db.HouseholdUser.findAll({
-            where: {
-                userId: self.req.user.id,
-            },
-        });
+            const userHouseholds = await self.db.HouseholdUser.findAll({
+                where: {
+                    userId: self.req.user.id,
+                },
+            });
 
-        let households = [];
-        let i = 0;
+            let households = [];
+            let i = 0;
 
-        for (const userHousehold of userHouseholds) {
-            households[i] = await self.db.Household.findByPk(
-                userHousehold.householdId
-            );
-            i++;
-        }
-        self.render({
-            title: 'Dashboard',
-            households: households,
-        });
-    }
-
-    async actionDashboardOne() {
-        const self = this;
-
-        self.css('custom');
-        self.js('Chart');
-        self.js('helper');
-        self.js('dashboard');
-
-        const householdId = self.param('householdId');
-        const household = await self.db.Household.findByPk(householdId);
-        const householdUsers = await self.db.HouseholdUser.findAll({
-            where: {
-                householdId: householdId,
-            },
-        });
-        let isUserPartOfHousehold = false;
-        const members = [];
-        for (let user of householdUsers) {
-            if (self.req.user.id == user.id) {
-                isUserPartOfHousehold = true;
-                console.log('YES');
+            for (const userHousehold of userHouseholds) {
+                households[i] = await self.db.Household.findByPk(
+                    userHousehold.householdId
+                );
+                i++;
             }
-            members.push(await self.db.User.findByPk(user.id));
+            self.render({
+                title: 'Dashboard',
+                households: households,
+            });
+        } else {
+            self.css('custom');
+            self.js('Chart');
+            self.js('helper');
+            self.js('dashboard');
+
+            const householdId = self.param('hid');
+            const household = await self.db.Household.findByPk(householdId);
+            const householdUsers = await self.db.HouseholdUser.findAll({
+                where: {
+                    householdId: householdId,
+                },
+            });
+            let isUserPartOfHousehold = false;
+            const members = [];
+            for (let user of householdUsers) {
+                if (self.req.user.id == user.id) {
+                    isUserPartOfHousehold = true;
+                }
+                members.push(await self.db.User.findByPk(user.id));
+            }
+
+            if (!isUserPartOfHousehold) {
+                self.next();
+            }
+
+            const lastPayments = await self.db.Payment.findAll({
+                include: self.db.Payment.extendInclude,
+                where: {
+                    householdId: householdId,
+                },
+                limit: 10,
+            });
+
+            const categories = await self.db.Category.findAll();
+
+            self.render({
+                title: 'Dashboard ' + household.name,
+                household: household,
+                members: members,
+                lastPayments: lastPayments,
+                categories: categories,
+            });
         }
-
-        if (!isUserPartOfHousehold) {
-            self.next();
-        }
-
-        const lastPayments = await self.db.Payment.findAll({
-            include: self.db.Payment.extendInclude,
-            where: {
-                householdId: householdId,
-            },
-            limit: 10,
-        });
-
-        const categories = await self.db.Category.findAll();
-
-        self.render({
-            title: 'Dashboard ' + household.name,
-            household: household,
-            members: members,
-            lastPayments: lastPayments,
-            categories: categories,
-        });
     }
 
     async actionTodo() {

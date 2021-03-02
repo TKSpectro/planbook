@@ -19,11 +19,6 @@ let routes = {
             { path: '/login', action: 'signin', method: 'get' },
             { path: '/register', action: 'signup', method: 'get' },
             { path: '/dashboard', action: 'dashboard', method: 'get' },
-            {
-                path: '/dashboard/:householdId',
-                action: 'dashboardOne',
-                method: 'get',
-            },
             { path: '/todo', action: 'todo', method: 'get' },
         ],
     },
