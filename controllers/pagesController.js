@@ -1,8 +1,3 @@
-/**
- * @author Tom Käppler <tomkaeppler@web.de>
- * @version 1.0.0
- */
-
 const Controller = require('./mainController.js');
 class PagesController extends Controller {
     constructor(...args) {
@@ -22,7 +17,7 @@ class PagesController extends Controller {
             }
         );
 
-        self.before(['dashboard'], async (next) => {
+        self.before(['dashboard', 'payments'], async (next) => {
             if (self.param('hid')) {
                 const householdUsers = await self.db.HouseholdUser.findAll({
                     where: {
@@ -165,6 +160,34 @@ class PagesController extends Controller {
                 categories: categories,
             });
         }
+    }
+
+    async actionPayments() {
+        const self = this;
+
+        // Choose between dashboardChooser and dashboardView for one household
+        // based on the set hid - householdId parameter
+
+        self.css('custom');
+        self.js('Chart');
+
+        const householdId = self.param('hid');
+        const household = await self.db.Household.findByPk(householdId);
+
+        // Get all the payments from the household in reverse order -> newest is first
+        const payments = await self.db.Payment.findAll({
+            include: self.db.Payment.extendInclude,
+            order: [['createdAt', 'DESC']],
+            where: {
+                householdId: householdId,
+            },
+        });
+
+        self.render({
+            title: 'Payments',
+            household: household,
+            payments: payments,
+        });
     }
 
     async actionTodo() {

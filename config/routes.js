@@ -20,6 +20,7 @@ let routes = {
             { path: '/register', action: 'signup', method: 'get' },
             { path: '/dashboard', action: 'dashboard', method: 'get' },
             { path: '/todo', action: 'todo', method: 'get' },
+            { path: '/payments', action: 'payments', method: 'get' },
         ],
     },
     'api/users': {
