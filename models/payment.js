@@ -32,8 +32,8 @@ module.exports = function (Model, db) {
         if (typeof data.categoryId !== 'undefined') {
             self.categoryId = data.categoryId;
         }
-        if (typeof data.entryId !== 'undefined') {
-            self.entryId = data.entryId;
+        if (typeof data.recurringPaymentId !== 'undefined') {
+            self.recurringPaymentId = data.recurringPaymentId;
         }
     };
 };
