@@ -22,6 +22,29 @@ class PagesController extends Controller {
             }
         );
 
+        self.before(['dashboard'], async (next) => {
+            if (self.param('hid')) {
+                const householdUsers = await self.db.HouseholdUser.findAll({
+                    where: {
+                        householdId: self.param('hid'),
+                    },
+                });
+                let isInHousehold;
+                for (let user of householdUsers) {
+                    if (self.req.user.id == user.id) {
+                        isInHousehold = true;
+                    }
+                }
+                if (isInHousehold) {
+                    next();
+                } else {
+                    self.redirect(self.urlFor('pages', 'dashboard'));
+                }
+            } else {
+                next();
+            }
+        });
+
         self.before(['signin', 'signup'], (next) => {
             if (self.req.authorized === true) {
                 self.redirect(self.urlFor('pages', 'dashboard'));
@@ -82,6 +105,8 @@ class PagesController extends Controller {
     async actionDashboard() {
         const self = this;
 
+        // Choose between dashboardChooser and dashboardView for one household
+        // based on the set hid - householdId parameter
         if (!self.param('hid')) {
             self.css('custom');
 
@@ -117,17 +142,9 @@ class PagesController extends Controller {
                     householdId: householdId,
                 },
             });
-            let isUserPartOfHousehold = false;
             const members = [];
             for (let user of householdUsers) {
-                if (self.req.user.id == user.id) {
-                    isUserPartOfHousehold = true;
-                }
                 members.push(await self.db.User.findByPk(user.id));
-            }
-
-            if (!isUserPartOfHousehold) {
-                self.next();
             }
 
             const lastPayments = await self.db.Payment.findAll({
