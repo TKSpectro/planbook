@@ -33,8 +33,6 @@ function clickHandler() {
 }
 
 function saveRecurringPayment() {
-    console.log('saved hit');
-
     const urlParams = new URLSearchParams(window.location.search);
     const householdId = urlParams.get('hid');
 
@@ -61,7 +59,7 @@ function saveRecurringPayment() {
     };
 
     putRecurringPayment(url, data).then((data) => {
-        console.log(data);
+        // TODO refresh page or update data by hand
     });
 
     $('#editRecurringPaymentModal').hide();
