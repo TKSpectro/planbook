@@ -2,9 +2,13 @@
     <a href="/dashboard?hid=<%=household.id%>" class="btn btn-primary"
         >Go Back</a
     >
+
     <div class="pt-4">
         <label>All recurring payments</label>
-        <table class="table table-hover table-dark bg-dark">
+        <table
+            id="recurringPaymentsTable"
+            class="table table-hover table-dark bg-dark"
+        >
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -30,9 +34,15 @@
                         <%if(recurringPayments[i].value > 0){ %>+<% }
                         %><%=recurringPayments[i].value%>€
                     </td>
+                    <td class="d-none">
+                        <%=recurringPayments[i].category.name%>
+                    </td>
+                    <td class="d-none"><%=recurringPayments[i].id%></td>
                 </tr>
                 <% } ;%>
             </tbody>
         </table>
     </div>
 </div>
+
+<%-include('../modals/editRecurringPaymentModal.html.ejs');-%>

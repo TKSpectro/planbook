@@ -33,5 +33,8 @@ module.exports = function (Model, db) {
         if (typeof data.householdId !== 'undefined') {
             self.householdId = data.householdId;
         }
+        if (typeof data.categoryId !== 'undefined') {
+            self.categoryId = data.categoryId;
+        }
     };
 };

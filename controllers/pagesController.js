@@ -198,6 +198,7 @@ class PagesController extends Controller {
 
         self.css('custom');
         self.js('Chart');
+        self.js('recurringPayment');
 
         const householdId = self.param('hid');
         const household = await self.db.Household.findByPk(householdId);
@@ -211,10 +212,13 @@ class PagesController extends Controller {
             },
         });
 
+        const categories = await self.db.Category.findAll();
+
         self.render({
             title: 'Payments',
             household: household,
             recurringPayments: recurringPayments,
+            categories: categories,
         });
     }
 

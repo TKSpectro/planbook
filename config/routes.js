@@ -86,18 +86,29 @@ let routes = {
             },
         ],
     },
-    'api/entries': {
+    'api/recurringPayments': {
         controller: ApiRecurringPaymentsController,
         actions: [
             {
-                path: '/api/recurringPayments/:householdId',
+                path: '/api/recurringPayments',
                 action: 'getAll',
                 method: 'GET',
             },
-            //{ path: '/api/entries/:id', action: 'getOne', method: 'GET' },
-            //{ path: '/api/entries', action: 'create', method: 'POST' },
-            //{ path: '/api/entries/:id', action: 'update', method: 'PUT' },
-            //{ path: '/api/entries/:id', action: 'delete', method: 'DELETE' },
+            {
+                path: '/api/recurringPayments',
+                action: 'create',
+                method: 'POST',
+            },
+            {
+                path: '/api/recurringPayments',
+                action: 'update',
+                method: 'PUT',
+            },
+            {
+                path: '/api/recurringPayments',
+                action: 'delete',
+                method: 'DELETE',
+            },
         ],
     },
     'api/todos': {

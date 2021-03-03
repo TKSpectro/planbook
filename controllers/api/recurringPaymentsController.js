@@ -10,8 +10,19 @@ class ApiRecurringPaymentsController extends Controller {
         self.format = Controller.HTTP_FORMAT_JSON;
 
         // users have to be signed in else they a 401 Unauthorized response
-        self.before(['*'], function (next) {
-            if (self.req.authorized === true) {
+        self.before(['*'], async function (next) {
+            const householdId = self.param('hid');
+            let householdUser;
+            if (householdId) {
+                householdUser = await self.db.HouseholdUser.findOne({
+                    where: {
+                        userId: self.req.user.id,
+                        householdId: householdId,
+                    },
+                });
+            }
+
+            if (self.req.authorized === true && householdUser) {
                 next();
             } else {
                 self.render(
@@ -24,34 +35,21 @@ class ApiRecurringPaymentsController extends Controller {
         });
     }
 
-    // you get all entries which are saved for your household
+    // you get all recurringPayments which are saved for your household
     async actionGetAll() {
         const self = this;
-
-        // define the where clause for the sql query
-        let where = {
-            householdId: self.param('householdId'),
-        };
-        const categoryId = self.param('categoryId');
-        if (categoryId) {
-            where.categoryId = categoryId;
-        }
-        const interval = self.param('interval');
-        if (interval) {
-            where.interval = interval;
-        }
-
-        let entries = [];
         let error = null;
+        let recurringPayments;
 
         try {
-            entries = await self.db.Entry.findAll({
-                include: self.db.Entry.extendInclude,
-                where: where,
+            recurringPayments = await self.db.RecurringPayment.findAll({
+                include: self.db.RecurringPayment.extendInclude,
+                where: {
+                    householdId: self.param('hid'),
+                },
             });
-            if (!entries.toString()) {
-                // throw a standard 404 nothing found
-                throw new ApiError('No entries found', 404);
+            if (!recurringPayments) {
+                throw new ApiError('No recurringPayments found', 404);
             }
         } catch (err) {
             error = err;
@@ -62,7 +60,7 @@ class ApiRecurringPaymentsController extends Controller {
         } else {
             self.render(
                 {
-                    entries: entries,
+                    recurringPayments: recurringPayments,
                 },
                 {
                     statusCode: 200,
@@ -71,62 +69,36 @@ class ApiRecurringPaymentsController extends Controller {
         }
     }
 
-    async actionGetOne() {
-        const self = this;
-
-        let entryId = self.param('id');
-        let entry = null;
-        let error = null;
-
-        try {
-            entry = await self.db.Entry.findOne({
-                where: {
-                    id: entryId,
-                    householdId: self.req.user.householdId,
-                },
-                include: self.db.Entry.extendInclude,
-            });
-            if (!entry) {
-                throw new ApiError(
-                    'No entry found with this id or you are not allowed to see it',
-                    404
-                );
-            }
-        } catch (err) {
-            error = err;
-        }
-
-        if (error) {
-            self.handleError(error);
-        } else {
-            self.render({
-                entry: entry,
-            });
-        }
-    }
-
     async actionCreate() {
         const self = this;
 
-        let remoteData = self.param('entry');
-        let entry = null;
         let error = null;
+        let recurringPayment = null;
 
         try {
-            entry = await self.db.sequelize.transaction(async (t) => {
-                let newEntry = self.db.Entry.build();
+            let remoteData = self.param('recurringPayment');
+            if (!remoteData) {
+                throw new ApiError(
+                    'no recurringPayment object found in body',
+                    400
+                );
+            }
+            remoteData['householdId'] = self.param('hid');
 
-                //user does not have to send householdId, we just use the household in which the user is part of
-                remoteData['householdId'] = self.req.user.householdId;
-                newEntry.writeRemotes(remoteData);
+            recurringPayment = await self.db.sequelize.transaction(
+                async (t) => {
+                    let newRecurringPayment = self.db.RecurringPayment.build();
 
-                await newEntry.save({
-                    transaction: t,
-                    lock: true,
-                });
+                    newRecurringPayment.writeRemotes(remoteData);
 
-                return newEntry;
-            });
+                    await newRecurringPayment.save({
+                        transaction: t,
+                        lock: true,
+                    });
+
+                    return newRecurringPayment;
+                }
+            );
         } catch (err) {
             error = err;
         }
@@ -136,7 +108,7 @@ class ApiRecurringPaymentsController extends Controller {
         } else {
             self.render(
                 {
-                    entry: entry,
+                    recurringPayment: recurringPayment,
                 },
                 {
                     statusCode: 201,
@@ -147,51 +119,69 @@ class ApiRecurringPaymentsController extends Controller {
 
     async actionUpdate() {
         const self = this;
-
-        let remoteData = self.param('entry');
-        let entryId = self.param('id');
-
-        let entry = null;
         let error = null;
 
-        //get the old entry
+        let recurringPayment = null;
+        //get the old recurringPayment
         try {
-            entry = await self.db.sequelize.transaction(async (t) => {
-                let updateEntry = await self.db.Entry.findOne(
-                    {
-                        where: {
-                            id: entryId,
-                            householdId: self.req.user.householdId,
-                        },
-                    },
-                    { transaction: t }
+            let remoteData = self.param('recurringPayment');
+            if (!remoteData) {
+                throw new ApiError(
+                    'no recurringPayment object found in body',
+                    400
                 );
-                if (updateEntry) {
-                    await updateEntry.update(
-                        {
-                            updatedAt: new Date(),
-                            endDate: remoteData['endDate'],
-                            income: remoteData['income'],
-                            value: remoteData['value'],
-                            purpose: remoteData['purpose'],
-                            interval: remoteData['interval'],
-                        },
+            }
+
+            const recurringPaymentId = self.param('id');
+            if (!recurringPaymentId) {
+                throw new ApiError('no id was send', 400);
+            }
+
+            // Need to set it manually null else we get a invalid date in the database
+            if (!remoteData['endDate']) {
+                remoteData['endDate'] = null;
+            }
+
+            recurringPayment = await self.db.sequelize.transaction(
+                async (t) => {
+                    let updateRecurringPayment = await self.db.RecurringPayment.findOne(
                         {
                             where: {
-                                id: entryId,
+                                id: recurringPaymentId,
+                                householdId: self.param('hid'),
                             },
                         },
-                        { transaction: t, lock: true }
+                        { transaction: t }
                     );
-                }
+                    if (updateRecurringPayment) {
+                        await updateRecurringPayment.update(
+                            {
+                                updatedAt: new Date(),
+                                startDate: remoteData['startDate'],
+                                endDate: remoteData['endDate'],
+                                value: remoteData['value'],
+                                purpose: remoteData['purpose'],
+                                interval: remoteData['interval'],
+                                categoryId: remoteData['categoryId'],
+                            },
+                            {
+                                where: {
+                                    id: recurringPaymentId,
+                                },
+                            },
+                            { transaction: t, lock: true }
+                        );
+                    }
 
-                return updateEntry;
-            });
-            if (!remoteData) {
-                throw new ApiError('no entry object in body found', 400);
-            }
-            if (!entry) {
-                throw new ApiError('Entry could not be updated', 404);
+                    return updateRecurringPayment;
+                }
+            );
+
+            if (!recurringPayment) {
+                throw new ApiError(
+                    'RecurringPayment could not be updated',
+                    404
+                );
             }
         } catch (err) {
             error = err;
@@ -202,7 +192,7 @@ class ApiRecurringPaymentsController extends Controller {
         } else {
             self.render(
                 {
-                    entry: entry,
+                    recurringPayment: recurringPayment,
                 },
                 {
                     statusCode: 202,
@@ -214,28 +204,34 @@ class ApiRecurringPaymentsController extends Controller {
     async actionDelete() {
         const self = this;
 
-        let entry = null;
-        let entryId = self.param('id');
+        let recurringPayment = null;
         let error = null;
-
         // delete the category
         try {
-            entry = await self.db.sequelize.transaction(async (t) => {
-                entry = await self.db.Entry.destroy(
-                    {
-                        where: {
-                            id: entryId,
-                            householdId: self.req.user.householdId,
-                        },
-                    },
-                    { transaction: t, lock: true }
-                );
+            if (!self.param('id')) {
+                throw new ApiError('No id given', 400);
+            }
 
-                return entry;
-            });
+            recurringPayment = await self.db.sequelize.transaction(
+                async (t) => {
+                    recurringPayment = await self.db.RecurringPayment.destroy(
+                        {
+                            where: {
+                                id: self.param('id'),
+                            },
+                        },
+                        { transaction: t, lock: true }
+                    );
+
+                    return recurringPayment;
+                }
+            );
             // if no category was found with this id throw an error
-            if (!entry) {
-                throw new ApiError('Found no entry for given id', 404);
+            if (!recurringPayment) {
+                throw new ApiError(
+                    'Found no recurringPayment for given id',
+                    404
+                );
             }
         } catch (err) {
             error = err;
