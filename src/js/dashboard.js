@@ -6,7 +6,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 // Setup the request
-fetch('/api/payments/' + householdId)
+fetch('/api/payments?hid=' + householdId)
     .then((data) => {
         if (data.status >= 200 && data.status < 400) {
             return data.json();

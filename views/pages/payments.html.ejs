@@ -2,6 +2,30 @@
     <a href="/dashboard?hid=<%=household.id%>" class="btn btn-primary"
         >Go Back</a
     >
+
+    <form class="pt-4 mb-0 form-inline">
+        <label class="col-sm-1 form-control-label" for="startDateInput"
+            >Start</label
+        >
+        <input
+            type="date"
+            class="form-control mb-2 mr-sm-2"
+            id="startDateInput"
+            value="<%=new Date().toISOString().slice(0,10)%>"
+        />
+        <label class="col-sm-1 form-control-label" for="endDateInput"
+            >End</label
+        >
+        <input
+            type="date"
+            class="form-control mb-2 mr-sm-2"
+            id="endDateInput"
+            value="<%=new Date().toISOString().slice(0,10)%>"
+        />
+        <button type="button" class="btn btn-primary" onclick="getPayments()">
+            Refresh
+        </button>
+    </form>
     <div class="pt-4">
         <label>All payments</label>
         <table class="table table-hover table-dark bg-dark">
@@ -25,8 +49,8 @@
                         <%{ %>no<% } %>
                     </td>
                     <td>
-                        <%if(payments[i].value > 0){ %>+<% } %>
-                        <%=payments[i].value%>€
+                        <%if(payments[i].value > 0){ %>+<% }
+                        %><%=payments[i].value%>€
                     </td>
                 </tr>
                 <% } ;%>

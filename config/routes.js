@@ -125,24 +125,19 @@ let routes = {
         controller: ApiPaymentsController,
         actions: [
             {
-                path: '/api/payments/:householdId',
+                path: '/api/payments',
                 action: 'getAll',
                 method: 'GET',
             },
             {
-                path: '/api/payments/:householdId/:id',
+                path: '/api/payments',
                 action: 'getOne',
                 method: 'GET',
             },
             {
-                path: '/api/payments/:householdId',
+                path: '/api/payments',
                 action: 'create',
                 method: 'POST',
-            },
-            {
-                path: '/api/payments/bookRecurringPayments',
-                action: 'bookRecurringPayments',
-                method: 'GET',
             },
         ],
     },

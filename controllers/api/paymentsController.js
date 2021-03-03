@@ -9,9 +9,19 @@ class ApiPaymentsController extends Controller {
 
         self.format = Controller.HTTP_FORMAT_JSON;
 
-        // users have to be signed in else they a 401 Unauthorized response
-        self.before(['*'], function (next) {
-            if (self.req.authorized === true) {
+        self.before(['*'], async function (next) {
+            const householdId = self.param('hid');
+            let householdUser;
+            if (householdId) {
+                householdUser = await self.db.HouseholdUser.findOne({
+                    where: {
+                        userId: self.req.user.id,
+                        householdId: householdId,
+                    },
+                });
+            }
+
+            if (self.req.authorized === true && householdUser) {
                 next();
             } else {
                 self.render(
@@ -28,20 +38,31 @@ class ApiPaymentsController extends Controller {
     async actionGetAll() {
         const self = this;
 
-        // define the where clause for the sql query
-        let where = {
-            householdId: self.param('householdId'),
-        };
-
-        let payments = [];
+        let payments;
         let error = null;
-
         try {
+            let where = { householdId: self.param('hid') };
+
+            if (self.param('start') && self.param('end')) {
+                where['createdAt'] = {
+                    [Op.gte]: new Date(self.param('start')),
+                    [Op.lte]: new Date(self.param('end')),
+                };
+            } else if (self.param('start')) {
+                where['createdAt'] = {
+                    [Op.gte]: new Date(self.param('start')),
+                };
+            } else if (self.param('end')) {
+                where['createdAt'] = {
+                    [Op.lte]: new Date(self.param('end')),
+                };
+            }
+
             payments = await self.db.Payment.findAll({
                 include: self.db.Payment.extendInclude,
                 where: where,
             });
-            if (!payments.toString()) {
+            if (!payments) {
                 // throw a standard 404 nothing found
                 throw new ApiError('No payments found', 404);
             }

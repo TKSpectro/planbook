@@ -13,6 +13,7 @@ module.exports = function (grunt) {
                     'assets/js/todo.min.js': 'src/js/todo.js',
                     'assets/js/recurringPayment.min.js':
                         'src/js/recurringPayment.js',
+                    'assets/js/payment.min.js': 'src/js/payment.js',
                 },
             },
         },
