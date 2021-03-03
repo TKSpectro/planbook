@@ -1,3 +1,12 @@
+const urlParams = new URLSearchParams(window.location.search);
+const householdId = urlParams.get('hid');
+
+const url =
+    '/api/recurringPayments/?hid=' +
+    householdId +
+    '&id=' +
+    document.querySelector('#paymentId').value;
+
 function clickHandler() {
     // Set the id in a hidden input field
     document.querySelector('#paymentId').value = this.children[7].innerHTML;
@@ -33,15 +42,6 @@ function clickHandler() {
 }
 
 function saveRecurringPayment() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const householdId = urlParams.get('hid');
-
-    const url =
-        '/api/recurringPayments/?hid=' +
-        householdId +
-        '&id=' +
-        document.querySelector('#paymentId').value;
-
     const sel = document.querySelector('#categorySelect');
     const categoryId = sel.options[sel.selectedIndex]
         .getAttribute('data-tokens')
@@ -59,10 +59,16 @@ function saveRecurringPayment() {
     };
 
     putRecurringPayment(url, data).then((data) => {
-        // TODO refresh page or update data by hand
+        // TODO refresh page or update data by hand and maybe show feedback
     });
 
     $('#editRecurringPaymentModal').hide();
+}
+
+function removeRecurringPayment() {
+    deleteRecurringPayment(url).then((res) => {
+        // TODO refresh page or update data by hand and maybe show feedback
+    });
 }
 
 async function putRecurringPayment(url = '', data = {}) {
@@ -74,6 +80,13 @@ async function putRecurringPayment(url = '', data = {}) {
         body: JSON.stringify(data),
     });
     return response.json();
+}
+
+async function deleteRecurringPayment(url = '') {
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+    return response;
 }
 
 // Helper function for converting HTML written strings (format Year-month-day)
