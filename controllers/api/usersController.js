@@ -70,17 +70,18 @@ class ApiUsersController extends Controller {
     // Need to be admin
     async actionGetOne() {
         const self = this;
-        if (!self.req.user.isAdmin) {
-            throw new ApiError(
-                'You are not allowed to access this endpoint',
-                403
-            );
-        }
 
-        let user = null;
         let error = null;
-
         try {
+            if (!self.req.user.isAdmin) {
+                throw new ApiError(
+                    'You are not allowed to access this endpoint',
+                    403
+                );
+            }
+
+            let user = null;
+
             user = await self.db.User.findOne({
                 where: {
                     id: self.param('id'),
