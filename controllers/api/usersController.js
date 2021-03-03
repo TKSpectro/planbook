@@ -72,6 +72,7 @@ class ApiUsersController extends Controller {
         const self = this;
 
         let error = null;
+        let user = null;
         try {
             if (!self.req.user.isAdmin) {
                 throw new ApiError(
@@ -80,13 +81,11 @@ class ApiUsersController extends Controller {
                 );
             }
 
-            let user = null;
-
             user = await self.db.User.findOne({
                 where: {
                     id: self.param('id'),
                 },
-                attributes: ['id', 'firstName', 'lastName', 'email'],
+                include: self.db.User.extendInclude,
             });
             if (!user) {
                 throw new ApiError('No user found with this id', 404);
