@@ -26,19 +26,10 @@
         <canvas id="mainChart" width="400" height="400"></canvas>
     </div>
 
-    <!-- Household Members -->
     <div class="pt-4">
-        <span>Members:</span>
-        <div class="list-group">
-            <% for (let i = 0; i < members.length; i++) { ;%>
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1"><%=members[i].firstName%></h5>
-            </div>
-            <% }; %>
-        </div>
-    </div>
-
-    <div class="pt-4">
+        <a href="/members?hid=<%=household.id%>" class="btn btn-primary"
+            >Members</a
+        >
         <a href="/payments?hid=<%=household.id%>" class="btn btn-primary"
             >All payments</a
         >

@@ -18,7 +18,7 @@ class PagesController extends Controller {
         );
 
         self.before(
-            ['dashboard', 'payments', 'recurringPayments'],
+            ['dashboard', 'payments', 'recurringPayments', 'members'],
             async (next) => {
                 if (self.param('hid')) {
                     const householdUsers = await self.db.HouseholdUser.findAll({
@@ -220,6 +220,35 @@ class PagesController extends Controller {
             household: household,
             recurringPayments: recurringPayments,
             categories: categories,
+        });
+    }
+
+    async actionMembers() {
+        const self = this;
+
+        // TODO Check if user is owner of the household
+        const householdId = self.param('hid');
+        const household = await self.db.Household.findByPk(householdId);
+
+        self.css('custom');
+        self.js('Chart');
+        self.js('member');
+
+        const householdUsers = await self.db.HouseholdUser.findAll({
+            include: self.db.HouseholdUser.extendInclude,
+            where: {
+                householdId: self.param('hid'),
+            },
+        });
+
+        const members = [];
+        householdUsers.forEach((data) => {
+            members.push(data.user);
+        });
+
+        self.render({
+            title: 'Members',
+            members: members,
         });
     }
 

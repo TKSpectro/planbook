@@ -26,6 +26,7 @@ let routes = {
                 action: 'recurringPayments',
                 method: 'get',
             },
+            { path: '/members', action: 'members', method: 'get' },
         ],
     },
     'api/users': {
@@ -73,14 +74,8 @@ let routes = {
         controller: ApiHouseholdsUsersController,
         actions: [
             { path: '/api/householdsUsers', action: 'getAll', method: 'GET' },
-            { path: '/api/householdsUsers', action: 'create', method: 'POST' },
             {
-                path: '/api/householdsUsers/:id',
-                action: 'update',
-                method: 'PUT',
-            },
-            {
-                path: '/api/householdsUsers/:id',
+                path: '/api/householdsUsers',
                 action: 'delete',
                 method: 'DELETE',
             },

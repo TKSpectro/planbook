@@ -3,7 +3,6 @@ module.exports = function (Model, db) {
         {
             model: db.Household,
             as: 'household',
-            attributes: ['id', 'name', 'ownerId'],
         },
     ];
     Model.extendInclude = [
