@@ -25,7 +25,7 @@ module.exports = function (grunt) {
             },
         },
         apidoc: {
-            taskboard: {
+            planbook: {
                 src: 'src/apidoc/',
                 dest: 'docs/',
             },
