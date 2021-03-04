@@ -60,6 +60,6 @@ cron.schedule('55 23 * * *', () => {
 });
 
 //Start the webserver
-server.listen(process.env.PORT || 3000, function () {
+server.listen(process.env.PORT || 80, function () {
     console.log('App started on Port ' + (process.env.PORT || 3000));
 });

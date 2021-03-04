@@ -5,28 +5,34 @@ require('dotenv').config();
 
 module.exports = function () {
     let sequelize;
-    if (process.env.SEQUELIZE_URL) {
-        sequelize = new Sequelize(process.env.SEQUELIZE_URL);
+
+    let options = {
+        host: process.env.DB_HOST || 'localhost',
+        dialect: 'mysql',
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000,
+        },
+    };
+
+    if (process.env.DATABASE_LOGGING == 'true') {
+        options['logging'] = console.log;
     } else {
-        sequelize = new Sequelize(
-            process.env.DB_NAME || 'planbook',
-            process.env.DB_USER || 'root',
-            process.env.DB_PASSWORD || '',
-            {
-                host: process.env.DB_HOST || 'localhost',
-                dialect: 'mysql',
-                pool: {
-                    max: 5,
-                    min: 0,
-                    acquire: 30000,
-                    idle: 10000,
-                },
-                logging: process.env.databaseLogging == 'true' || false,
-                logQueryParameters:
-                    process.env.databaseLogging == 'true' || false,
-            }
-        );
+        options['logging'] = false;
     }
+
+    if (process.env.DATABASE_QUERY_PARAMETERS_LOGGING == 'true') {
+        options['logQueryParameters'] = true;
+    }
+
+    sequelize = new Sequelize(
+        process.env.DB_NAME || 'planbook',
+        process.env.DB_USER || 'root',
+        process.env.DB_PASSWORD || '',
+        options
+    );
 
     const db = {
         Sequelize: Sequelize,
