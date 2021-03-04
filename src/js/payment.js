@@ -77,5 +77,6 @@ function refreshChart(payments) {
         options: options,
     });
 }
+
 // Call the method when loading the page
 getPayments();
