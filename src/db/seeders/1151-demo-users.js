@@ -5,7 +5,6 @@ module.exports = {
             'user',
             [
                 {
-                    id: 1,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     firstName: 'Tom',
@@ -16,7 +15,6 @@ module.exports = {
                     isAdmin: false,
                 },
                 {
-                    id: 2,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     firstName: 'Max',
@@ -27,7 +25,6 @@ module.exports = {
                     isAdmin: false,
                 },
                 {
-                    id: 3,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     firstName: 'Bilal',
@@ -38,7 +35,6 @@ module.exports = {
                     isAdmin: false,
                 },
                 {
-                    id: 4,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     firstName: 'Olga',
@@ -49,7 +45,6 @@ module.exports = {
                     isAdmin: false,
                 },
                 {
-                    id: 5,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     firstName: 'Jens',
@@ -60,7 +55,6 @@ module.exports = {
                     isAdmin: false,
                 },
                 {
-                    id: 6,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     firstName: 'Bettina',

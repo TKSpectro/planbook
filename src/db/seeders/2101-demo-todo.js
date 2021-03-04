@@ -5,7 +5,6 @@ module.exports = {
             'todo',
             [
                 {
-                    id: 1,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     task: 'Buy bananas',
@@ -14,7 +13,6 @@ module.exports = {
                     householdId: 1,
                 },
                 {
-                    id: 2,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     task: 'Buy toilet paper',
@@ -23,7 +21,6 @@ module.exports = {
                     householdId: 1,
                 },
                 {
-                    id: 3,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     task: 'Buy water',
@@ -32,7 +29,6 @@ module.exports = {
                     householdId: 1,
                 },
                 {
-                    id: 4,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     task: 'Buy noodles',

@@ -5,7 +5,6 @@ module.exports = {
             'householdUser',
             [
                 {
-                    id: 1,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     timeJoined: new Date(),
@@ -13,7 +12,6 @@ module.exports = {
                     householdId: 1,
                 },
                 {
-                    id: 2,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     timeJoined: new Date(),
@@ -21,7 +19,6 @@ module.exports = {
                     householdId: 4,
                 },
                 {
-                    id: 3,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     timeJoined: new Date(),
@@ -29,7 +26,6 @@ module.exports = {
                     householdId: 2,
                 },
                 {
-                    id: 4,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     timeJoined: new Date(),
@@ -37,7 +33,6 @@ module.exports = {
                     householdId: 3,
                 },
                 {
-                    id: 5,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     timeJoined: new Date(),
@@ -45,7 +40,6 @@ module.exports = {
                     householdId: 1,
                 },
                 {
-                    id: 6,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     timeJoined: new Date(),
