@@ -7,7 +7,7 @@
         <link
             rel="stylesheet"
             type="text/css"
-            href="/assets/css/<%-self.cssFiles[index]%>.css"
+            href="/assets/css/<%=self.cssFiles[index]%>.css"
         />
         <% } %>
         <script src="/socket.io/socket.io.js"></script>
@@ -28,11 +28,11 @@
             <%-body%> <%if(self.req.user) { %>
         </div>
         <script>
-            let currentUserId = <%-self.req.user.id%>;
+            let currentUserId = <%=self.req.user.id%>;
         </script>
         <% } %> <% for (let index = 0; index < self.jsFiles.length; index++) {
         %>
-        <script src="/assets/js/<%-self.jsFiles[index]+(cfg.minify === true ? '.min' : '')%>.js"></script>
+        <script src="/assets/js/<%=self.jsFiles[index]+(cfg.minify === true ? '.min' : '')%>.js"></script>
         <% } %>
         <script src="/assets/js/jquery.slim.min.js"></script>
         <script src="/assets/js/bootstrap.min.js"></script>
