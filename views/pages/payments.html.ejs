@@ -7,15 +7,18 @@
         <label class="col-sm-1 form-control-label" for="startDateInput"
             >Start</label
         >
+        <!-- startDateInput - defaultValue: first day of the month -->
         <input
             type="date"
             class="form-control mb-2 mr-sm-2"
             id="startDateInput"
-            value="<%=new Date().toISOString().slice(0,10)%>"
+            value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
+                .toISOString().slice(0,10)%>"
         />
         <label class="col-sm-1 form-control-label" for="endDateInput"
             >End</label
         >
+        <!-- endDateInput - defaultValue: today -->
         <input
             type="date"
             class="form-control mb-2 mr-sm-2"
@@ -26,6 +29,11 @@
             Refresh
         </button>
     </form>
+
+    <div class="pt-4 mx-auto">
+        <canvas id="paymentHistoryChart"></canvas>
+    </div>
+
     <div class="pt-4">
         <label>All payments</label>
         <table class="table table-hover table-dark bg-dark">
@@ -58,3 +66,5 @@
         </table>
     </div>
 </div>
+<!-- need moment.js for chart.js usage with time x axis -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
