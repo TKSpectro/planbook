@@ -364,25 +364,34 @@ class ApiUsersController extends Controller {
                         },
                         { transaction: t, lock: true }
                     );
+
+                    newUser.writeRemotes(remoteData);
+                    await newUser.save({
+                        transaction: t,
+                        lock: true,
+                        include: self.db.User.extendInclude,
+                    });
+
+                    return newUser;
                 } else {
+                    newUser.writeRemotes(remoteData);
+                    await newUser.save({
+                        transaction: t,
+                        lock: true,
+                        include: self.db.User.extendInclude,
+                    });
+
                     //Create a new household and set id in the new user
                     let household = self.db.Household.build();
                     household.name = 'New household';
+                    household.ownerId = newUser.id;
                     let newHousehold = await household.save({
                         transaction: t,
                         lock: true,
                     });
-                    newUser.householdId = newHousehold.id;
+
+                    return newUser;
                 }
-
-                newUser.writeRemotes(remoteData);
-                await newUser.save({
-                    transaction: t,
-                    lock: true,
-                    include: self.db.User.extendInclude,
-                });
-
-                return newUser;
             });
         } catch (err) {
             error = err;
