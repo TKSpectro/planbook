@@ -100,12 +100,16 @@ class ApiPaymentsController extends Controller {
         let payment = null;
         let error = null;
 
-        let where = {
-            householdId: self.param('householdId'),
-            id: self.param('id'),
-        };
-
         try {
+            if (!self.param('id')) {
+                throw new ApiError('No payment id given');
+            }
+
+            let where = {
+                id: self.param('id'),
+                householdId: self.param('hid'),
+            };
+
             payment = await self.db.Payment.findOne({
                 where: where,
                 include: self.db.Payment.extendInclude,
@@ -132,15 +136,20 @@ class ApiPaymentsController extends Controller {
     async actionCreate() {
         const self = this;
 
-        let remoteData = self.param('payment');
         let payment = null;
         let error = null;
 
         try {
+            if (!self.param('payment')) {
+                throw new ApiError('No body or wrong body', 400);
+            }
+
+            let remoteData = self.param('payment');
+
             payment = await self.db.sequelize.transaction(async (t) => {
                 let newPayment = self.db.Payment.build();
 
-                remoteData['householdId'] = self.param('householdId');
+                remoteData['householdId'] = self.param('hid');
                 newPayment.writeRemotes(remoteData);
 
                 await newPayment.save({
