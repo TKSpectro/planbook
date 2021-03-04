@@ -46,7 +46,11 @@ class ApiPaymentsController extends Controller {
             if (self.param('start') && self.param('end')) {
                 where['createdAt'] = {
                     [Op.gte]: new Date(self.param('start')),
-                    [Op.lte]: new Date(self.param('end')),
+                    [Op.lte]: new Date(
+                        new Date(self.param('end')).setDate(
+                            new Date(self.param('end')).getDate() + 1
+                        )
+                    ),
                 };
             } else if (self.param('start')) {
                 where['createdAt'] = {
@@ -54,14 +58,20 @@ class ApiPaymentsController extends Controller {
                 };
             } else if (self.param('end')) {
                 where['createdAt'] = {
-                    [Op.lte]: new Date(self.param('end')),
+                    [Op.lte]: new Date(
+                        new Date(self.param('end')).setDate(
+                            new Date(self.param('end')).getDate() + 1
+                        )
+                    ),
                 };
             }
 
             payments = await self.db.Payment.findAll({
                 include: self.db.Payment.extendInclude,
                 where: where,
+                order: ['createdAt'],
             });
+
             if (!payments) {
                 // throw a standard 404 nothing found
                 throw new ApiError('No payments found', 404);
