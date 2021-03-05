@@ -17,7 +17,7 @@ function removeMember() {
         '/api/householdsUsers?hid=' +
         householdId +
         '&id=' +
-        document.querySelector('#chosenId').value;
+        document.querySelector('#chosenMemberId').value;
 
     deleteMember(url).then((response) => {
         // TODO refresh page or update data by hand and maybe show feedback
@@ -47,7 +47,8 @@ function saveInvite(event) {
     return false;
 }
 
-function removeInvite(id) {
+function removeInvite() {
+    const id = document.getElementById('chosenInviteId').value;
     const url = '/api/invites?hid=' + householdId + '&id=' + id;
     deleteInvite(url).then((response) => {
         //TODO user feedback
@@ -67,7 +68,7 @@ function refreshMembersTable() {
         .then((data) => {
             if (data.members.length === 0) {
                 // TODO Alert user
-                refreshTable();
+                refreshTable('membersTable');
                 return;
             } else {
                 let tableData = [];
@@ -82,7 +83,7 @@ function refreshMembersTable() {
                     ]);
                     i++;
                 });
-                refreshTable('pendingInvitesTable', tableData);
+                refreshTable('membersTable', tableData);
             }
         });
 }
@@ -98,7 +99,7 @@ function refreshPendingInvitesTable() {
         .then((data) => {
             if (data.invites.length === 0) {
                 // TODO Alert user
-                refreshTable();
+                refreshTable('pendingInvitesTable');
                 return;
             } else {
                 let tableData = [];
@@ -115,6 +116,13 @@ function refreshPendingInvitesTable() {
                 });
                 refreshTable('pendingInvitesTable', tableData);
             }
+
+            // Setup clickListener for removing
+            document
+                .querySelectorAll('#pendingInvitesTable tbody tr')
+                .forEach((e) => {
+                    e.addEventListener('click', clickRemoveInviteHandler);
+                });
         });
 }
 
@@ -147,6 +155,16 @@ async function deleteMember(url = '') {
     });
 
     return response;
+}
+
+function clickRemoveInviteHandler() {
+    // Set the id in a hidden input field
+    document.querySelector(
+        '#chosenInviteId'
+    ).value = this.children[4].innerHTML;
+
+    // Show the edit modal
+    $('#removeInviteModal').modal();
 }
 
 refreshPage();

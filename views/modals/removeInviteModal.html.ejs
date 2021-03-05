@@ -1,16 +1,15 @@
-<!-- Edit Modal -->
 <div
     class="modal fade"
-    id="removeMemberModal"
+    id="removeInviteModal"
     tabindex="-1"
-    aria-labelledby="removeMemberModalLabel"
+    aria-labelledby="removeInviteModalLabel"
     aria-hidden="true"
 >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="removeMemberModalLabel">
-                    Are you sure you want to remove this member?
+                <h5 class="modal-title" id="removeInviteModalLabel">
+                    Are you sure you want to remove this invite?
                 </h5>
                 <button
                     type="button"
@@ -21,7 +20,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <input id="chosenMemberId" class="d-none"></input>
+            <input id="chosenInviteId" class="d-none"></input>
             <div class="modal-footer">
                 <button
                     type="button"
@@ -34,7 +33,7 @@
                     type="button"
                     class="btn btn-danger"
                     data-dismiss="modal"
-                    onclick="removeMember()"
+                    onclick="removeInvite()"
                 >
                     Remove
                 </button>
