@@ -62,20 +62,80 @@ function refreshChart(payments) {
         ],
     };
     let currentValue = 0;
+    let tableData = [];
+    let i = 1;
     payments.forEach((payment) => {
+        // Write data for chart
         currentValue += payment.value;
         data.labels.push(payment.createdAt);
         data.datasets[0].data.push({
             t: payment.createdAt,
             y: currentValue,
         });
+
+        // Write data for table
+        let recurringPaymentString;
+        if (payment.recurringPayment) {
+            recurringPaymentString = 'yes';
+        } else {
+            recurringPaymentString = 'no';
+        }
+
+        let paymentValueString;
+        if (payment.value > 0) {
+            paymentValueString = '+' + payment.value + '€';
+        } else {
+            paymentValueString = payment.value + '€';
+        }
+
+        tableData.push([
+            i,
+            payment.purpose,
+            payment.name,
+            recurringPaymentString,
+            paymentValueString,
+        ]);
+        i++;
     });
+
+    let endDate = new Date(document.getElementById('endDateInput').value);
+    endDate.setHours(24);
+    data.labels.push(endDate);
 
     let paymentHistoryChart = new Chart(chartElement, {
         type: 'line',
         data: data,
         options: options,
     });
+
+    refreshTable(tableData);
+}
+
+function refreshTable(tableData) {
+    const table = document.getElementById('paymentsTable');
+
+    // Just remove the tbody if there actually is one
+    if (table.getElementsByTagName('tbody')[0]) {
+        table.removeChild(table.getElementsByTagName('tbody')[0]);
+    }
+
+    // Create a new tableBody
+    const tableBody = document.createElement('tbody');
+
+    // Fill in the data from parameter
+    tableData.forEach(function (rowData) {
+        const row = document.createElement('tr');
+
+        rowData.forEach(function (cellData) {
+            const cell = document.createElement('td');
+            cell.appendChild(document.createTextNode(cellData));
+            row.appendChild(cell);
+        });
+
+        tableBody.appendChild(row);
+    });
+
+    table.appendChild(tableBody);
 }
 
 // Call the method when loading the page

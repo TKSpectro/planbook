@@ -71,23 +71,6 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
-                <% for (let i = 0; i < payments.length; i++) { ;%>
-                <tr>
-                    <td><%=i+1%></td>
-                    <td><%=payments[i].purpose%></td>
-                    <td><%=payments[i].category.name%></td>
-                    <td>
-                        <% if(payments[i].recurringPayment){%>yes<%}else{%>no <%
-                        } %>
-                    </td>
-                    <td>
-                        <%if(payments[i].value > 0){ %>+<% }
-                        %><%=payments[i].value%>€
-                    </td>
-                </tr>
-                <% } ;%>
-            </tbody>
         </table>
     </div>
 </div>

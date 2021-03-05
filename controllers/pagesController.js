@@ -179,19 +179,9 @@ class PagesController extends Controller {
         const householdId = self.param('hid');
         const household = await self.db.Household.findByPk(householdId);
 
-        // Get all the payments from the household in reverse order -> newest is first
-        const payments = await self.db.Payment.findAll({
-            include: self.db.Payment.extendInclude,
-            order: [['createdAt', 'DESC']],
-            where: {
-                householdId: householdId,
-            },
-        });
-
         self.render({
             title: 'Payments',
             household: household,
-            payments: payments,
         });
     }
 
