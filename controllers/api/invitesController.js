@@ -122,7 +122,11 @@ class ApiInvitesController extends Controller {
 
             // SEND OUT AN EMAIL
             // The email account used to invite other users has to be given in the .env file
-            if (process.env.MAIL_NAME && process.env.MAIL_PASSWORD) {
+            if (
+                process.env.MAIL_NAME &&
+                process.env.MAIL_PASSWORD &&
+                !process.env.MAIL_SEND
+            ) {
                 //Send an email to the invited person
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
