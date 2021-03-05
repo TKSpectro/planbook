@@ -27,7 +27,27 @@ module.exports = {
                 {
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    name: 'General',
+                    name: 'Rent',
+                },
+                {
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Others',
+                },
+                {
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Cost of living',
+                },
+                {
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Clothing',
+                },
+                {
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    name: 'Free time',
                 },
             ],
             {}
