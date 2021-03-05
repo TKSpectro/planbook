@@ -1,7 +1,14 @@
+function refreshPage() {
+    getPayments();
+}
+
 function getPayments() {
     const householdId = new URLSearchParams(window.location.search).get('hid');
     const startDate = document.getElementById('startDateInput').value;
-    const endDate = document.getElementById('endDateInput').value;
+    const endDate = new Date(document.getElementById('endDateInput').value);
+    endDate.setHours(new Date().getHours());
+    endDate.setMinutes(new Date().getMinutes() + 5);
+
     let url =
         '/api/payments?hid=' +
         householdId +
@@ -26,6 +33,7 @@ function getPayments() {
             }
         });
 }
+
 function refreshChart(payments) {
     const chartElement = document.getElementById('paymentHistoryChart');
 
@@ -64,9 +72,14 @@ function refreshChart(payments) {
     let currentValue = 0;
     let tableData = [];
     let i = 1;
+
+    payments.forEach((payment) => {
+        currentValue += payment.value;
+    });
+
     payments.forEach((payment) => {
         // Write data for chart
-        currentValue += payment.value;
+        currentValue -= payment.value;
         data.labels.push(payment.createdAt);
         data.datasets[0].data.push({
             t: payment.createdAt,

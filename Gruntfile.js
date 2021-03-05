@@ -15,6 +15,7 @@ module.exports = function (grunt) {
                         'src/js/recurringPayment.js',
                     'assets/js/payment.min.js': 'src/js/payment.js',
                     'assets/js/member.min.js': 'src/js/member.js',
+                    'assets/js/savePayment.min.js': 'src/js/savePayment.js',
                 },
             },
         },

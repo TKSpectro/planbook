@@ -39,9 +39,10 @@
                         </label>
                         <div class="col-sm-10">
                             <input
+                                id="purposeInput"
                                 type="text"
                                 class="form-control"
-                                placeholder=""
+                                required
                             />
                         </div>
                     </div>
@@ -54,9 +55,10 @@
                                 <div class="input-group-text">€</div>
                             </div>
                             <input
+                                id="valueInput"
                                 type="number"
                                 class="form-control"
-                                placeholder=""
+                                required
                             />
                         </div>
                     </div>
@@ -67,11 +69,14 @@
                         <div class="col-sm-10">
                             <select
                                 class="form-control selectpicker"
-                                id="select-category"
+                                id="categorySelect"
                                 data-live-search="true"
                             >
-                                <%for(let i = 0; i < categories.length; i++){%>
-                                <option data-tokens="<%=categories[i].name%>">
+                                <%for (let i = 0; i < categories.length; i++){%>
+                                <option
+                                    value="<%=categories[i].name%>"
+                                    data-tokens="<%=categories[i].name%>/<%=categories[i].id%>"
+                                >
                                     <%=categories[i].name%>
                                 </option>
                                 <% }; %>
@@ -88,7 +93,14 @@
                 >
                     Close
                 </button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                    onclick="savePayment()"
+                >
+                    Save
+                </button>
             </div>
         </div>
     </div>

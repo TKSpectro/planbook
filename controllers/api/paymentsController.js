@@ -10,6 +10,15 @@ class ApiPaymentsController extends Controller {
         self.format = Controller.HTTP_FORMAT_JSON;
 
         self.before(['*'], async function (next) {
+            if (self.req.authorized !== true) {
+                self.render(
+                    {},
+                    {
+                        statusCode: 401,
+                    }
+                );
+            }
+
             const householdId = self.param('hid');
             let householdUser;
             if (householdId) {
@@ -21,7 +30,7 @@ class ApiPaymentsController extends Controller {
                 });
             }
 
-            if (self.req.authorized === true && householdUser) {
+            if (householdUser) {
                 next();
             } else {
                 self.render(
@@ -46,11 +55,7 @@ class ApiPaymentsController extends Controller {
             if (self.param('start') && self.param('end')) {
                 where['createdAt'] = {
                     [Op.gte]: new Date(self.param('start')),
-                    [Op.lte]: new Date(
-                        new Date(self.param('end')).setDate(
-                            new Date(self.param('end')).getDate() + 1
-                        )
-                    ),
+                    [Op.lte]: new Date(self.param('end')),
                 };
             } else if (self.param('start')) {
                 where['createdAt'] = {
@@ -58,18 +63,14 @@ class ApiPaymentsController extends Controller {
                 };
             } else if (self.param('end')) {
                 where['createdAt'] = {
-                    [Op.lte]: new Date(
-                        new Date(self.param('end')).setDate(
-                            new Date(self.param('end')).getDate() + 1
-                        )
-                    ),
+                    [Op.lte]: new Date(self.param('end')),
                 };
             }
 
             payments = await self.db.Payment.findAll({
                 include: self.db.Payment.extendInclude,
                 where: where,
-                order: ['createdAt'],
+                order: [['createdAt', 'DESC']],
             });
 
             if (!payments) {
