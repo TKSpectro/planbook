@@ -35,13 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     Invite.associate = function (models) {
         Invite.belongsTo(models.User, {
             as: 'sender',
-            foreignKey: 'senderId',
+            foreignKey: 'id',
         });
-    };
-    Invite.associate = function (models) {
         Invite.belongsTo(models.Household, {
             as: 'household',
-            foreignKey: 'householdId',
+            foreignKey: 'id',
         });
     };
     return Invite;

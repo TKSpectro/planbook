@@ -221,13 +221,29 @@ class PagesController extends Controller {
     async actionMembers() {
         const self = this;
 
-        // TODO Check if user is owner of the household
+        if (!self.param('hid')) {
+            self.redirect(self.urlFor('pages', 'dashboard'));
+            return;
+        }
+
         const householdId = self.param('hid');
         const household = await self.db.Household.findByPk(householdId);
 
+        if (self.req.user.id != household.ownerId) {
+            self.redirect(self.urlFor('pages', 'dashboard'));
+            return;
+        }
+
         self.css('custom');
         self.js('Chart');
+        self.js('helper');
         self.js('member');
+
+        const invites = await self.db.Invite.findAll({
+            where: {
+                householdId: self.param('hid'),
+            },
+        });
 
         const householdUsers = await self.db.HouseholdUser.findAll({
             include: self.db.HouseholdUser.extendInclude,
@@ -244,6 +260,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Members',
             members: members,
+            invites: invites,
         });
     }
 

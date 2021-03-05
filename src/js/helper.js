@@ -3,6 +3,46 @@ const calcEntries = (entries) => {
     return result;
 };
 
+function refreshTable(tableIdString = '', tableData = []) {
+    const table = document.getElementById(tableIdString);
+
+    // Just remove the tbody if there actually is one
+    if (table.getElementsByTagName('tbody')[0]) {
+        table.removeChild(table.getElementsByTagName('tbody')[0]);
+    }
+
+    // Create a new tableBody
+    const tableBody = document.createElement('tbody');
+
+    // Fill in the data from parameter
+    tableData.forEach(function (rowData) {
+        const row = document.createElement('tr');
+
+        rowData.forEach(function (cellData) {
+            // There is a possibility to put hidden elements
+            if (cellData.toString().indexOf('hidden/') != -1) {
+                const cell = document.createElement('td');
+                cell.classList.add('d-none');
+                cell.appendChild(
+                    document.createTextNode(
+                        cellData.toString().replace('hidden/', '')
+                    )
+                );
+                row.appendChild(cell);
+            } else {
+                const cell = document.createElement('td');
+                cell.classList.add('align-middle');
+                cell.appendChild(document.createTextNode(cellData));
+                row.appendChild(cell);
+            }
+        });
+
+        tableBody.appendChild(row);
+    });
+
+    table.appendChild(tableBody);
+}
+
 /*
 Algorithm used: https://www.w3schools.com/howto/howto_js_sort_table.asp
     Combined with the sort table numerically

@@ -31,6 +31,25 @@
             <% }; %>
         </tbody>
     </table>
+
+    <div class="pt-4"><%-include('../modals/addInviteModal.html.ejs');-%></div>
+
+    <div class="pt-4">
+        <label for="pendingInvitesTable">Pending invites</label>
+        <table
+            id="pendingInvitesTable"
+            class="table table-hover table-dark bg-dark"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Invited email</th>
+                    <th scope="col">Valid until</th>
+                    <th scope="col">Created At</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 
 <%-include('../modals/removeMemberModal.html.ejs');-%>

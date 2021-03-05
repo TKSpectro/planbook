@@ -13,9 +13,28 @@ class ApiInvitesController extends Controller {
 
         self.format = Controller.HTTP_FORMAT_JSON;
 
-        // users have to be signed in else they a 401 Unauthorized response
-        self.before(['*'], function (next) {
-            if (self.req.authorized === true) {
+        self.before(['*'], async function (next) {
+            if (self.req.authorized !== true) {
+                self.render(
+                    {},
+                    {
+                        statusCode: 401,
+                    }
+                );
+            }
+
+            const householdId = self.param('hid');
+            let householdUser;
+            if (householdId) {
+                householdUser = await self.db.HouseholdUser.findOne({
+                    where: {
+                        userId: self.req.user.id,
+                        householdId: householdId,
+                    },
+                });
+            }
+
+            if (householdUser) {
                 next();
             } else {
                 self.render(
@@ -35,10 +54,12 @@ class ApiInvitesController extends Controller {
         let error = null;
 
         try {
+            const householdId = self.param('hid');
+
             invites = await self.db.Invite.findAll({
                 include: self.db.Invite.extendInclude,
                 where: {
-                    senderId: self.req.user.id,
+                    householdId: householdId,
                 },
             });
             if (!invites) {
@@ -66,77 +87,73 @@ class ApiInvitesController extends Controller {
     async actionCreate() {
         const self = this;
 
-        let invitedEmail = self.param('email');
-        // Set valid until either from param or set it to 1 day
-        let validUntil =
-            self.param('validUntil') || new Date() + 1000 * 60 * 60 * 1;
-
-        if (!self.req.user.householdId) {
-            throw new ApiError(
-                'You cant invite because you are not in a household',
-                400
-            );
-        }
-
         let invite = null;
         let error = null;
-        let link = uuidv4();
-
         try {
+            // Get the remote data and check if its valid
+            let remoteData = self.param('invite');
+            if (!remoteData) {
+                throw new ApiError('no invite object found in body', 400);
+            }
+
+            // Set remoteData params
+            remoteData['householdId'] = self.param('hid');
+            remoteData['senderId'] = self.req.user.id;
+
+            // Set valid until either from param or set it to 1 day
+            remoteData['validUntil'] = new Date() + 1000 * 60 * 60 * 7;
+            remoteData['wasUsed'] = false;
+
+            // Set the link to a random generated one
+            remoteData['link'] = uuidv4();
+
             invite = await self.db.sequelize.transaction(async (t) => {
                 let newInvite = self.db.Invite.build();
 
-                let data = {
-                    senderId: self.req.user.id,
-                    validUntil: validUntil,
-                    wasUsed: false,
-                    invitedEmail: invitedEmail,
-                    link: link,
-                };
                 //newInvite.dataValues.senderId = self.req.user.id;
-                newInvite.writeRemotes(data);
+                newInvite.writeRemotes(remoteData);
                 await newInvite.save({
                     transaction: t,
                     lock: true,
                 });
 
-                // SEND OUT AN EMAIL
-                //The email account used to invite other users has to be given in the .env file
-                if (process.env.MAIL_NAME && process.env.MAIL_PASSWORD) {
-                    //Send an email to the invited person
-                    var transporter = nodemailer.createTransport({
-                        service: 'gmail',
-                        auth: {
-                            user: process.env.MAIL_NAME,
-                            pass: process.env.MAIL_PASSWORD,
-                        },
-                    });
-
-                    var mailOptions = {
-                        from: process.env.MAIL_NAME,
-                        to: invitedEmail,
-                        subject: 'Invite for Planbook',
-                        text:
-                            'Greetings from Planbook. You just have been invited by ' +
-                            self.req.user.firstName +
-                            ' ' +
-                            self.req.user.lastName +
-                            ' to join their household\nFor that you need to just register with this inviteCode ' +
-                            newInvite.link +
-                            ' on the website',
-                    };
-
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log('Email sent: ' + info.response);
-                        }
-                    });
-                }
-                // END EMAIL SENDING
                 return newInvite;
             });
+
+            // SEND OUT AN EMAIL
+            // The email account used to invite other users has to be given in the .env file
+            if (process.env.MAIL_NAME && process.env.MAIL_PASSWORD) {
+                //Send an email to the invited person
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: process.env.MAIL_NAME,
+                        pass: process.env.MAIL_PASSWORD,
+                    },
+                });
+
+                var mailOptions = {
+                    from: process.env.MAIL_NAME,
+                    to: invite.invitedEmail,
+                    subject: 'Invite for Planbook',
+                    text:
+                        'Greetings from Planbook. You just have been invited by ' +
+                        self.req.user.firstName +
+                        ' ' +
+                        self.req.user.lastName +
+                        ' to join their household\nFor that you need to just register with this inviteCode ' +
+                        invite.link +
+                        ' on the website',
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                    }
+                });
+            }
+            // END EMAIL SENDING
         } catch (err) {
             error = err;
         }
@@ -155,6 +172,7 @@ class ApiInvitesController extends Controller {
         }
     }
 
+    //TODO this needs fixing
     //This route "uses" an invite link and sets the householdId of the user to the one which send the link
     async actionUpdate() {
         const self = this;
@@ -249,6 +267,51 @@ class ApiInvitesController extends Controller {
                 },
                 {
                     statusCode: 202,
+                }
+            );
+        }
+    }
+
+    async actionDelete() {
+        const self = this;
+
+        let invite = null;
+        let error = null;
+        // delete the category
+        try {
+            if (!self.param('id')) {
+                throw new ApiError('No id given', 400);
+            }
+
+            invite = await self.db.sequelize.transaction(async (t) => {
+                invite = await self.db.Invite.destroy(
+                    {
+                        where: {
+                            householdId: self.param('hid'),
+                            id: self.param('id'),
+                        },
+                    },
+                    { transaction: t, lock: true }
+                );
+
+                return invite;
+            });
+            // if no category was found with this id throw an error
+            if (!invite) {
+                throw new ApiError('Found no invite for given id', 404);
+            }
+        } catch (err) {
+            error = err;
+        }
+
+        // render either the error or 204 No-Content
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {},
+                {
+                    statusCode: 204,
                 }
             );
         }

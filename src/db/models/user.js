@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         User.belongsToMany(models.Household, {
             through: 'householdUser',
         });
+        User.hasMany(models.Invite, {
+            as: 'invites',
+            foreignKey: 'id',
+        });
     };
     return User;
 };

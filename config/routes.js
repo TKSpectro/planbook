@@ -46,8 +46,9 @@ let routes = {
         controller: ApiInvitesController,
         actions: [
             { path: '/api/invites', action: 'getAll', method: 'GET' },
-            { path: '/api/invites/:email', action: 'create', method: 'POST' },
-            { path: '/api/invites/:link', action: 'update', method: 'PUT' },
+            { path: '/api/invites', action: 'create', method: 'POST' },
+            { path: '/api/invites', action: 'update', method: 'PUT' },
+            { path: '/api/invites', action: 'delete', method: 'DELETE' },
         ],
     },
     'api/categories': {

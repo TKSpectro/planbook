@@ -121,34 +121,7 @@ function refreshChart(payments) {
         options: options,
     });
 
-    refreshTable(tableData);
-}
-
-function refreshTable(tableData) {
-    const table = document.getElementById('paymentsTable');
-
-    // Just remove the tbody if there actually is one
-    if (table.getElementsByTagName('tbody')[0]) {
-        table.removeChild(table.getElementsByTagName('tbody')[0]);
-    }
-
-    // Create a new tableBody
-    const tableBody = document.createElement('tbody');
-
-    // Fill in the data from parameter
-    tableData.forEach(function (rowData) {
-        const row = document.createElement('tr');
-
-        rowData.forEach(function (cellData) {
-            const cell = document.createElement('td');
-            cell.appendChild(document.createTextNode(cellData));
-            row.appendChild(cell);
-        });
-
-        tableBody.appendChild(row);
-    });
-
-    table.appendChild(tableBody);
+    refreshTable('paymentsTable', tableData);
 }
 
 // Call the method when loading the page

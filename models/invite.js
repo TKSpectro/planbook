@@ -3,7 +3,11 @@ module.exports = function (Model, db) {
         {
             model: db.User,
             as: 'sender',
-            attributes: ['id', 'firstName', 'lastName'],
+            attributes: ['id', 'firstName', 'lastName', 'email'],
+        },
+        {
+            model: db.Household,
+            as: 'household',
         },
     ];
 
@@ -26,6 +30,9 @@ module.exports = function (Model, db) {
         }
         if (typeof data.link !== 'undefined') {
             self.link = data.link;
+        }
+        if (typeof data.senderId !== 'undefined') {
+            self.senderId = data.senderId;
         }
         if (typeof data.householdId !== 'undefined') {
             self.householdId = data.householdId;
