@@ -1,17 +1,12 @@
 // define our constants
-const SocketHandler = require('./core/socket.js');
 const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
-const io = require('socket.io')();
 const bodyParser = require('body-parser');
 const database = require('./core/database.js')();
 const favicon = require('serve-favicon');
 const cron = require('node-cron');
-
-//Attach socket.io
-io.attach(server);
 
 //Write global configuration
 global.cfg = require('./config/config.js');
@@ -23,9 +18,6 @@ app.use(bodyParser.json());
 app.use('/assets', express.static(__dirname + '/assets'));
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use('/apidoc', express.static(__dirname + '/docs'));
-
-const socket = new SocketHandler(io, database);
-app.ioHandler = socket;
 
 //Set our custom router
 const routes = require('./config/routes.js');
