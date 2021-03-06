@@ -3,6 +3,8 @@
         >Go Back</a
     >
 
+    <%-include('../modals/addRecurringPaymentModal.html.ejs');-%>
+
     <div class="pt-4">
         <label>All recurring payments</label>
         <table
@@ -19,28 +21,6 @@
                     <th scope="col">Value</th>
                 </tr>
             </thead>
-            <tbody>
-                <% for (let i = 0; i < recurringPayments.length; i++) { ;%>
-                <tr>
-                    <th scope="row"><%=i+1%></th>
-                    <td><%=recurringPayments[i].purpose%></td>
-                    <td><%=recurringPayments[i].startDate.toDateString()%></td>
-                    <td>
-                        <% if(recurringPayments[i].endDate) { %>
-                        <%=recurringPayments[i].endDate.toDateString() %> <%}%>
-                    </td>
-                    <td><%=recurringPayments[i].interval%></td>
-                    <td>
-                        <%if(recurringPayments[i].value > 0){ %>+<% }
-                        %><%=recurringPayments[i].value%>€
-                    </td>
-                    <td class="d-none">
-                        <%=recurringPayments[i].category.name%>
-                    </td>
-                    <td class="d-none"><%=recurringPayments[i].id%></td>
-                </tr>
-                <% } ;%>
-            </tbody>
         </table>
     </div>
 </div>

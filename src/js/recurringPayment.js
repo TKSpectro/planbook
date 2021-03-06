@@ -1,79 +1,153 @@
 const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
-const url =
-    '/api/recurringPayments/?hid=' +
-    householdId +
-    '&id=' +
-    document.querySelector('#paymentId').value;
+function refreshPage() {
+    refreshRecurringPaymentsTable();
+}
+
+function refreshRecurringPaymentsTable() {
+    const householdId = new URLSearchParams(window.location.search).get('hid');
+
+    const url = '/api/recurringPayments?hid=' + householdId;
+
+    fetch(url)
+        .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+                return response.json();
+            }
+        })
+        .then((data) => {
+            if (data.recurringPayments.length === 0) {
+                // TODO Alert user
+                refreshTable('recurringPaymentsTable');
+                return;
+            } else {
+                // TODO Refresh Table
+                let tableData = [];
+                let i = 1;
+                data.recurringPayments.forEach((recurringPayment) => {
+                    tableData.push([
+                        i,
+                        recurringPayment.purpose,
+                        new Date(recurringPayment.startDate).toDateString(),
+                        recurringPayment.endDate
+                            ? new Date(recurringPayment.endDate).toDateString()
+                            : '',
+                        recurringPayment.interval,
+                        recurringPayment.value > 0
+                            ? '+' + recurringPayment.value + '€'
+                            : recurringPayment.value + '€',
+                        'hidden/' + recurringPayment.category.name,
+                        'hidden/' + recurringPayment.id,
+                    ]);
+                    i++;
+                });
+                refreshTable('recurringPaymentsTable', tableData);
+            }
+
+            // Setup clickListener for removing
+            document
+                .querySelectorAll('#recurringPaymentsTable tbody tr')
+                .forEach((e) => {
+                    e.addEventListener('click', clickHandler);
+                });
+        });
+}
 
 function clickHandler() {
     // Set the id in a hidden input field
-    document.querySelector('#paymentId').value = this.children[7].innerHTML;
+    document.querySelector('#editPaymentId').value = this.children[7].innerHTML;
 
     // Set the purpose
-    document.querySelector('#purposeInput').value = this.children[1].innerHTML;
+    document.querySelector(
+        '#editPurposeInput'
+    ).value = this.children[1].innerHTML;
 
     // Set the category -> need to remove \n and remove whitespaces
     document.querySelector(
-        '#categorySelect'
+        '#editCategorySelect'
     ).value = this.children[6].innerText.replace('\n', '').trim();
 
     // Set the value -> need to remove the '€' from the string
     document.querySelector(
-        '#valueInput'
-    ).value = this.children[5].innerText.replace('€', '');
+        '#editValueInput'
+    ).value = this.children[5].innerText.replace('€', '').replace('+', '');
 
     // Set the start and end dates -> use the HTMLDateToJSDate function
-    document.querySelector('#startDateInput').value = convertHTMLDateToJSDate(
-        this.children[2].innerText
-    );
-    document.querySelector('#endDateInput').value = convertHTMLDateToJSDate(
+    document.querySelector(
+        '#editStartDateInput'
+    ).value = convertHTMLDateToJSDate(this.children[2].innerText);
+    document.querySelector('#editEndDateInput').value = convertHTMLDateToJSDate(
         this.children[3].innerText
     );
 
     // Set the interval
     document.querySelector(
-        '#intervalSelect'
+        '#editIntervalSelect'
     ).value = this.children[4].innerText;
 
     // Show the edit modal
     $('#editRecurringPaymentModal').modal();
 }
 
-function saveRecurringPayment() {
-    const sel = document.querySelector('#categorySelect');
+function saveRecurringPayment(event, form = '') {
+    event.preventDefault();
+
+    let url;
+    let method;
+    if (form === 'edit') {
+        url =
+            '/api/recurringPayments/?hid=' +
+            householdId +
+            '&id=' +
+            document.querySelector('#' + form + 'PaymentId').value;
+        method = 'PUT';
+    } else {
+        url = '/api/recurringPayments/?hid=' + householdId;
+        method = 'POST';
+    }
+
+    const sel = document.querySelector('#' + form + 'CategorySelect');
     const categoryId = sel.options[sel.selectedIndex]
         .getAttribute('data-tokens')
         .split('/')[1];
 
     const data = {
         recurringPayment: {
-            purpose: document.querySelector('#purposeInput').value,
-            value: document.querySelector('#valueInput').value,
+            purpose: document.querySelector('#' + form + 'PurposeInput').value,
+            value: document.querySelector('#' + form + 'ValueInput').value,
             categoryId: categoryId,
-            startDate: document.querySelector('#startDateInput').value,
-            endDate: document.querySelector('#endDateInput').value,
-            interval: document.querySelector('#intervalSelect').value,
+            startDate: document.querySelector('#' + form + 'StartDateInput')
+                .value,
+            endDate: document.querySelector('#' + form + 'EndDateInput').value,
+            interval: document.querySelector('#' + form + 'IntervalSelect')
+                .value,
         },
     };
 
-    putRecurringPayment(url, data).then((data) => {
-        // TODO refresh page or update data by hand and maybe show feedback
+    putRecurringPayment(url, data, method).then((data) => {
+        $('#addRecurringPaymentModal').modal('hide');
+        $('#editRecurringPaymentModal').modal('hide');
+        refreshPage();
     });
-
-    $('#editRecurringPaymentModal').hide();
 }
 
 function removeRecurringPayment() {
+    const url =
+        '/api/recurringPayments/?hid=' +
+        householdId +
+        '&id=' +
+        document.querySelector('#editPaymentId').value;
+
     deleteRecurringPayment(url).then((res) => {
-        // TODO refresh page or update data by hand and maybe show feedback
+        // TODO give user feedback
+        refreshPage();
     });
 }
 
-async function putRecurringPayment(url = '', data = {}) {
+async function putRecurringPayment(url = '', data = {}, method = '') {
     const response = await fetch(url, {
-        method: 'PUT',
+        method: method,
         headers: {
             'Content-Type': 'application/json',
         },
@@ -106,6 +180,4 @@ function convertHTMLDateToJSDate(htmlDate) {
     );
 }
 
-document.querySelectorAll('#recurringPaymentsTable tbody tr').forEach((e) => {
-    e.addEventListener('click', clickHandler);
-});
+refreshPage();

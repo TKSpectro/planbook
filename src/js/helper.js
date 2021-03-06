@@ -20,7 +20,7 @@ function refreshTable(tableIdString = '', tableData = []) {
 
         rowData.forEach(function (cellData) {
             // There is a possibility to put hidden elements
-            if (cellData.toString().indexOf('hidden/') != -1) {
+            if (cellData && cellData.toString().indexOf('hidden/') != -1) {
                 const cell = document.createElement('td');
                 cell.classList.add('d-none');
                 cell.appendChild(
