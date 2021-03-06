@@ -7,29 +7,8 @@
                 <th scope="col">First name</th>
                 <th scope="col">Last name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Actions</th>
             </tr>
         </thead>
-        <tbody>
-            <% for (let i = 0; i < members.length; i++) { ;%>
-            <tr>
-                <th class="align-middle" scope="row"><%=i+1%></th>
-                <td class="align-middle"><%=members[i].firstName%></td>
-                <td class="align-middle"><%=members[i].lastName%></td>
-                <td class="align-middle"><%=members[i].email%></td>
-                <td class="d-none"><%=members[i].id%></td>
-                <td>
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        onclick="removeMemberClicked('<%=members[i].id%>')"
-                    >
-                        Remove
-                    </button>
-                </td>
-            </tr>
-            <% }; %>
-        </tbody>
     </table>
 
     <div class="pt-4"><%-include('../modals/addInviteModal.html.ejs');-%></div>

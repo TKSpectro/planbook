@@ -3,7 +3,7 @@ const householdId = urlParams.get('hid');
 
 function refreshPage() {
     refreshPendingInvitesTable();
-    //TODO refreshMembersTable();
+    refreshMembersTable();
 }
 
 function removeMemberClicked(id) {
@@ -20,7 +20,8 @@ function removeMember() {
         document.querySelector('#chosenMemberId').value;
 
     deleteMember(url).then((response) => {
-        // TODO refresh page or update data by hand and maybe show feedback
+        // TODO give feedback to user
+        refreshMembersTable();
     });
 
     $('#removeMemberModal').hide();
@@ -39,7 +40,7 @@ function saveInvite(event) {
     };
 
     postInvite(url, data).then((response) => {
-        //TODO user feedback
+        //TODO give feedback to user
         refreshPendingInvitesTable();
     });
 
@@ -51,13 +52,12 @@ function removeInvite() {
     const id = document.getElementById('chosenInviteId').value;
     const url = '/api/invites?hid=' + householdId + '&id=' + id;
     deleteInvite(url).then((response) => {
-        //TODO user feedback
+        //TODO give feedback to user
         refreshPendingInvitesTable();
     });
 }
 
 function refreshMembersTable() {
-    //TODO needs fixing
     const url = '/api/householdsUsers?hid=' + householdId;
     fetch(url)
         .then((response) => {
@@ -66,25 +66,30 @@ function refreshMembersTable() {
             }
         })
         .then((data) => {
-            if (data.members.length === 0) {
-                // TODO Alert user
+            if (data.households.length === 0) {
+                // TODO alert user -> no households found
                 refreshTable('membersTable');
                 return;
             } else {
                 let tableData = [];
                 let i = 1;
-                data.members.forEach((invite) => {
+                data.households.forEach((household) => {
                     tableData.push([
                         i,
-                        member.firstName,
-                        member.lastName,
-                        member.email,
-                        'hidden/' + member.id,
+                        household.user.firstName,
+                        household.user.lastName,
+                        household.user.email,
+                        'hidden/' + household.user.id,
                     ]);
                     i++;
                 });
                 refreshTable('membersTable', tableData);
             }
+
+            // Setup clickListener for removing
+            document.querySelectorAll('#membersTable tbody tr').forEach((e) => {
+                e.addEventListener('click', clickRemoveMemberHandler);
+            });
         });
 }
 
@@ -98,7 +103,7 @@ function refreshPendingInvitesTable() {
         })
         .then((data) => {
             if (data.invites.length === 0) {
-                // TODO Alert user
+                // TODO alert user -> no invites found
                 refreshTable('pendingInvitesTable');
                 return;
             } else {
@@ -165,6 +170,16 @@ function clickRemoveInviteHandler() {
 
     // Show the edit modal
     $('#removeInviteModal').modal();
+}
+
+function clickRemoveMemberHandler() {
+    // Set the id in a hidden input field
+    document.querySelector(
+        '#chosenMemberId'
+    ).value = this.children[4].innerHTML;
+
+    // Show the edit modal
+    $('#removeMemberModal').modal();
 }
 
 refreshPage();
