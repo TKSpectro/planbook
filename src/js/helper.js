@@ -1,7 +1,7 @@
 function showAlert(message = '', alertType = '') {
     const alertPlaceholder = document.getElementById('alertPlaceholder');
 
-    alertPlaceholder.innerHTML =
+    alertPlaceholder.innerHTML +=
         '<div class="alert alert-' +
         alertType +
         ' alert-dismissible fade show" role="alert">' +

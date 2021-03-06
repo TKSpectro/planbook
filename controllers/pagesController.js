@@ -102,6 +102,7 @@ class PagesController extends Controller {
 
     async actionDashboard() {
         const self = this;
+        self.js('helper');
 
         // Choose between dashboardChooser and dashboardView for one household
         // based on the set hid - householdId parameter
@@ -129,7 +130,6 @@ class PagesController extends Controller {
         } else {
             self.css('custom');
             self.js('Chart');
-            self.js('helper');
             self.js('dashboard');
 
             const householdId = self.param('hid');

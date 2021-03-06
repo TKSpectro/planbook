@@ -20,7 +20,7 @@ function removeMember() {
         document.querySelector('#chosenMemberId').value;
 
     deleteMember(url).then((response) => {
-        // TODO give feedback to user
+        showAlert('The member was deleted!', 'success');
         refreshMembersTable();
     });
 
@@ -40,7 +40,7 @@ function saveInvite(event) {
     };
 
     postInvite(url, data).then((response) => {
-        //TODO give feedback to user
+        showAlert('The invite was created!', 'success');
         refreshPendingInvitesTable();
     });
 
@@ -52,7 +52,7 @@ function removeInvite() {
     const id = document.getElementById('chosenInviteId').value;
     const url = '/api/invites?hid=' + householdId + '&id=' + id;
     deleteInvite(url).then((response) => {
-        //TODO give feedback to user
+        showAlert('The invite was removed!', 'success');
         refreshPendingInvitesTable();
     });
 }
@@ -67,7 +67,7 @@ function refreshMembersTable() {
         })
         .then((data) => {
             if (data.households.length === 0) {
-                // TODO alert user -> no households found
+                showAlert('Found no households!', 'warning');
                 refreshTable('membersTable');
                 return;
             } else {
@@ -103,7 +103,7 @@ function refreshPendingInvitesTable() {
         })
         .then((data) => {
             if (data.invites.length === 0) {
-                // TODO alert user -> no invites found
+                showAlert('Found no invites!', 'warning');
                 refreshTable('pendingInvitesTable');
                 return;
             } else {

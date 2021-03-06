@@ -16,7 +16,10 @@ function createHousehold(event) {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
-                //TODO alert user
+                showAlert(
+                    'Could not create a household. Please contact the support',
+                    'warning'
+                );
                 return;
             }
         })
@@ -32,7 +35,10 @@ function createHousehold(event) {
                     if (response.status >= 200 && response.status < 400) {
                         return response.json();
                     } else {
-                        //TODO alert user
+                        showAlert(
+                            'Could not create a household. Please contact the support',
+                            'warning'
+                        );
                         return;
                     }
                 })

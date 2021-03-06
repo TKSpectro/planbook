@@ -16,7 +16,7 @@ function savePayment() {
     const url = '/api/payments/?hid=' + householdId;
     // Send the payment to the api
     postPayment(url, data).then((data) => {
-        // TODO refresh page or update data by hand and maybe show feedback
+        showAlert('The payment was created!', 'success');
         refreshPage();
     });
 }
