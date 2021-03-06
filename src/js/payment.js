@@ -104,7 +104,7 @@ function refreshChart(payments) {
         tableData.push([
             i,
             payment.purpose,
-            payment.name,
+            payment.category.name,
             recurringPaymentString,
             paymentValueString,
         ]);
