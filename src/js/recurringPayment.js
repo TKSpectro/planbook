@@ -2,10 +2,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 function refreshPage() {
-    refreshRecurringPaymentsTable();
-}
-
-function refreshRecurringPaymentsTable() {
     const householdId = new URLSearchParams(window.location.search).get('hid');
 
     const url = '/api/recurringPayments?hid=' + householdId;
@@ -17,40 +13,83 @@ function refreshRecurringPaymentsTable() {
             }
         })
         .then((data) => {
-            if (data.recurringPayments.length === 0) {
-                // TODO Alert user
-                refreshTable('recurringPaymentsTable');
-                return;
-            } else {
-                // TODO Refresh Table
-                let tableData = [];
-                let i = 1;
-                data.recurringPayments.forEach((recurringPayment) => {
-                    tableData.push([
-                        i,
-                        recurringPayment.purpose,
-                        new Date(recurringPayment.startDate).toDateString(),
-                        recurringPayment.endDate
-                            ? new Date(recurringPayment.endDate).toDateString()
-                            : '',
-                        recurringPayment.interval,
-                        recurringPayment.value > 0
-                            ? '+' + recurringPayment.value + '€'
-                            : recurringPayment.value + '€',
-                        'hidden/' + recurringPayment.category.name,
-                        'hidden/' + recurringPayment.id,
-                    ]);
-                    i++;
-                });
-                refreshTable('recurringPaymentsTable', tableData);
-            }
+            refreshCalculations(data);
+            refreshRecurringPaymentsTable(data);
+        });
+}
 
-            // Setup clickListener for removing
-            document
-                .querySelectorAll('#recurringPaymentsTable tbody tr')
-                .forEach((e) => {
-                    e.addEventListener('click', clickHandler);
-                });
+function refreshCalculations(data) {
+    if (data.recurringPayments.length === 0) {
+        refreshTable('calculatedTable');
+        return;
+    } else {
+        let tableData = [];
+        let daily = 0,
+            weekly = 0,
+            monthly = 0,
+            quarterly = 0,
+            yearly = 0;
+        data.recurringPayments.forEach((recurringPayment) => {
+            if (recurringPayment.interval === 'daily') {
+                daily += recurringPayment.value;
+            }
+            if (recurringPayment.interval === 'weekly') {
+                weekly += recurringPayment.value;
+            }
+            if (recurringPayment.interval === 'monthly') {
+                monthly += recurringPayment.value;
+            }
+            if (recurringPayment.interval === 'quarterly') {
+                quarterly += recurringPayment.value;
+            }
+            if (recurringPayment.interval === 'yearly') {
+                yearly += recurringPayment.value;
+            }
+        });
+        weekly += daily * 7;
+        monthly += weekly * 30;
+        quarterly += monthly * 3;
+        yearly += quarterly * 4;
+        tableData.push([daily, weekly, monthly, quarterly, yearly]);
+
+        refreshTable('calculatedTable', tableData);
+    }
+}
+
+function refreshRecurringPaymentsTable(data) {
+    if (data.recurringPayments.length === 0) {
+        // TODO Alert user
+        refreshTable('recurringPaymentsTable');
+        return;
+    } else {
+        // TODO Refresh Table
+        let tableData = [];
+        let i = 1;
+        data.recurringPayments.forEach((recurringPayment) => {
+            tableData.push([
+                i,
+                recurringPayment.purpose,
+                new Date(recurringPayment.startDate).toDateString(),
+                recurringPayment.endDate
+                    ? new Date(recurringPayment.endDate).toDateString()
+                    : '',
+                recurringPayment.interval,
+                recurringPayment.value > 0
+                    ? '+' + recurringPayment.value + '€'
+                    : recurringPayment.value + '€',
+                'hidden/' + recurringPayment.category.name,
+                'hidden/' + recurringPayment.id,
+            ]);
+            i++;
+        });
+        refreshTable('recurringPaymentsTable', tableData);
+    }
+
+    // Setup clickListener for removing
+    document
+        .querySelectorAll('#recurringPaymentsTable tbody tr')
+        .forEach((e) => {
+            e.addEventListener('click', clickHandler);
         });
 }
 
