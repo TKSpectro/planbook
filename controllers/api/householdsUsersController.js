@@ -9,7 +9,7 @@ class ApiHouseholdsUsersController extends Controller {
         self.format = Controller.HTTP_FORMAT_JSON;
 
         // users have to signed in else they get a 401 Unauthorized response
-        self.before(['*', '-getAll'], async function (next) {
+        self.before(['*', '-getAll', '-create'], async function (next) {
             const householdId = self.param('hid');
             let householdUser;
             if (householdId) {
@@ -33,7 +33,7 @@ class ApiHouseholdsUsersController extends Controller {
             }
         });
 
-        self.before(['getAll'], async function (next) {
+        self.before(['getAll', 'create'], async function (next) {
             if (self.req.authorized === true) {
                 next();
             } else {
@@ -86,6 +86,44 @@ class ApiHouseholdsUsersController extends Controller {
                 },
                 {
                     statusCode: 200,
+                }
+            );
+        }
+    }
+
+    async actionCreate() {
+        const self = this;
+
+        let remoteData = self.param('householdUser') || {};
+        let householdUser;
+        let error;
+
+        try {
+            householdUser = await self.db.sequelize.transaction(async (t) => {
+                let newHouseholdUser = self.db.HouseholdUser.build();
+                // create the household
+                newHouseholdUser.writeRemotes(remoteData);
+                await newHouseholdUser.save({
+                    transaction: t,
+                    lock: true,
+                });
+
+                return newHouseholdUser;
+            });
+        } catch (err) {
+            error = err;
+        }
+
+        // render either the error or the created household
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {
+                    householdUser: householdUser,
+                },
+                {
+                    statusCode: 201,
                 }
             );
         }

@@ -107,22 +107,21 @@ class PagesController extends Controller {
         // based on the set hid - householdId parameter
         if (!self.param('hid')) {
             self.css('custom');
+            self.js('dashboardList');
 
-            const userHouseholds = await self.db.HouseholdUser.findAll({
+            const householdsUsers = await self.db.HouseholdUser.findAll({
+                include: self.db.HouseholdUser.extendInclude,
                 where: {
                     userId: self.req.user.id,
                 },
             });
 
             let households = [];
-            let i = 0;
 
-            for (const userHousehold of userHouseholds) {
-                households[i] = await self.db.Household.findByPk(
-                    userHousehold.householdId
-                );
-                i++;
-            }
+            householdsUsers.forEach((householdUser) => {
+                households.push(householdUser.household);
+            });
+
             self.render({
                 title: 'Dashboard',
                 households: households,

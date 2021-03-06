@@ -102,6 +102,7 @@ class ApiHouseholdsController extends Controller {
             household = await self.db.sequelize.transaction(async (t) => {
                 let newHousehold = self.db.Household.build();
                 // create the household
+                remoteData['ownerId'] = self.req.user.id;
                 newHousehold.writeRemotes(remoteData);
                 await newHousehold.save({
                     transaction: t,
