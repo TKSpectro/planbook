@@ -53,13 +53,21 @@ class ApiHouseholdsUsersController extends Controller {
 
         let error = null;
         let households = [];
-
         try {
+            let where = {};
+            let include;
+            const householdId = self.param('hid');
+            if (householdId) {
+                where['householdId'] = self.param('hid');
+                include = self.db.HouseholdUser.extendInclude;
+            } else {
+                where['userId'] = self.req.user.id;
+                include = self.db.HouseholdUser.extendIncludeHousehold;
+            }
+
             households = await self.db.HouseholdUser.findAll({
-                where: {
-                    userId: self.req.user.id,
-                },
-                include: self.db.HouseholdUser.extendIncludeHousehold,
+                where: where,
+                include: include,
                 attributes: ['userId', 'householdId'],
             });
             if (!households) {
