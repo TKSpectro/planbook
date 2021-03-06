@@ -20,7 +20,10 @@
 
     <body class="bg-dark">
         <%-include('./header.html.ejs');-%>
-        <div class="container pt-4 text-primary"><%-body%></div>
+        <div class="container pt-4 text-primary">
+            <div id="alertPlaceholder"></div>
+            <%-body%>
+        </div>
         <% for (let index = 0; index < self.jsFiles.length; index++) { %>
         <script src="/assets/js/<%=self.jsFiles[index]+(cfg.minify === true ? '.min' : '')%>.js"></script>
         <% } %>

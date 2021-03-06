@@ -1,7 +1,14 @@
-const calcEntries = (entries) => {
-    let result = entries;
-    return result;
-};
+function showAlert(message = '', alertType = '') {
+    const alertPlaceholder = document.getElementById('alertPlaceholder');
+
+    alertPlaceholder.innerHTML =
+        '<div class="alert alert-' +
+        alertType +
+        ' alert-dismissible fade show" role="alert">' +
+        message +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span></button></div>';
+}
 
 function refreshTable(tableIdString = '', tableData = []) {
     const table = document.getElementById(tableIdString);
