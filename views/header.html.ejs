@@ -37,29 +37,7 @@
                             >Dashboard <span class="sr-only">(current)</span></a
                         >
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/todo"
-                            >Todo <span class="sr-only">(current)</span></a
-                        >
-                    </li>
                     <% } %>
-
-                    <!--
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="#">Features</a>
-                <a class="dropdown-item" href="#">Pricing</a>
-                <a class="dropdown-item" href="#">Documentation</a>
-              </div>
-            </li>
-            -->
                 </ul>
 
                 <%if(!self.req.authorized) { %>
@@ -67,7 +45,7 @@
                     <div class="col-sm">
                         <button
                             class="btn btn-sm btn-primary btn-block"
-                            onclick="redirectLogin();"
+                            onclick="window.location.href = '/login';"
                         >
                             Login
                         </button>
@@ -75,7 +53,7 @@
                     <div class="col-sm">
                         <button
                             class="btn btn-sm btn-primary btn-block"
-                            onclick="redirectRegister();"
+                            onclick="window.location.href = '/register';"
                         >
                             Register
                         </button>
@@ -99,32 +77,8 @@
         function logout() {
             document.cookie =
                 'planbook_auth_jwt' +
-                '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax';
-            redirectLogin();
-        }
-
-        function redirectLogin() {
-            const url =
-                window.location.protocol +
-                '//' +
-                window.location.hostname +
-                ':' +
-                window.location.port +
-                '/' +
-                'login';
-            window.location.href = url;
-        }
-
-        function redirectRegister() {
-            const url =
-                window.location.protocol +
-                '//' +
-                window.location.hostname +
-                ':' +
-                window.location.port +
-                '/' +
-                'register';
-            window.location.href = url;
+                '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            window.location.href = '/login';
         }
     </script>
 </header>
