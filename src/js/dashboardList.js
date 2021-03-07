@@ -1,3 +1,32 @@
+function refreshHouseholdList() {
+    getHouseholds()
+        .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+                return response.json();
+            } else {
+                showAlert(
+                    'Could not find any households you are part of. Please create a new one',
+                    'warning'
+                );
+                return;
+            }
+        })
+        .then((data) => {
+            const householdList = document.getElementById('householdList');
+
+            data.households.forEach((household) => {
+                householdList.innerHTML +=
+                    '<a href="/dashboard?hid=' +
+                    household.householdId +
+                    '" class="list-group-item active text-dark">' +
+                    '<div class="d-flex w-100 justify-content-between">' +
+                    '<h5 class="mb-1">' +
+                    household.household.name +
+                    '</h5></div></a>';
+            });
+        });
+}
+
 function createHousehold(event) {
     event.preventDefault();
 
@@ -81,6 +110,16 @@ function useInvite(event) {
     return false;
 }
 
+async function getHouseholds() {
+    const url = '/api/householdsUsers';
+
+    const response = await fetch(url, {
+        method: 'GET',
+    });
+
+    return response;
+}
+
 async function postHousehold(data) {
     const url = '/api/households';
     const response = await fetch(url, {
@@ -119,3 +158,5 @@ async function putInvite(data) {
 
     return response;
 }
+
+refreshHouseholdList();

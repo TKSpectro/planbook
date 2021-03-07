@@ -111,22 +111,9 @@ class PagesController extends Controller {
             self.css('custom');
             self.js('dashboardList');
 
-            const householdsUsers = await self.db.HouseholdUser.findAll({
-                include: self.db.HouseholdUser.extendInclude,
-                where: {
-                    userId: self.req.user.id,
-                },
-            });
-
-            let households = [];
-
-            householdsUsers.forEach((householdUser) => {
-                households.push(householdUser.household);
-            });
-
             self.render({
                 title: 'Dashboard',
-                households: households,
+                isHouseholdChooser: true,
             });
         } else {
             self.css('custom');
@@ -161,6 +148,7 @@ class PagesController extends Controller {
                 members: members,
                 lastPayments: lastPayments,
                 categories: categories,
+                isHouseholdChooser: false,
             });
         }
     }
