@@ -74,7 +74,7 @@ function useInvite(event) {
             }
         })
         .then((data) => {
-            console.log(data);
+            // TODO refresh page data
         });
 
     $('#useInviteModal').modal('hide');

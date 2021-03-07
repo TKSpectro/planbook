@@ -113,8 +113,11 @@ class ApiInvitesController extends Controller {
             remoteData['householdId'] = self.param('hid');
             remoteData['senderId'] = self.req.user.id;
 
-            // Set valid until either from param or set it to 1 day
-            remoteData['validUntil'] = new Date() + 1000 * 60 * 60 * 7;
+            // Set valid until either from param or set it to 1 week
+            let validUntil = new Date();
+            validUntil.setDate(validUntil.getDate() + 7);
+
+            remoteData['validUntil'] = validUntil;
             remoteData['wasUsed'] = false;
 
             // Set the link to a random generated one
