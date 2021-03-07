@@ -1,41 +1,43 @@
-function signupPressed(elm) {
-    var form = document.getElementById('signup-form');
+function registerPressed(event) {
+    event.preventDefault();
 
-    var xhr = new XMLHttpRequest();
-    var start = new Date();
-
-    // handle request finished
-    xhr.onload = function () {
-        var end = new Date();
-        var duration = 820 - (end.getTime() - start.getTime());
-        duration = duration < 0 ? 0 : duration;
-
-        setTimeout(function () {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                setTimeout(function () {
-                    window.location = '/dashboard';
-                }, 300);
-            } else {
-                console.log('request failed');
-                elm.className = 'error';
-            }
-        }, duration);
+    let data = {
+        user: {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+        },
     };
 
-    xhr.open(
-        form.getAttribute('method') || 'POST',
-        form.getAttribute('action')
-    );
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(
-        JSON.stringify({
-            user: {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                link: document.getElementById('link').value,
-            },
-        })
-    );
+    if (document.getElementById('link').value) {
+        data.user['link'] = document.getElementById('link').value;
+    }
+
+    postRegister(data).then((response) => {
+        if (response.user) {
+            window.location.href = '/dashboard';
+            return;
+        } else {
+            showAlert(
+                'Register was not possible. Please contact our support',
+                'warning'
+            );
+            return;
+        }
+    });
+    return false;
+}
+
+async function postRegister(data = {}) {
+    const url = '/api/signup';
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    return response.json();
 }

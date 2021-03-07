@@ -1,11 +1,6 @@
-<div class="text-center">
-    <h1 class="h3 mb-3 font-weight-normal text-primary">Please sign up</h1>
-    <form
-        class="form-signup"
-        id="signup-form"
-        action="<%=self.urlFor('api/users', 'signup', null, 'POST')%>"
-        method="POST"
-    >
+<div class="text-center container" style="max-width: 30%">
+    <h1 class="h3 mb-3 font-weight-normal text-primary">Register</h1>
+    <form id="signupForm" onsubmit="return registerPressed(event)">
         <label for="firstName" class="sr-only">First name</label>
         <input
             type="text"
@@ -24,12 +19,12 @@
             required
         />
 
-        <label for="email" class="sr-only">Email address</label>
+        <label for="email" class="sr-only">email</label>
         <input
             type="email"
             id="email"
             class="form-control"
-            placeholder="E-Mail address"
+            placeholder="Email"
             required
             autofocus
         />
@@ -47,15 +42,11 @@
         <input
             type="text"
             id="link"
-            class="form-control"
+            class="form-control mt-4"
             placeholder="optional invite link"
-            required
         />
-        <br />
-        <button
-            class="btn btn-lg btn-primary btn-block"
-            onclick="signupPressed(this); return false;"
-        >
+
+        <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">
             Sign Up
         </button>
     </form>

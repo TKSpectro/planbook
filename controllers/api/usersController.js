@@ -300,6 +300,7 @@ class ApiUsersController extends Controller {
         }
     }
 
+    // TODO stop using invite token here
     async actionSignup() {
         const self = this;
 

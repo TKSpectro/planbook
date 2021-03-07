@@ -1,17 +1,12 @@
-<div class="text-center">
-    <h1 class="h3 mb-3 font-weight-normal text-primary">Please sign in</h1>
-    <form
-        class="form-signin"
-        id="signin-form"
-        action="<%=self.urlFor('api/users', 'signin', null, 'POST')%>"
-        method="POST"
-    >
-        <label for="email" class="sr-only">Email address</label>
+<div class="text-center container" style="max-width: 30%">
+    <h1 class="h3 mb-3 font-weight-normal text-primary">Login</h1>
+    <form id="signinForm" onsubmit="return loginPressed(event)">
+        <label for="email" class="sr-only">Email</label>
         <input
             type="email"
             id="email"
             class="form-control"
-            placeholder="E-Mail address"
+            placeholder="Email"
             required
             autofocus
         />
@@ -25,10 +20,7 @@
             required
         />
 
-        <button
-            class="btn btn-lg btn-primary btn-block"
-            onclick="signinPressed(this); return false;"
-        >
+        <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">
             Sign In
         </button>
     </form>

@@ -81,8 +81,8 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
-        self.css('signin');
         self.js('signin');
+        self.js('helper');
 
         self.render({
             title: 'Login',
@@ -93,8 +93,8 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
-        self.css('signup');
         self.js('signup');
+        self.js('helper');
 
         self.render({
             title: 'Register',
