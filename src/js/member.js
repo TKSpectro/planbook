@@ -19,10 +19,18 @@ function removeMember() {
         '&id=' +
         document.querySelector('#chosenMemberId').value;
 
-    deleteMember(url).then((response) => {
-        showAlert('The member was deleted!', 'success');
-        refreshMembersTable();
-    });
+    if (
+        document.getElementById('chosenMemberId').value ===
+        document.getElementById('userId').value
+    ) {
+        // TODO implement a way to remove yourself from a household
+        showAlert('You cant remove yourself', 'warning');
+    } else {
+        deleteMember(url).then((response) => {
+            showAlert('The member was deleted!', 'success');
+            refreshMembersTable();
+        });
+    }
 
     $('#removeMemberModal').hide();
 }
