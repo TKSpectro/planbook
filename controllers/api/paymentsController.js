@@ -67,10 +67,16 @@ class ApiPaymentsController extends Controller {
                 };
             }
 
+            let limit;
+            if (self.param('limit')) {
+                limit = Number(self.param('limit'));
+            }
+
             payments = await self.db.Payment.findAll({
                 include: self.db.Payment.extendInclude,
                 where: where,
                 order: [['createdAt', 'DESC']],
+                limit: limit,
             });
 
             if (!payments) {
