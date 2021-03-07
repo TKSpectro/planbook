@@ -26,12 +26,13 @@ class PagesController extends Controller {
                             householdId: self.param('hid'),
                         },
                     });
-                    let isInHousehold;
-                    for (let user of householdUsers) {
-                        if (self.req.user.id == user.id) {
+
+                    let isInHousehold = false;
+                    householdUsers.forEach((householdUser) => {
+                        if (self.req.user.id == householdUser.userId) {
                             isInHousehold = true;
                         }
-                    }
+                    });
                     if (isInHousehold) {
                         next();
                     } else {
