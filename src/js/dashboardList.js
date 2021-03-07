@@ -54,6 +54,33 @@ function createHousehold(event) {
     return false;
 }
 
+function useInvite(event) {
+    event.preventDefault();
+    const usedInviteLink = document.getElementById('inviteLinkInput').value;
+
+    const data = {
+        invite: {
+            link: usedInviteLink,
+        },
+    };
+
+    putInvite(data)
+        .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+                return response.json();
+            } else {
+                showAlert('Invite link was not valid', 'warning');
+                return;
+            }
+        })
+        .then((data) => {
+            console.log(data);
+        });
+
+    $('#useInviteModal').modal('hide');
+    return false;
+}
+
 async function postHousehold(data) {
     const url = '/api/households';
     const response = await fetch(url, {
@@ -71,6 +98,19 @@ async function postHouseholdUser(data) {
     const url = '/api/householdsUsers';
     const response = await fetch(url, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    return response;
+}
+
+async function putInvite(data) {
+    const url = '/api/invites';
+    const response = await fetch(url, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },

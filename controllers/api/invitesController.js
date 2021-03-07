@@ -13,7 +13,7 @@ class ApiInvitesController extends Controller {
 
         self.format = Controller.HTTP_FORMAT_JSON;
 
-        self.before(['*'], async function (next) {
+        self.before(['*', '-update'], async function (next) {
             if (self.req.authorized !== true) {
                 self.render(
                     {},
@@ -35,6 +35,19 @@ class ApiInvitesController extends Controller {
             }
 
             if (householdUser) {
+                next();
+            } else {
+                self.render(
+                    {},
+                    {
+                        statusCode: 401,
+                    }
+                );
+            }
+        });
+
+        self.before(['update'], async function (next) {
+            if (self.req.authorized === true) {
                 next();
             } else {
                 self.render(
@@ -176,21 +189,24 @@ class ApiInvitesController extends Controller {
         }
     }
 
-    //TODO this needs fixing
+    // TODO maybe delete the invite instead of just setting wasUsed?
     //This route "uses" an invite link and sets the householdId of the user to the one which send the link
     async actionUpdate() {
         const self = this;
 
-        let link = self.param('link');
-        if (!link) {
-            throw new ApiError('no invite found with this token', 400);
-        }
-
         let invite = null;
         let error = null;
 
-        //get the old todo
         try {
+            if (!self.param('invite')) {
+                throw new ApiError('no invite in body found', 400);
+            }
+            if (!self.param('invite').link) {
+                throw new ApiError('no link in body found', 400);
+            }
+
+            let link = self.param('invite').link;
+
             invite = await self.db.sequelize.transaction(async (t) => {
                 let updateInvite = await self.db.Invite.findOne(
                     {
@@ -255,7 +271,7 @@ class ApiInvitesController extends Controller {
                             404
                         );
                     }
-                    return sender.householdId;
+                    return newHouseholdUser.householdId;
                 }
             );
         } catch (err) {

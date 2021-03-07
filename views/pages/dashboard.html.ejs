@@ -1,9 +1,12 @@
 <% if(typeof households !== 'undefined'){ %>
 
 <div class="container" style="width: 60%">
-    <%-include('../modals/addHouseholdModal.html.ejs');-%>
+    <div>
+        <%-include('../modals/addHouseholdModal.html.ejs');-%>
+        <%-include('../modals/useInviteModal.html.ejs');-%>
+    </div>
 
-    <div class="list-group">
+    <div class="list-group pt-4">
         <% for (let i = 0; i < households.length; i++) { ;%>
         <a
             href="/dashboard?hid=<%=households[i].id%>"
