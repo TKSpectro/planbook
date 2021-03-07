@@ -43,8 +43,9 @@ function createHousehold(event) {
                     }
                 })
                 .then((data) => {
+                    window.location.href =
+                        '/dashboard?hid=' + data.householdUser.householdId;
                     return;
-                    //TODO redirect to the new household
                 });
             return;
         });
