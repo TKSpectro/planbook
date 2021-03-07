@@ -145,8 +145,6 @@ class PagesController extends Controller {
             self.render({
                 title: 'Dashboard ' + household.name,
                 household: household,
-                members: members,
-                lastPayments: lastPayments,
                 categories: categories,
                 isHouseholdChooser: false,
             });

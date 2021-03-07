@@ -37,7 +37,10 @@
     </div>
     <div class="pt-4">
         <label>Last payments</label>
-        <table class="table table-hover table-dark bg-dark">
+        <table
+            id="lastPaymentsTable"
+            class="table table-hover table-dark bg-dark"
+        >
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -45,18 +48,6 @@
                     <th scope="col">Value</th>
                 </tr>
             </thead>
-            <tbody>
-                <% for (let i = 0; i < lastPayments.length; i++) { ;%>
-                <tr>
-                    <th scope="row"><%=lastPayments[i].id%></th>
-                    <td><%=lastPayments[i].purpose%></td>
-                    <td>
-                        <%if(lastPayments[i].value > 0){ %>+<% }
-                        %><%=lastPayments[i].value%>€
-                    </td>
-                </tr>
-                <% }; %>
-            </tbody>
         </table>
     </div>
 </div>
