@@ -8,6 +8,7 @@ const ApiRecurringPaymentsController = require('../controllers/api/recurringPaym
 const ApiTodosController = require('../controllers/api/todosController.js');
 const ApiPaymentsController = require('../controllers/api/paymentsController.js');
 const ApiCronController = require('../controllers/api/cronController.js');
+const ApiMoneypoolsController = require('../controllers/api/moneypoolsController.js');
 
 let routes = {
     pages: {
@@ -145,6 +146,16 @@ let routes = {
                 path: '/api/cron/bookRecurringPayments',
                 action: 'bookRecurringPayments',
                 method: 'POST',
+            },
+        ],
+    },
+    'api/moneypools': {
+        controller: ApiMoneypoolsController,
+        actions: [
+            {
+                path: '/api/moneypools',
+                action: 'get',
+                method: 'GET',
             },
         ],
     },
