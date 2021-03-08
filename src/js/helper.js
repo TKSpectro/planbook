@@ -2,12 +2,16 @@ function showAlert(message = '', alertType = '') {
     const alertPlaceholder = document.getElementById('alertPlaceholder');
 
     alertPlaceholder.innerHTML +=
-        '<div class="alert alert-' +
+        '<div id="activeAlert" class="alert alert-' +
         alertType +
         ' alert-dismissible fade show" role="alert">' +
         message +
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
         '<span aria-hidden="true">&times;</span></button></div>';
+
+    setTimeout(function () {
+        $('#activeAlert').alert('close');
+    }, 5000);
 }
 
 function refreshTable(tableIdString = '', tableData = []) {
