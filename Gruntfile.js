@@ -6,7 +6,7 @@ module.exports = function (grunt) {
             build: {
                 files: {
                     'assets/js/index.min.js': 'src/js/index.js',
-                    'assets/js/signin.min.js': 'src/js/signin.js',
+                    'assets/js/login.min.js': 'src/js/login.js',
                     'assets/js/signup.min.js': 'src/js/signup.js',
                     'assets/js/helper.min.js': 'src/js/helper.js',
                     'assets/js/dashboard.min.js': 'src/js/dashboard.js',

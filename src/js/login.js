@@ -8,7 +8,7 @@ function loginPressed(event) {
         },
     };
 
-    postSignIn(data).then((response) => {
+    postLogin(data).then((response) => {
         if (response.token) {
             window.location.href = '/dashboard';
             return;
@@ -23,8 +23,8 @@ function loginPressed(event) {
     return false;
 }
 
-async function postSignIn(data = {}) {
-    const url = '/api/signin';
+async function postLogin(data = {}) {
+    const url = '/api/login';
 
     const response = await fetch(url, {
         method: 'POST',

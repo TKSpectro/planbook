@@ -11,8 +11,8 @@ class ApiUsersController extends Controller {
         self.format = Controller.HTTP_FORMAT_JSON;
 
         // users have to signed in else they a 401 Unauthorized response
-        // signIn and Signup are exempt from this
-        self.before(['*', '-signin', '-signup'], function (next) {
+        // login and Signup are exempt from this
+        self.before(['*', '-login', '-signup'], function (next) {
             if (self.req.authorized === true) {
                 next();
             } else {
@@ -252,7 +252,7 @@ class ApiUsersController extends Controller {
         }
     }
 
-    async actionSignin() {
+    async actionLogin() {
         const self = this;
         let remoteData = self.param('user') || {};
         let user = null;

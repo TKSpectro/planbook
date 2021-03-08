@@ -31,7 +31,7 @@ function leaveOwnedHousehold(event) {
         '/api/householdsUsers?hid=' +
         householdId +
         '&id=' +
-        document.getElementById('currentUserId').value;
+        document.getElementById('userId').value;
 
     deleteMember(householdUserUrl)
         .then((response) => {

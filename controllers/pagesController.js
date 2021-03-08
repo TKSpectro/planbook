@@ -7,12 +7,12 @@ class PagesController extends Controller {
         self.css('custom');
 
         self.before(
-            ['*', '-imprint', '-signin', '-signup', '-index'],
+            ['*', '-imprint', '-login', '-signup', '-index'],
             (next) => {
                 if (self.req.authorized === true) {
                     next();
                 } else {
-                    self.redirect(self.urlFor('pages', 'signin'));
+                    self.redirect(self.urlFor('pages', 'login'));
                 }
             }
         );
@@ -44,7 +44,7 @@ class PagesController extends Controller {
             }
         );
 
-        self.before(['signin', 'signup', 'index'], (next) => {
+        self.before(['login', 'signup', 'index'], (next) => {
             if (self.req.authorized === true) {
                 self.redirect(self.urlFor('pages', 'dashboard'));
             } else {
@@ -77,11 +77,11 @@ class PagesController extends Controller {
         });
     }
 
-    actionSignin() {
+    actionLogin() {
         const self = this;
 
         self.css('custom');
-        self.js('signin');
+        self.js('login');
         self.js('helper');
 
         self.render({

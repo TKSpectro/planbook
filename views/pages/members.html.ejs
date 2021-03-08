@@ -12,7 +12,7 @@
     </table>
 
     <div class="pt-4"><%-include('../modals/addInviteModal.html.ejs');-%></div>
-
+    <input id="userId" class="d-none" value="<%=self.req.user.id%>"></input>
     <div class="pt-4">
         <label for="pendingInvitesTable">Pending invites</label>
         <table

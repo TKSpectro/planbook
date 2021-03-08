@@ -22,7 +22,6 @@
         <%-include('./header.html.ejs');-%>
         <div class="container pt-4 text-primary">
             <div id="alertPlaceholder"></div>
-            <input id="currentUserId" value="<%=self.req.user.id%>" class="d-none"></input>
             <%-body%>
         </div>
         <% for (let index = 0; index < self.jsFiles.length; index++) { %>
