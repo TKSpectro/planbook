@@ -119,6 +119,7 @@ class PagesController extends Controller {
             self.css('custom');
             self.js('Chart');
             self.js('dashboard');
+            self.js('savePayment');
 
             const householdId = self.param('hid');
             const household = await self.db.Household.findByPk(householdId);

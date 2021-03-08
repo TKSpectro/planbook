@@ -1,4 +1,6 @@
-function savePayment() {
+function savePayment(event) {
+    event.preventDefault();
+
     const sel = document.querySelector('#categorySelect');
     const categoryId = sel.options[sel.selectedIndex]
         .getAttribute('data-tokens')
@@ -18,7 +20,10 @@ function savePayment() {
     postPayment(url, data).then((data) => {
         showAlert('The payment was created!', 'success');
         refreshPage();
+        return;
     });
+
+    return false;
 }
 
 async function postPayment(url = '', data = {}) {

@@ -28,8 +28,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form id="addPaymentModalForm" onsubmit="return savePayment(event)">
+                <div class="modal-body">
                     <div class="form-group row">
                         <label for="" class="col-sm-2 form-control-label">
                             Purpose
@@ -80,25 +80,18 @@
                             </select>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                >
-                    Close
-                </button>
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-dismiss="modal"
-                    onclick="savePayment()"
-                >
-                    Save
-                </button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="reset"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
