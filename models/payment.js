@@ -15,6 +15,10 @@ module.exports = function (Model, db) {
             as: 'recurringPayment',
             attributes: ['id', 'purpose', 'value'],
         },
+        {
+            model: db.Moneypool,
+            as: 'moneypool',
+        },
     ];
 
     Model.prototype.writeRemotes = function (data) {
@@ -34,6 +38,9 @@ module.exports = function (Model, db) {
         }
         if (typeof data.recurringPaymentId !== 'undefined') {
             self.recurringPaymentId = data.recurringPaymentId;
+        }
+        if (typeof data.moneypoolId !== 'undefined') {
+            self.moneypoolId = data.moneypoolId;
         }
     };
 };

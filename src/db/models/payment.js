@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
             as: 'recurringPayment',
             foreignKey: 'recurringPaymentId',
         });
+        Payment.belongsTo(models.Moneypool, {
+            as: 'moneypool',
+            foreignKey: 'moneypoolId',
+        });
     };
 
     return Payment;

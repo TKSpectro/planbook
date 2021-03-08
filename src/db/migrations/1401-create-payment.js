@@ -54,6 +54,16 @@ module.exports = {
                 },
                 allowNull: true,
             },
+            moneypoolId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'moneypool',
+                    },
+                    key: 'id',
+                },
+                allowNull: true,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
