@@ -4,35 +4,63 @@ IT-Praxisprojekt (4./5. Semester)
 
 ## TODO
 
-- [x] setup
-  - [x] database (mysql)
-  - [x] continuous deployment on heroku
-  - [x] bootstrap and sass compiling
-  - [x] integration of chart.js
-- [x] User/Login/Register
-  - [x] API routes
-  - [x] Webpages
+### Setup
+
+- [x] database (mysql)
+- [x] continuous deployment on heroku -> <https://planbook-project.herokuapp.com/>
+- [x] setup linode server -> <https://www.planbook.online/>
+- [x] bootstrap and sass compiling
+- [x] integration of chart.js
+
+### Frontend
+
+#### Pages
+
+- [ ] Index - Homepage
+- [x] Login/Register
+- [x] Household Chooser
+- [x] Dashboard
+- [x] Member and invite management
+- [x] Payments with sorting and filtering
+- [x] Recurring payment management
+- [ ] Moneypool
+- [ ] To-Do lists
+
+#### Functionality
+
+- [x] Using invite links
+- [x] Dynamic data fetching
+- [x] dynamic table and chart.js building
+- [x] dynamic alert generation
+
+### Backend
+
+- [x] CRON scheduler
+- [x] Mailing agent
+
+#### API
+
+- [ ] Documentation
+- [x] Login/Register
+- [x] Users
 - [x] Categories
-  - [x] API routes
-- [ ] Households
-  - [x] API routes
-  - [ ] Webpage (Who is in the household and statistics)
+- [x] Households
+- [x] HouseholdsUsers
 - [x] Invites
-  - [x] API routes
-  - [ ] Webpage (Add/Delete invites and some basic statistics)
-- [ ] Todos
-  - [ ] API routes
-  - [ ] Webpage
-- [ ] Entries
-  - [ ] API routes
-  - [ ] Webpages
-    - [ ] Dashboard
-      - [ ] Statistics with chart.js
-      - [ ] Filtering of entries
-      - [ ] Sorting of entries
-- [ ] API documentation
+- [x] Payments
+- [x] Recurring payments
+- [x] CRON endpoints
 
 ## Commands
+
+### Building
+
+- setup the database
+- configuring .env file
+- npm run build
+
 ### Dev
+
 - npx nodemon
 - npx grunt
+- npm run sassWatch
