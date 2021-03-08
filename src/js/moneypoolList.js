@@ -1,6 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
+function refreshPage() {
+    refreshMoneypoolList();
+}
+
 function refreshMoneypoolList() {
     getMoneypools()
         .then((response) => {
@@ -16,7 +20,7 @@ function refreshMoneypoolList() {
         })
         .then((data) => {
             const moneypoolList = document.getElementById('moneypoolList');
-
+            moneypoolList.innerHTML = '';
             data.moneypools.forEach((moneypool) => {
                 moneypoolList.innerHTML +=
                     '<a href="/moneypools?hid=' +
@@ -42,4 +46,5 @@ async function getMoneypools() {
 
     return response;
 }
-refreshMoneypoolList();
+
+refreshPage();

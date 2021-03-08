@@ -71,5 +71,48 @@ class ApiMoneypoolsController extends Controller {
             );
         }
     }
+
+    async actionCreate() {
+        const self = this;
+
+        let moneypool = null;
+        let error = null;
+
+        try {
+            if (!self.param('moneypool')) {
+                throw new ApiError('No body or wrong body', 400);
+            }
+
+            let remoteData = self.param('moneypool');
+
+            moneypool = await self.db.sequelize.transaction(async (t) => {
+                let newMoneypool = self.db.Moneypool.build();
+
+                newMoneypool.writeRemotes(remoteData);
+
+                await newMoneypool.save({
+                    transaction: t,
+                    lock: true,
+                });
+
+                return newMoneypool;
+            });
+        } catch (err) {
+            error = err;
+        }
+
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {
+                    moneypool: moneypool,
+                },
+                {
+                    statusCode: 201,
+                }
+            );
+        }
+    }
 }
 module.exports = ApiMoneypoolsController;

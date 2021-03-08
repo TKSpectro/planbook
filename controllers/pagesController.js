@@ -254,6 +254,8 @@ class PagesController extends Controller {
         const self = this;
 
         self.css('custom');
+        self.js('helper');
+        self.js('saveMoneypool');
 
         let isMoneypoolChooser = false;
         if (self.param('id')) {

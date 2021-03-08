@@ -158,6 +158,11 @@ let routes = {
                 action: 'get',
                 method: 'GET',
             },
+            {
+                path: '/api/moneypools',
+                action: 'create',
+                method: 'POST',
+            },
         ],
     },
 };
