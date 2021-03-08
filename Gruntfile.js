@@ -17,6 +17,8 @@ module.exports = function (grunt) {
                     'assets/js/payment.min.js': 'src/js/payment.js',
                     'assets/js/member.min.js': 'src/js/member.js',
                     'assets/js/savePayment.min.js': 'src/js/savePayment.js',
+                    'assets/js/moneypool.min.js': 'src/js/moneypool.js',
+                    'assets/js/moneypoolList.min.js': 'src/js/moneypoolList.js',
                 },
             },
         },

@@ -28,6 +28,7 @@ let routes = {
                 method: 'get',
             },
             { path: '/members', action: 'members', method: 'get' },
+            { path: '/moneypools', action: 'moneypools', method: 'get' },
         ],
     },
     'api/users': {

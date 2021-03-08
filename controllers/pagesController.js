@@ -18,7 +18,13 @@ class PagesController extends Controller {
         );
 
         self.before(
-            ['dashboard', 'payments', 'recurringPayments', 'members'],
+            [
+                'dashboard',
+                'payments',
+                'recurringPayments',
+                'members',
+                'moneypools',
+            ],
             async (next) => {
                 if (self.param('hid')) {
                     const householdUsers = await self.db.HouseholdUser.findAll({
@@ -241,6 +247,25 @@ class PagesController extends Controller {
             title: 'Members',
             members: members,
             invites: invites,
+        });
+    }
+
+    async actionMoneypools() {
+        const self = this;
+
+        self.css('custom');
+
+        let isMoneypoolChooser = false;
+        if (self.param('id')) {
+            self.js('moneypool');
+        } else {
+            self.js('moneypoolList');
+            isMoneypoolChooser = true;
+        }
+
+        self.render({
+            title: 'Moneypools',
+            isMoneypoolChooser: isMoneypoolChooser,
         });
     }
 

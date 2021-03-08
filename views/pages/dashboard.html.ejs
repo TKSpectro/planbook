@@ -19,6 +19,9 @@
     </div>
 
     <div class="pt-4">
+        <a href="/moneypools?hid=<%=household.id%>" class="btn btn-primary"
+            >Moneypools</a
+        >
         <% if(self.req.user.id == household.ownerId) {%>
         <a href="/members?hid=<%=household.id%>" class="btn btn-primary"
             >Members</a
