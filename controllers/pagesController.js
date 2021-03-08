@@ -132,14 +132,6 @@ class PagesController extends Controller {
                 members.push(await self.db.User.findByPk(user.id));
             }
 
-            const lastPayments = await self.db.Payment.findAll({
-                include: self.db.Payment.extendInclude,
-                where: {
-                    householdId: householdId,
-                },
-                limit: 10,
-            });
-
             const categories = await self.db.Category.findAll();
 
             self.render({
