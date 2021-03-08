@@ -30,7 +30,7 @@ function registerPressed(event) {
 }
 
 async function postRegister(data = {}) {
-    const url = '/api/signup';
+    const url = '/api/register';
 
     const response = await fetch(url, {
         method: 'POST',

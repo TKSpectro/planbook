@@ -112,7 +112,7 @@
 
 /**
  * @api {post} /users Create user
- * @apiDescription This should not be used (just here for the crud) -> Use api/users/signup instead
+ * @apiDescription This should not be used (just here for the crud) -> Use api/users/register instead
  * @apiName CreateUser
  * @apiGroup Users
  *

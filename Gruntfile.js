@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                 files: {
                     'assets/js/index.min.js': 'src/js/index.js',
                     'assets/js/login.min.js': 'src/js/login.js',
-                    'assets/js/signup.min.js': 'src/js/signup.js',
+                    'assets/js/register.min.js': 'src/js/register.js',
                     'assets/js/helper.min.js': 'src/js/helper.js',
                     'assets/js/dashboard.min.js': 'src/js/dashboard.js',
                     'assets/js/dashboardList.min.js': 'src/js/dashboardList.js',

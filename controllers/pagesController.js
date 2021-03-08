@@ -7,7 +7,7 @@ class PagesController extends Controller {
         self.css('custom');
 
         self.before(
-            ['*', '-imprint', '-login', '-signup', '-index'],
+            ['*', '-imprint', '-login', '-register', '-index'],
             (next) => {
                 if (self.req.authorized === true) {
                     next();
@@ -44,7 +44,7 @@ class PagesController extends Controller {
             }
         );
 
-        self.before(['login', 'signup', 'index'], (next) => {
+        self.before(['login', 'register', 'index'], (next) => {
             if (self.req.authorized === true) {
                 self.redirect(self.urlFor('pages', 'dashboard'));
             } else {
@@ -89,11 +89,11 @@ class PagesController extends Controller {
         });
     }
 
-    actionSignup() {
+    actionRegister() {
         const self = this;
 
         self.css('custom');
-        self.js('signup');
+        self.js('register');
         self.js('helper');
 
         self.render({

@@ -11,8 +11,8 @@ class ApiUsersController extends Controller {
         self.format = Controller.HTTP_FORMAT_JSON;
 
         // users have to signed in else they a 401 Unauthorized response
-        // login and Signup are exempt from this
-        self.before(['*', '-login', '-signup'], function (next) {
+        // login and register are exempt from this
+        self.before(['*', '-login', '-register'], function (next) {
             if (self.req.authorized === true) {
                 next();
             } else {
@@ -301,7 +301,8 @@ class ApiUsersController extends Controller {
     }
 
     // TODO stop using invite token here
-    async actionSignup() {
+    // TODO dont create a empty household
+    async actionRegister() {
         const self = this;
 
         let remoteData = self.param('user') || {};
