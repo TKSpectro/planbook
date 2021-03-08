@@ -12,6 +12,59 @@ function removeMemberClicked(id) {
     $('#removeMemberModal').modal();
 }
 
+function leaveOwnedHouseholdClicked() {
+    $('#leaveOwnedHouseholdModal').modal();
+}
+
+function leaveOwnedHousehold(event) {
+    event.preventDefault();
+
+    // Set new owner of household
+    const householdUrl = '/api/households?hid=' + householdId;
+
+    const sel = document.getElementById('chooseNewOwnerSelect');
+    const newOwnerId = sel.options[sel.selectedIndex]
+        .getAttribute('data-tokens')
+        .split('/')[1];
+
+    const householdUserUrl =
+        '/api/householdsUsers?hid=' +
+        householdId +
+        '&id=' +
+        document.getElementById('currentUserId').value;
+
+    deleteMember(householdUserUrl)
+        .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+                return;
+            } else {
+                alertShow('Could not update householdUser', 'danger');
+            }
+        })
+        .then(() => {
+            const requestData = {
+                household: {
+                    id: householdId,
+                    ownerId: newOwnerId,
+                },
+            };
+
+            putHousehold(householdUrl, requestData)
+                .then((response) => {
+                    if (response.status >= 200 && response.status < 400) {
+                        return;
+                    } else {
+                        alertShow('Could not update household', 'danger');
+                    }
+                })
+                .then(() => {
+                    window.location.href = '/dashboard';
+                });
+        });
+
+    return false;
+}
+
 function removeMember() {
     const url =
         '/api/householdsUsers?hid=' +
@@ -81,7 +134,26 @@ function refreshMembersTable() {
             } else {
                 let tableData = [];
                 let i = 1;
+                selectElement = document.getElementById('chooseNewOwnerSelect');
                 data.households.forEach((household) => {
+                    // TODO Need Refactoring -> Move into its own function
+                    if (household.userId !== household.household.ownerId) {
+                        selectElement.innerHTML +=
+                            '<option value="' +
+                            household.userId +
+                            '"' +
+                            'data-tokens="' +
+                            household.user.firstName +
+                            ' ' +
+                            household.user.lastName +
+                            '/' +
+                            household.userId +
+                            '">' +
+                            household.user.firstName +
+                            ' ' +
+                            household.user.lastName;
+                    }
+
                     tableData.push([
                         i,
                         household.user.firstName,
@@ -96,7 +168,14 @@ function refreshMembersTable() {
 
             // Setup clickListener for removing
             document.querySelectorAll('#membersTable tbody tr').forEach((e) => {
-                e.addEventListener('click', clickRemoveMemberHandler);
+                if (
+                    e.children[4].innerHTML ==
+                    data.households[0].household.ownerId
+                ) {
+                    e.addEventListener('click', leaveOwnedHouseholdClicked);
+                } else {
+                    e.addEventListener('click', clickRemoveMemberHandler);
+                }
             });
         });
 }
@@ -142,6 +221,18 @@ function refreshPendingInvitesTable() {
 async function postInvite(url = '', data) {
     const response = await fetch(url, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    return response;
+}
+
+async function putHousehold(url = '', data) {
+    const response = await fetch(url, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
