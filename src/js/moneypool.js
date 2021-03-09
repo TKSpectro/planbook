@@ -164,6 +164,9 @@ function savePayment(event) {
     postPayment(url, data).then((data) => {
         showAlert('The payment was created!', 'success');
         refreshPage();
+
+        $('#addMoneypoolPaymentModal').modal('hide');
+
         return;
     });
 
