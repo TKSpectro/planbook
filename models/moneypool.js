@@ -3,6 +3,12 @@ module.exports = function (Model, db) {
         {
             model: db.Household,
             as: 'household',
+            include: [
+                {
+                    model: db.User,
+                    as: 'members',
+                },
+            ],
         },
         {
             model: db.Payment,
