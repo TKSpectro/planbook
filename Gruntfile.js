@@ -49,7 +49,7 @@ module.exports = function (grunt) {
                         expand: true,
                         flatten: true,
                         src: [
-                            './node_modules/bootstrap/dist/js/bootstrap.min.js',
+                            './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
                         ],
                         dest: './assets/js',
                     },
@@ -57,10 +57,11 @@ module.exports = function (grunt) {
                         expand: true,
                         flatten: true,
                         src: [
-                            './node_modules/bootstrap/dist/js/bootstrap.min.js.map',
+                            './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
                         ],
                         dest: './assets/js',
                     },
+
                     // copy chart.js files
                     {
                         expand: true,
