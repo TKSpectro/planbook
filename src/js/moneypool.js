@@ -1,5 +1,5 @@
 function refreshPage() {
-    getPayments()
+    getMoneypool()
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
@@ -10,33 +10,21 @@ function refreshPage() {
             }
         })
         .then((data) => {
-            refreshMemberAmountChart(data);
-            const payments = data.payments;
-            getMoneypool()
-                .then((response) => {
-                    if (response.status >= 200 && response.status < 400) {
-                        return response.json();
-                    } else {
-                        showAlert('Found no moneypool', 'warning');
-                        // TODO document.getElementById('mainChart').hidden = true;
-                        return;
-                    }
-                })
-                .then((data) => {
-                    refreshNeededMoneyProgress(data, payments);
-                });
+            const moneypool = data.moneypools[0];
+            refreshMemberAmountChart(moneypool);
+            refreshNeededMoneyProgress(moneypool);
         });
 }
 
-function refreshNeededMoneyProgress(moneypoolData, payments) {
+function refreshNeededMoneyProgress(moneypool) {
     let labels = [];
     let values = [];
     let backgroundColors = [];
-    if (!moneypoolData || !payments) {
+    if (!moneypool) {
         return;
     }
 
-    const moneypool = moneypoolData.moneypools[0];
+    const payments = moneypool.payments;
 
     let alreadyPaidMoney = 0;
     payments.forEach((payment) => {
@@ -85,14 +73,14 @@ function refreshNeededMoneyProgress(moneypoolData, payments) {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function refreshMemberAmountChart(data) {
+function refreshMemberAmountChart(moneypool) {
     let labels = [];
     let values = [];
-    if (!data) {
+    if (!moneypool) {
         return;
     }
 
-    data.payments.forEach((payment) => {
+    moneypool.payments.forEach((payment) => {
         let name = payment.user.firstName + ' ' + payment.user.lastName;
         if (labels.indexOf(name) == -1) {
             labels.push(name);
@@ -146,21 +134,6 @@ async function getMoneypool() {
     const moneypoolId = urlParams.get('id');
 
     const url = '/api/moneypools?hid=' + householdId + '&id=' + moneypoolId;
-
-    const response = await fetch(url, {
-        method: 'GET',
-    });
-
-    return response;
-}
-
-async function getPayments() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const householdId = urlParams.get('hid');
-    const moneypoolId = urlParams.get('id');
-
-    const url =
-        '/api/payments?hid=' + householdId + '&moneypoolId=' + moneypoolId;
 
     const response = await fetch(url, {
         method: 'GET',
