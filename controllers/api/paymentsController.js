@@ -68,7 +68,11 @@ class ApiPaymentsController extends Controller {
             }
 
             if (self.param('moneypoolId')) {
-                where['moneypoolId'] = self.param('moneypoolId');
+                if (self.param('moneypoolId') == 'null') {
+                    where['moneypoolId'] = { [Op.is]: null };
+                } else {
+                    where['moneypoolId'] = self.param('moneypoolId');
+                }
             }
 
             let limit;

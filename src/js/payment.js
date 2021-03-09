@@ -15,7 +15,8 @@ function getPayments() {
         '&start=' +
         startDate +
         '&end=' +
-        endDate;
+        endDate +
+        '&moneypoolId=null';
 
     fetch(url)
         .then((response) => {
