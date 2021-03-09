@@ -19,22 +19,23 @@ module.exports = (sequelize, DataTypes) => {
     Household.associate = function (models) {
         Household.belongsTo(models.User, {
             as: 'owner',
-            foreignKey: 'id',
+            foreignKey: 'ownerId',
         });
         Household.belongsToMany(models.User, {
+            as: 'members',
             through: 'householdUser',
         });
         Household.hasMany(models.RecurringPayment, {
             as: 'entries',
-            foreignKey: 'id',
+            foreignKey: 'householdId',
         });
         Household.hasMany(models.Todo, {
             as: 'todos',
-            foreignKey: 'id',
+            foreignKey: 'householdId',
         });
         Household.hasMany(models.Invite, {
             as: 'invites',
-            foreignKey: 'id',
+            foreignKey: 'householdId',
         });
     };
     return Household;
