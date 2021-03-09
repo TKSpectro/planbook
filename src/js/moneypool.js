@@ -13,6 +13,7 @@ function refreshPage() {
             const moneypool = data.moneypools[0];
             refreshMemberAmountChart(moneypool);
             refreshNeededMoneyProgress(moneypool);
+            refreshMoneypoolPaymentsTable(moneypool);
         });
 }
 
@@ -126,6 +127,23 @@ function refreshMemberAmountChart(moneypool) {
     };
 
     let memberAmountChart = new Chart(ctx, config);
+}
+
+function refreshMoneypoolPaymentsTable(moneypool) {
+    let tableData = [];
+    let i = 1;
+    moneypool.payments.forEach((payment) => {
+        tableData.push([
+            i,
+            new Date(payment.createdAt).toDateString(),
+            payment.value + '€',
+            // TODO write a helper function for firstName + lastName for frontend
+            payment.user.firstName + ' ' + payment.user.lastName,
+        ]);
+        i++;
+    });
+
+    refreshTable('moneypoolPaymentsTable', tableData);
 }
 
 async function getMoneypool() {
