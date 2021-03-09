@@ -4,6 +4,28 @@ module.exports = function (Model, db) {
             model: db.Household,
             as: 'household',
         },
+        {
+            model: db.Payment,
+            as: 'payments',
+            include: [
+                {
+                    model: db.User,
+                    as: 'user',
+                },
+            ],
+        },
+    ];
+    Model.extendIncludeHousehold = [
+        {
+            model: db.Household,
+            as: 'household',
+        },
+    ];
+    Model.extendIncludePayments = [
+        {
+            model: db.Payment,
+            as: 'payments',
+        },
     ];
 
     Model.prototype.writeRemotes = function (data) {

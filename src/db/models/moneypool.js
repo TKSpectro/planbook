@@ -27,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     Moneypool.associate = function (models) {
         Moneypool.belongsTo(models.Household, {
             as: 'household',
-            foreignKey: 'id',
+            foreignKey: 'householdId',
         });
         Moneypool.hasMany(models.Payment, {
             as: 'payments',
-            foreignKey: 'id',
+            foreignKey: 'moneypoolId',
         });
     };
     return Moneypool;

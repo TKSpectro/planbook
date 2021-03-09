@@ -41,13 +41,15 @@ class ApiMoneypoolsController extends Controller {
         let error = null;
         try {
             let where = { householdId: self.param('hid') };
+            let include = self.db.Moneypool.extendIncludeHousehold;
 
             if (self.param('id')) {
                 where['id'] = self.param('id');
+                include = self.db.Moneypool.extendInclude;
             }
 
             moneypools = await self.db.Moneypool.findAll({
-                include: self.db.Moneypool.extendInclude,
+                include: include,
                 where: where,
             });
 
