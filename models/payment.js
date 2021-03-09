@@ -18,6 +18,14 @@ module.exports = function (Model, db) {
         {
             model: db.Moneypool,
             as: 'moneypool',
+            attributes: [
+                'id',
+                'name',
+                'description',
+                'currentNeededMoney',
+                'totalNeededMoney',
+                'householdId',
+            ],
         },
     ];
 
