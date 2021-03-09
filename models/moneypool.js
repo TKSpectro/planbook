@@ -15,9 +15,6 @@ module.exports = function (Model, db) {
         if (typeof data.description !== 'undefined') {
             self.description = data.description;
         }
-        if (typeof data.currentNeededMoney !== 'undefined') {
-            self.currentNeededMoney = data.currentNeededMoney;
-        }
         if (typeof data.totalNeededMoney !== 'undefined') {
             self.totalNeededMoney = data.totalNeededMoney;
         }

@@ -11,10 +11,6 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            currentNeededMoney: {
-                type: DataTypes.DOUBLE,
-                allowNull: false,
-            },
             totalNeededMoney: {
                 type: DataTypes.DOUBLE,
                 allowNull: false,

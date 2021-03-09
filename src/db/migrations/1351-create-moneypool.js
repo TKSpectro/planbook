@@ -24,10 +24,6 @@ module.exports = {
                 type: Sequelize.STRING(1000),
                 allowNull: true,
             },
-            currentNeededMoney: {
-                type: Sequelize.DOUBLE,
-                allowNull: false,
-            },
             totalNeededMoney: {
                 type: Sequelize.DOUBLE,
                 allowNull: false,

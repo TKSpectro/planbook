@@ -22,10 +22,14 @@ module.exports = function (Model, db) {
                 'id',
                 'name',
                 'description',
-                'currentNeededMoney',
                 'totalNeededMoney',
                 'householdId',
             ],
+        },
+        {
+            model: db.User,
+            as: 'user',
+            attributes: ['id', 'firstName', 'lastName'],
         },
     ];
 

@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
             as: 'moneypool',
             foreignKey: 'moneypoolId',
         });
+        Payment.belongsTo(models.User, {
+            as: 'user',
+            foreignKey: 'userId',
+        });
     };
 
     return Payment;

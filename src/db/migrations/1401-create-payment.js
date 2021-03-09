@@ -64,6 +64,16 @@ module.exports = {
                 },
                 allowNull: true,
             },
+            userId: {
+                type: Sequelize.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'user',
+                    },
+                    key: 'id',
+                },
+                allowNull: true,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
