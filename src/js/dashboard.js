@@ -100,7 +100,8 @@ async function getLastPayments() {
     const urlParams = new URLSearchParams(window.location.search);
     const householdId = urlParams.get('hid');
 
-    const url = '/api/payments?hid=' + householdId + '&limit=10';
+    const url =
+        '/api/payments?hid=' + householdId + '&moneypoolId=null&limit=10';
 
     const response = await fetch(url, {
         method: 'GET',
