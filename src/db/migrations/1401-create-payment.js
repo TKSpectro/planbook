@@ -22,7 +22,7 @@ module.exports = {
             },
             purpose: {
                 type: Sequelize.STRING(320),
-                allowNull: false,
+                allowNull: true,
             },
             categoryId: {
                 type: Sequelize.INTEGER,
@@ -32,7 +32,7 @@ module.exports = {
                     },
                     key: 'id',
                 },
-                allowNull: false,
+                allowNull: true,
             },
             householdId: {
                 type: Sequelize.INTEGER,
