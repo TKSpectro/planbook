@@ -161,6 +161,10 @@ class ApiPaymentsController extends Controller {
 
             let remoteData = self.param('payment');
 
+            if (remoteData['moneypoolId']) {
+                remoteData['userId'] = self.req.user.id;
+            }
+
             payment = await self.db.sequelize.transaction(async (t) => {
                 let newPayment = self.db.Payment.build();
 

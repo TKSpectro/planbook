@@ -137,13 +137,37 @@ function refreshMoneypoolPaymentsTable(moneypool) {
             i,
             new Date(payment.createdAt).toDateString(),
             payment.value + '€',
-            // TODO write a helper function for firstName + lastName for frontend
             payment.user.firstName + ' ' + payment.user.lastName,
         ]);
         i++;
     });
 
     refreshTable('moneypoolPaymentsTable', tableData);
+}
+
+function savePayment(event) {
+    event.preventDefault();
+    const searchParams = new URLSearchParams(window.location.search);
+    const householdId = searchParams.get('hid');
+    const moneypoolId = searchParams.get('id');
+
+    const data = {
+        payment: {
+            value: document.querySelector('#valueInput').value,
+            householdId: householdId,
+            moneypoolId: moneypoolId,
+        },
+    };
+
+    const url = '/api/payments/?hid=' + householdId;
+    // Send the payment to the api
+    postPayment(url, data).then((data) => {
+        showAlert('The payment was created!', 'success');
+        refreshPage();
+        return;
+    });
+
+    return false;
 }
 
 async function getMoneypool() {
@@ -158,6 +182,17 @@ async function getMoneypool() {
     });
 
     return response;
+}
+
+async function postPayment(url = '', data = {}) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    return response.json();
 }
 
 refreshPage();

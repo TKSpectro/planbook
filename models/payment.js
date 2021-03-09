@@ -54,5 +54,8 @@ module.exports = function (Model, db) {
         if (typeof data.moneypoolId !== 'undefined') {
             self.moneypoolId = data.moneypoolId;
         }
+        if (typeof data.userId !== 'undefined') {
+            self.userId = data.userId;
+        }
     };
 };
