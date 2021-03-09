@@ -9,8 +9,25 @@
 <% } else{ %>
 <div class="mx-auto" style="width: 80%">
     <div class="pt-4 mx-auto">
-        <canvas id="neededMoneyChart"></canvas>
-        <canvas id="memberAmountChart"></canvas>
+        <div class="progress font-weight-bold" style="height: 4em">
+            <div
+                id="neededMoneyProgressBar"
+                class="progress-bar progress-bar-striped text-dark"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            ></div>
+            <div
+                id="missingMoneyProgressBar"
+                class="progress-bar progress-bar-striped bg-complementary text-dark"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            ></div>
+        </div>
+        <div class="pt-4">
+            <canvas id="memberAmountChart"></canvas>
+        </div>
     </div>
 </div>
 <% } %>
