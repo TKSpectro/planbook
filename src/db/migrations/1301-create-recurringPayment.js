@@ -29,7 +29,7 @@ module.exports = {
                 allowNull: false,
             },
             purpose: {
-                type: Sequelize.STRING(320),
+                type: Sequelize.STRING(50),
                 allowNull: false,
             },
             interval: {

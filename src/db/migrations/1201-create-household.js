@@ -17,7 +17,7 @@ module.exports = {
                 allowNull: false,
             },
             name: {
-                type: Sequelize.STRING(255),
+                type: Sequelize.STRING(30),
                 allowNull: false,
             },
             ownerId: {
