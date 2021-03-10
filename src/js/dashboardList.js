@@ -13,7 +13,7 @@ function refreshHouseholdList() {
         })
         .then((data) => {
             const householdList = document.getElementById('householdList');
-
+            householdList.innerHTML = '';
             data.households.forEach((household) => {
                 householdList.innerHTML +=
                     '<a href="/dashboard?hid=' +
@@ -103,7 +103,7 @@ function useInvite(event) {
             }
         })
         .then((data) => {
-            // TODO refresh page data
+            refreshHouseholdList();
         });
 
     $('#useInviteModal').modal('hide');
