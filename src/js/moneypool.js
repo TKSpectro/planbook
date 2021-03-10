@@ -62,7 +62,7 @@ function refreshNeededMoneyProgress(moneypool) {
     const missingMoneyProgressBar = document.getElementById(
         'missingMoneyProgressBar'
     );
-    const missingPercentage = 100 - percentage + 0.001;
+    const missingPercentage = 100 - percentage + 0.005;
     missingMoneyProgressBar.style.width = missingPercentage + '%';
     missingMoneyProgressBar.setAttribute('aria-valuenow', missingPercentage);
     missingMoneyProgressBar.innerHTML = missingPercentage.toFixed(2) + '%';
@@ -110,7 +110,7 @@ function refreshOwnNeededMoneyProgress(moneypool) {
     const missingMoneyProgressBar = document.getElementById(
         'ownMissingMoneyProgressBar'
     );
-    const ownMissingPercentage = 100 - ownPercentage + 0.001;
+    const ownMissingPercentage = 100 - ownPercentage + 0.005;
     missingMoneyProgressBar.style.width = ownMissingPercentage + '%';
     missingMoneyProgressBar.setAttribute('aria-valuenow', ownMissingPercentage);
     missingMoneyProgressBar.innerHTML = ownMissingPercentage.toFixed(2) + '%';
