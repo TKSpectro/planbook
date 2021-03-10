@@ -72,7 +72,6 @@ function refreshChart(payments) {
     };
     let currentValue = 0;
     let tableData = [];
-    let i = 1;
 
     payments.forEach((payment) => {
         currentValue += payment.value;
@@ -103,13 +102,11 @@ function refreshChart(payments) {
         }
 
         tableData.push([
-            i,
             payment.purpose,
             payment.category.name,
-            recurringPaymentString,
             paymentValueString,
+            recurringPaymentString,
         ]);
-        i++;
     });
 
     let paymentHistoryChart = new Chart(chartElement, {

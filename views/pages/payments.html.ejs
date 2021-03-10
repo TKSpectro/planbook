@@ -38,42 +38,41 @@
 
     <div class="pt-4">
         <label>All payments</label>
-        <table id="paymentsTable" class="table table-hover table-dark bg-dark">
-            <thead>
-                <tr>
-                    <th
-                        scope="col"
-                        onclick="sortTable(0, true, 'paymentsTable')"
-                    >
-                        #
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(1, false, 'paymentsTable')"
-                    >
-                        Purpose
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(2, false,'paymentsTable')"
-                    >
-                        Category
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(3, false,'paymentsTable')"
-                    >
-                        isFromRecurringPayment
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(4, true, 'paymentsTable')"
-                    >
-                        Value
-                    </th>
-                </tr>
-            </thead>
-        </table>
+        <div class="table-responsive-lg">
+            <table
+                id="paymentsTable"
+                class="table table-hover table-dark bg-dark"
+            >
+                <thead>
+                    <tr>
+                        <th
+                            scope="col"
+                            onclick="sortTable(0, false, 'paymentsTable')"
+                        >
+                            Purpose
+                        </th>
+                        <th
+                            scope="col"
+                            onclick="sortTable(1, false,'paymentsTable')"
+                        >
+                            Category
+                        </th>
+                        <th
+                            scope="col"
+                            onclick="sortTable(2, true, 'paymentsTable')"
+                        >
+                            Value
+                        </th>
+                        <th
+                            scope="col"
+                            onclick="sortTable(3, false,'paymentsTable')"
+                        >
+                            recurring
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 <!-- need moment.js for chart.js usage with time x axis -->
