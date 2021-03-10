@@ -8,9 +8,14 @@
 
 <% } else{ %>
 <div class="mx-auto" style="width: 80%">
-    <div class="pt-4">
-        <h2 id="moneypoolName"></h2>
-        <p id="moneypoolDescription"></p>
+    <div class="row pt-4">
+        <div class="col-4">
+            <h2 id="moneypoolName"></h2>
+            <p id="moneypoolDescription"></p>
+        </div>
+        <div class="col-8">
+            <canvas id="memberAmountChart"></canvas>
+        </div>
     </div>
     <input id="currentUserId" class="d-none" value="<%=self.req.user.id%>"></input>
     <div class="pt-4">
@@ -50,9 +55,6 @@
                 aria-valuemax="100"
             ></div>
         </div>
-    </div>
-    <div class="pt-4">
-        <canvas id="memberAmountChart"></canvas>
     </div>
     <div class="pt-4">
         <%-include('../modals/addMoneypoolPaymentModal.html.ejs');-%>
