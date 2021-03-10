@@ -6,24 +6,22 @@
     <%-include('../modals/addPaymentModal.html.ejs');-%>
 
     <form class="pt-4 mb-0 form-inline">
-        <label class="col-sm-1 form-control-label" for="startDateInput"
+        <label class="col-sm-1 col-form-label" for="startDateInput"
             >Start</label
         >
         <!-- startDateInput - defaultValue: first day of the month -->
         <input
             type="date"
-            class="form-control mb-2 mr-sm-2"
+            class="form-control"
             id="startDateInput"
             value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
                 .toISOString().slice(0,10)%>"
         />
-        <label class="col-sm-1 form-control-label" for="endDateInput"
-            >End</label
-        >
+        <label class="col-sm-1 col-form-label" for="endDateInput">End</label>
         <!-- endDateInput - defaultValue: today -->
         <input
             type="date"
-            class="form-control mb-2 mr-sm-2"
+            class="form-control mr-4"
             id="endDateInput"
             value="<%=new Date().toISOString().slice(0,10)%>"
         />
