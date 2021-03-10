@@ -59,6 +59,7 @@ class ApiHouseholdsUsersController extends Controller {
             const householdId = self.param('hid');
             if (householdId) {
                 where['householdId'] = self.param('hid');
+                where['userId'] = self.req.user.id;
                 include = self.db.HouseholdUser.extendInclude;
             } else {
                 where['userId'] = self.req.user.id;
@@ -91,7 +92,6 @@ class ApiHouseholdsUsersController extends Controller {
         }
     }
 
-    // TODO check if the connection already exists
     async actionCreate() {
         const self = this;
 
@@ -100,9 +100,39 @@ class ApiHouseholdsUsersController extends Controller {
         let error;
 
         try {
+            const household = await self.db.Household.findOne({
+                where: {
+                    id: remoteData['householdId'],
+                    ownerId: self.req.user.id,
+                },
+            });
+
+            if (!household) {
+                throw new ApiError(
+                    'You only join the household directly if you are the owner. Please use the invite system',
+                    400
+                );
+            }
+
+            const alreadyExisting = await self.db.HouseholdUser.findOne({
+                where: {
+                    householdId: remoteData['householdId'],
+                    userId: self.req.user.id,
+                },
+            });
+
+            if (alreadyExisting) {
+                throw new ApiError(
+                    'You already are part of this household',
+                    400
+                );
+            }
+
             householdUser = await self.db.sequelize.transaction(async (t) => {
                 let newHouseholdUser = self.db.HouseholdUser.build();
                 // create the household
+                remoteData['userId'] = self.req.user.id;
+
                 newHouseholdUser.writeRemotes(remoteData);
                 await newHouseholdUser.save({
                     transaction: t,
