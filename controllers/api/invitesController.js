@@ -192,7 +192,6 @@ class ApiInvitesController extends Controller {
         }
     }
 
-    // TODO maybe delete the invite instead of just setting wasUsed?
     //This route "uses" an invite link and sets the householdId of the user to the one which send the link
     async actionUpdate() {
         const self = this;
@@ -208,7 +207,7 @@ class ApiInvitesController extends Controller {
                 throw new ApiError('no link in body found', 400);
             }
 
-            let link = self.param('invite').link;
+            const link = self.param('invite').link;
 
             invite = await self.db.sequelize.transaction(async (t) => {
                 let updateInvite = await self.db.Invite.findOne(
@@ -219,40 +218,63 @@ class ApiInvitesController extends Controller {
                     },
                     { transaction: t }
                 );
-                if (updateInvite) {
-                    //Check if the invite was already used
-                    if (
-                        updateInvite.createdAt.getTime() !==
-                        updateInvite.updatedAt.getTime()
-                    ) {
-                        throw new ApiError('Invite link was already used', 400);
-                    }
-                    //We now have to force updating only the updatedAt
-                    //Without this the updatedAt would not be updated
-                    updateInvite.changed('updatedAt', true);
 
-                    await updateInvite.update(
-                        {
-                            updatedAt: new Date(),
-                            wasUsed: true,
-                        },
-                        {
-                            where: {
-                                link: link,
-                            },
-                        },
-                        { transaction: t, lock: true }
+                if (!updateInvite) {
+                    throw new ApiError(
+                        'There is no invite existing with this link',
+                        400
                     );
                 }
 
+                //Check if the invite was already used
+                if (updateInvite.wasUsed === true) {
+                    throw new ApiError('Invite link was already used', 400);
+                }
+
+                //We now have to force updating only the updatedAt
+                //Without this the updatedAt would not be updated
+                updateInvite.changed('updatedAt', true);
+
+                await updateInvite.update(
+                    {
+                        updatedAt: new Date(),
+                        wasUsed: true,
+                    },
+                    {
+                        where: {
+                            link: link,
+                        },
+                    },
+                    { transaction: t, lock: true }
+                );
+
                 return updateInvite;
             });
+
             if (!invite) {
                 throw new ApiError('Invite could not be used', 404);
             }
 
-            //Set the household id of the current user to the householdId of the invite sender
-            //Get the sender.householdId
+            if (invite.invitedEmail != self.req.user.email) {
+                throw new ApiError(
+                    'This invite was not created for you account email.',
+                    400
+                );
+            }
+
+            const alreadyInHousehold = await self.db.HouseholdUser.findOne({
+                where: {
+                    householdId: invite.householdId,
+                    userId: self.req.user.id,
+                },
+            });
+            if (alreadyInHousehold) {
+                throw new ApiError(
+                    'Invite was used but you were already in this household',
+                    400
+                );
+            }
+
             let householdUser = await self.db.sequelize.transaction(
                 async (t) => {
                     let newHouseholdUser = self.db.HouseholdUser.build();
@@ -262,7 +284,7 @@ class ApiInvitesController extends Controller {
                         householdId: invite.householdId,
                         userId: self.req.user.id,
                     };
-                    //newInvite.dataValues.senderId = self.req.user.id;
+
                     newHouseholdUser.writeRemotes(data);
                     await newHouseholdUser.save({
                         transaction: t,
