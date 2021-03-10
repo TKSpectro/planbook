@@ -7,7 +7,7 @@
         <link
             rel="stylesheet"
             type="text/css"
-            href="/assets/css/<%=self.cssFiles[index]%>.css"
+            href="/assets/css/<%=self.cssFiles[index]+(cfg.minify === true ? '.min' : '')%>.css"
         />
         <% } %>
 
