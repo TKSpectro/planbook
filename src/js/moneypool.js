@@ -11,6 +11,7 @@ function refreshPage() {
         })
         .then((data) => {
             const moneypool = data.moneypools[0];
+            refreshNameAndDescription(moneypool);
             refreshMemberAmountChart(moneypool);
             refreshNeededMoneyProgress(moneypool);
             refreshOwnNeededMoneyProgress(moneypool);
@@ -19,6 +20,12 @@ function refreshPage() {
             // Enable all tooltips
             $('[data-toggle="tooltip"]').tooltip();
         });
+}
+
+function refreshNameAndDescription(moneypool) {
+    document.getElementById('moneypoolName').innerHTML = moneypool.name;
+    document.getElementById('moneypoolDescription').innerHTML =
+        moneypool.description;
 }
 
 function refreshNeededMoneyProgress(moneypool) {
