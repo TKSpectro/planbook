@@ -13,7 +13,11 @@ function refreshPage() {
             const moneypool = data.moneypools[0];
             refreshMemberAmountChart(moneypool);
             refreshNeededMoneyProgress(moneypool);
+            refreshOwnNeededMoneyProgress(moneypool);
             refreshMoneypoolPaymentsTable(moneypool);
+
+            // Enable all tooltips
+            $('[data-toggle="tooltip"]').tooltip();
         });
 }
 
@@ -32,46 +36,88 @@ function refreshNeededMoneyProgress(moneypool) {
         alreadyPaidMoney += payment.value;
     });
 
-    const percentage = (
-        (alreadyPaidMoney / moneypool.totalNeededMoney) *
-        100
-    ).toFixed(2);
+    const percentage = (alreadyPaidMoney / moneypool.totalNeededMoney) * 100;
     const progressBar = document.getElementById('neededMoneyProgressBar');
 
     // Show text
     progressBar.style.width = percentage + '%';
     progressBar.setAttribute('aria-valuenow', percentage);
-    progressBar.innerHTML = percentage + '%';
+    progressBar.innerHTML = percentage.toFixed(2) + '%';
 
     // Build the tooltip
     progressBar.setAttribute('data-toggle', 'tooltip');
     progressBar.setAttribute('data-placement', 'bottom');
     progressBar.setAttribute(
         'title',
-        percentage + '% = ' + alreadyPaidMoney + '€'
+        percentage.toFixed(2) + '% = ' + alreadyPaidMoney + '€'
     );
 
     const missingMoneyProgressBar = document.getElementById(
         'missingMoneyProgressBar'
     );
-    const missingPercentage = (100 - percentage).toFixed(2);
+    const missingPercentage = 100 - percentage + 0.001;
     missingMoneyProgressBar.style.width = missingPercentage + '%';
     missingMoneyProgressBar.setAttribute('aria-valuenow', missingPercentage);
-    missingMoneyProgressBar.innerHTML = missingPercentage + '%';
+    missingMoneyProgressBar.innerHTML = missingPercentage.toFixed(2) + '%';
 
     // Build the tooltip
     missingMoneyProgressBar.setAttribute('data-toggle', 'tooltip');
     missingMoneyProgressBar.setAttribute('data-placement', 'bottom');
     missingMoneyProgressBar.setAttribute(
         'title',
-        missingPercentage +
+        missingPercentage.toFixed(2) +
             '% = ' +
             (moneypool.totalNeededMoney - alreadyPaidMoney) +
             '€'
     );
+}
 
-    // Enable all tooltips
-    $('[data-toggle="tooltip"]').tooltip();
+function refreshOwnNeededMoneyProgress(moneypool) {
+    ownMissingMoney =
+        moneypool.totalNeededMoney / moneypool.household.members.length;
+
+    let alreadyOwnPaidMoney = 0;
+    moneypool.payments.forEach((payment) => {
+        if (payment.userId == document.getElementById('currentUserId').value) {
+            alreadyOwnPaidMoney += payment.value;
+        }
+    });
+
+    const ownPercentage = (alreadyOwnPaidMoney / ownMissingMoney) * 100;
+
+    const progressBar = document.getElementById('ownNeededMoneyProgressBar');
+
+    // Show text
+    progressBar.style.width = ownPercentage + '%';
+    progressBar.setAttribute('aria-valuenow', ownPercentage);
+    progressBar.innerHTML = ownPercentage.toFixed(2) + '%';
+
+    // Build the tooltip
+    progressBar.setAttribute('data-toggle', 'tooltip');
+    progressBar.setAttribute('data-placement', 'bottom');
+    progressBar.setAttribute(
+        'title',
+        ownPercentage.toFixed(2) + '% = ' + alreadyOwnPaidMoney + '€'
+    );
+
+    const missingMoneyProgressBar = document.getElementById(
+        'ownMissingMoneyProgressBar'
+    );
+    const ownMissingPercentage = 100 - ownPercentage + 0.001;
+    missingMoneyProgressBar.style.width = ownMissingPercentage + '%';
+    missingMoneyProgressBar.setAttribute('aria-valuenow', ownMissingPercentage);
+    missingMoneyProgressBar.innerHTML = ownMissingPercentage.toFixed(2) + '%';
+
+    // Build the tooltip
+    missingMoneyProgressBar.setAttribute('data-toggle', 'tooltip');
+    missingMoneyProgressBar.setAttribute('data-placement', 'bottom');
+    missingMoneyProgressBar.setAttribute(
+        'title',
+        ownMissingPercentage.toFixed(2) +
+            '% = ' +
+            (ownMissingMoney - alreadyOwnPaidMoney) +
+            '€'
+    );
 }
 
 function refreshMemberAmountChart(moneypool) {

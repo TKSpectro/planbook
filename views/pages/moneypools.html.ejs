@@ -8,7 +8,9 @@
 
 <% } else{ %>
 <div class="mx-auto" style="width: 80%">
-    <div class="pt-4 mx-auto">
+    <input id="currentUserId" class="d-none" value="<%=self.req.user.id%>"></input>
+    <div class="pt-4">
+        <label>Whole Moneypool progress</label>
         <div class="progress font-weight-bold" style="height: 4em">
             <div
                 id="neededMoneyProgressBar"
@@ -19,6 +21,25 @@
             ></div>
             <div
                 id="missingMoneyProgressBar"
+                class="progress-bar progress-bar-striped bg-complementary text-dark"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            ></div>
+        </div>
+    </div>
+    <div class="pt-4">
+        <label>Own progress in moneypool</label>
+        <div class="progress font-weight-bold" style="height: 4em">
+            <div
+                id="ownNeededMoneyProgressBar"
+                class="progress-bar progress-bar-striped text-dark"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            ></div>
+            <div
+                id="ownMissingMoneyProgressBar"
                 class="progress-bar progress-bar-striped bg-complementary text-dark"
                 role="progressbar"
                 aria-valuemin="0"
