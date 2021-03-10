@@ -91,6 +91,7 @@ class ApiHouseholdsUsersController extends Controller {
         }
     }
 
+    // TODO check if the connection already exists
     async actionCreate() {
         const self = this;
 

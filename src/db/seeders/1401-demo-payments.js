@@ -111,7 +111,7 @@ module.exports = {
                 {
                     createdAt: new Date('2021.03.03 12:00:00'),
                     updatedAt: new Date('2021.03.03 12:00:00'),
-                    value: 20.0,
+                    value: 70.0,
                     householdId: 1,
                     moneypoolId: 1,
                     userId: 1,
@@ -119,7 +119,7 @@ module.exports = {
                 {
                     createdAt: new Date('2021.03.03 12:00:00'),
                     updatedAt: new Date('2021.03.03 12:00:00'),
-                    value: 35.0,
+                    value: 105.0,
                     householdId: 1,
                     moneypoolId: 1,
                     userId: 1,
@@ -127,7 +127,7 @@ module.exports = {
                 {
                     createdAt: new Date('2021.03.03 12:00:00'),
                     updatedAt: new Date('2021.03.03 12:00:00'),
-                    value: 10.0,
+                    value: 25.0,
                     householdId: 1,
                     moneypoolId: 1,
                     userId: 5,
@@ -151,7 +151,7 @@ module.exports = {
                 {
                     createdAt: new Date('2021.03.03 12:00:00'),
                     updatedAt: new Date('2021.03.03 12:00:00'),
-                    value: 7.5,
+                    value: 150,
                     householdId: 1,
                     moneypoolId: 1,
                     userId: 6,
