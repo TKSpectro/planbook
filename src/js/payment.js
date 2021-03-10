@@ -112,11 +112,6 @@ function refreshChart(payments) {
         i++;
     });
 
-    // TODO decide how the payment graph should look like
-    //let endDate = new Date(document.getElementById('endDateInput').value);
-    //endDate.setHours(24);
-    //data.labels.push(endDate);
-
     let paymentHistoryChart = new Chart(chartElement, {
         type: 'line',
         data: data,

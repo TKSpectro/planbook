@@ -76,7 +76,6 @@ function removeMember() {
         document.getElementById('chosenMemberId').value ===
         document.getElementById('userId').value
     ) {
-        // TODO implement a way to remove yourself from a household
         showAlert('You cant remove yourself', 'warning');
     } else {
         deleteMember(url).then((response) => {
