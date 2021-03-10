@@ -23,73 +23,6 @@ class ApiHouseholdsController extends Controller {
         });
     }
 
-    // GET for all households
-    async actionGetAll() {
-        const self = this;
-
-        let error = null;
-        let households = [];
-
-        try {
-            // find all categories
-            households = await self.db.Household.findAll({
-                attributes: ['id', 'createdAt', 'updatedAt', 'name', 'ownerId'],
-                where: {},
-            });
-            if (!households) {
-                throw new ApiError('No households found', 404);
-            }
-        } catch (err) {
-            error = err;
-        }
-        // render either the error or the found households
-        if (error) {
-            self.handleError(error);
-        } else {
-            self.render(
-                {
-                    households: households,
-                },
-                {
-                    statusCode: 200,
-                }
-            );
-        }
-    }
-
-    // GET for one household with a specific id
-    async actionGetOne() {
-        const self = this;
-
-        let householdId = self.param('id');
-        let household = null;
-        let error = null;
-
-        try {
-            // find the household with the given id
-            household = await self.db.Household.findOne({
-                attributes: ['id', 'createdAt', 'updatedAt', 'name', 'ownerId'],
-                where: {
-                    id: householdId,
-                },
-            });
-            if (!household) {
-                throw new ApiError('No household found with this id', 404);
-            }
-        } catch (err) {
-            error = err;
-        }
-
-        // render either the error or the found household
-        if (error) {
-            self.handleError(error);
-        } else {
-            self.render({
-                household: household,
-            });
-        }
-    }
-
     // create the household with the send body (name)
     async actionCreate() {
         const self = this;
@@ -193,11 +126,14 @@ class ApiHouseholdsController extends Controller {
     async actionDelete() {
         const self = this;
 
-        let householdId = self.param('id');
+        let householdId = self.param('hid');
         let error = null;
 
         // delete the household
         try {
+            if (!householdId) {
+                throw new ApiError('No householdId specified.', 400);
+            }
             household = await self.db.sequelize.transaction(async (t) => {
                 household = await self.db.Household.destroy(
                     {
