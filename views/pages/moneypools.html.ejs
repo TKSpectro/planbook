@@ -8,13 +8,15 @@
 
 <% } else{ %>
 <div class="mx-auto" style="width: 80%">
-    <div class="row pt-4">
-        <div class="col-4">
-            <h2 id="moneypoolName"></h2>
-            <p id="moneypoolDescription"></p>
-        </div>
-        <div class="col-8">
-            <canvas id="memberAmountChart"></canvas>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <h2 id="moneypoolName"></h2>
+                <p id="moneypoolDescription"></p>
+            </div>
+            <div class="col-lg-7">
+                <canvas id="memberAmountChart"></canvas>
+            </div>
         </div>
     </div>
     <input id="currentUserId" class="d-none" value="<%=self.req.user.id%>"></input>
