@@ -170,6 +170,19 @@ function refreshMemberAmountChart(moneypool) {
             ],
         },
         options: {
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let sum = ctx.dataset._meta[0].total;
+                        let percentage = ((value * 100) / sum).toFixed(1) + '%';
+                        return percentage;
+                    },
+                    font: {
+                        weight: 'normal',
+                    },
+                    color: '#202020',
+                },
+            },
             title: {
                 display: false,
             },

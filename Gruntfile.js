@@ -69,6 +69,14 @@ module.exports = function (grunt) {
                         src: ['./node_modules/chart.js/dist/*.js'],
                         dest: './assets/js',
                     },
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: [
+                            './node_modules/chartjs-plugin-datalabels/dist/*.js',
+                        ],
+                        dest: './assets/js',
+                    },
                     // copy non minified js for development
                     {
                         expand: true,

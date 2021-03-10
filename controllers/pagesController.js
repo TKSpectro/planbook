@@ -260,6 +260,7 @@ class PagesController extends Controller {
         let isMoneypoolChooser = false;
         if (self.param('id')) {
             self.js('Chart');
+            self.js('chartjs-plugin-datalabels');
             self.js('moneypool');
         } else {
             self.js('moneypoolList');
