@@ -7,7 +7,7 @@ function showAlert(message = '', alertType = '') {
         ' alert-dismissible fade show" role="alert">' +
         message +
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button></div>';
+        '<span aria-hidden="true" class="text-white">&times;</span></button></div>';
 
     setTimeout(function () {
         $('#activeAlert').alert('close');
