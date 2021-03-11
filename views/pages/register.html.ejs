@@ -1,4 +1,4 @@
-<div class="text-center container" style="max-width: 30%">
+<div class="text-center container" style="max-width: 330px">
     <h1 class="h3 mb-3 font-weight-normal text-primary">Register</h1>
     <form id="registerForm" onsubmit="return registerPressed(event)">
         <label for="firstName" class="sr-only">First name</label>
@@ -14,7 +14,7 @@
         <input
             type="text"
             id="lastName"
-            class="form-control"
+            class="form-control mt-2"
             placeholder="Last name"
             required
         />
@@ -23,7 +23,7 @@
         <input
             type="email"
             id="email"
-            class="form-control"
+            class="form-control mt-2"
             placeholder="Email"
             required
             autofocus
@@ -33,17 +33,9 @@
         <input
             type="password"
             id="password"
-            class="form-control"
+            class="form-control mt-2"
             placeholder="Password"
             required
-        />
-
-        <label for="link" class="sr-only">invite link</label>
-        <input
-            type="text"
-            id="link"
-            class="form-control mt-4"
-            placeholder="optional invite link"
         />
 
         <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">
