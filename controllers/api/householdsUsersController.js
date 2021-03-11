@@ -59,7 +59,6 @@ class ApiHouseholdsUsersController extends Controller {
             const householdId = self.param('hid');
             if (householdId) {
                 where['householdId'] = self.param('hid');
-                where['userId'] = self.req.user.id;
                 include = self.db.HouseholdUser.extendInclude;
             } else {
                 where['userId'] = self.req.user.id;
