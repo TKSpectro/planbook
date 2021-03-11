@@ -18,7 +18,7 @@ function refreshHouseholdList() {
                 householdList.innerHTML +=
                     '<a href="/dashboard?hid=' +
                     household.householdId +
-                    '" class="list-group-item active text-dark text-center font-weight-bold">' +
+                    '" class="list-group-item mt-2 active text-dark text-center font-weight-bold">' +
                     household.household.name +
                     '</a>';
             });

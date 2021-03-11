@@ -28,11 +28,9 @@ function refreshMoneypoolList() {
                     '&id=' +
                     moneypool.id +
                     '"' +
-                    'class="list-group-item active text-dark">' +
-                    '<div class="d-flex w-100 justify-content-between">' +
-                    '<h5 class="mb-1">' +
+                    'class="list-group-item mt-2 active text-dark text-center font-weight-bold">' +
                     moneypool.name +
-                    '</h5></div></a>';
+                    '</a>';
             });
         });
 }
