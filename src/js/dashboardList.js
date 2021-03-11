@@ -18,11 +18,9 @@ function refreshHouseholdList() {
                 householdList.innerHTML +=
                     '<a href="/dashboard?hid=' +
                     household.householdId +
-                    '" class="list-group-item active text-dark">' +
-                    '<div class="d-flex w-100 justify-content-between">' +
-                    '<h5 class="mb-1">' +
+                    '" class="list-group-item active text-dark text-center font-weight-bold">' +
                     household.household.name +
-                    '</h5></div></a>';
+                    '</a>';
             });
         });
 }

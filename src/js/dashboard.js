@@ -152,11 +152,11 @@ function createPaymentListElement(
     row1.classList.add('row', 'font-weight-bold');
 
     const row1div1 = document.createElement('div');
-    row1div1.classList.add('col');
+    row1div1.classList.add('col-7');
     row1div1.append(name);
 
     const row1div2 = document.createElement('div');
-    row1div2.classList.add('col', 'text-right');
+    row1div2.classList.add('col-5', 'text-right');
     row1div2.append(value);
 
     row1.append(row1div1);
