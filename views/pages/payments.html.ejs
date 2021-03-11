@@ -1,28 +1,42 @@
-<%-include('../modals/addPaymentModal.html.ejs');-%>
-
-<form class="pt-4 mb-0 form-inline">
-    <label class="col-sm-1 col-form-label" for="startDateInput">Start</label>
-    <!-- startDateInput - defaultValue: first day of the month -->
-    <input
-        type="date"
-        class="form-control"
-        id="startDateInput"
-        value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <form class="mb-0 form-inline">
+                <label class="mx-2 mt-2 col-form-label" for="startDateInput"
+                    >Start</label
+                >
+                <!-- startDateInput - defaultValue: first day of the month -->
+                <input
+                    type="date"
+                    class="form-control mt-2"
+                    id="startDateInput"
+                    value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
                 .toISOString().slice(0,10)%>"
-    />
-    <label class="col-sm-1 col-form-label" for="endDateInput">End</label>
-    <!-- endDateInput - defaultValue: today -->
-    <input
-        type="date"
-        class="form-control mr-4"
-        id="endDateInput"
-        value="<%=new Date().toISOString().slice(0,10)%>"
-    />
-    <button type="button" class="btn btn-primary" onclick="getPayments()">
-        Refresh
-    </button>
-</form>
-
+                />
+                <label class="mx-2 mt-2 col-form-label" for="endDateInput"
+                    >End</label
+                >
+                <!-- endDateInput - defaultValue: today -->
+                <input
+                    type="date"
+                    class="form-control mt-2"
+                    id="endDateInput"
+                    value="<%=new Date().toISOString().slice(0,10)%>"
+                />
+                <button
+                    type="button"
+                    class="ml-3 mt-2 btn btn-primary"
+                    onclick="getPayments()"
+                >
+                    Refresh
+                </button>
+            </form>
+        </div>
+        <div class="col-md-3 mt-2 text-right">
+            <%-include('../modals/addPaymentModal.html.ejs');-%>
+        </div>
+    </div>
+</div>
 <div class="pt-4 mx-auto">
     <canvas id="paymentHistoryChart"></canvas>
 </div>
