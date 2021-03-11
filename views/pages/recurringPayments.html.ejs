@@ -1,47 +1,38 @@
-<div class="mx-auto" style="width: 80%">
-    <a href="/dashboard?hid=<%=household.id%>" class="btn btn-primary"
-        >Go Back</a
-    >
+<%-include('../modals/addRecurringPaymentModal.html.ejs');-%>
 
-    <%-include('../modals/addRecurringPaymentModal.html.ejs');-%>
+<div class="pt-4">
+    <label>recurring Payments calculated</label>
+    <table id="calculatedTable" class="table table-hover table-dark bg-dark">
+        <thead>
+            <tr>
+                <th scope="col">per Day</th>
+                <th scope="col">per Week</th>
+                <th scope="col">per Month</th>
+                <th scope="col">per Quarter</th>
+                <th scope="col">per Year</th>
+            </tr>
+        </thead>
+    </table>
+</div>
 
-    <div class="pt-4">
-        <label>recurring Payments calculated</label>
+<div class="pt-4">
+    <label>All recurring payments</label>
+    <div class="table-responsive-lg">
         <table
-            id="calculatedTable"
+            id="recurringPaymentsTable"
             class="table table-hover table-dark bg-dark"
         >
             <thead>
                 <tr>
-                    <th scope="col">per Day</th>
-                    <th scope="col">per Week</th>
-                    <th scope="col">per Month</th>
-                    <th scope="col">per Quarter</th>
-                    <th scope="col">per Year</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Purpose</th>
+                    <th scope="col">StartDate</th>
+                    <th scope="col">EndDate</th>
+                    <th scope="col">Interval</th>
+                    <th scope="col">Value</th>
                 </tr>
             </thead>
         </table>
-    </div>
-
-    <div class="pt-4">
-        <label>All recurring payments</label>
-        <div class="table-responsive-lg">
-            <table
-                id="recurringPaymentsTable"
-                class="table table-hover table-dark bg-dark"
-            >
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Purpose</th>
-                        <th scope="col">StartDate</th>
-                        <th scope="col">EndDate</th>
-                        <th scope="col">Interval</th>
-                        <th scope="col">Value</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
     </div>
 </div>
 

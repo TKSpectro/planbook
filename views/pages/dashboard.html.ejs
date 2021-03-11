@@ -10,104 +10,101 @@
 </div>
 
 <% } else{ %>
-<div class="mx-auto" style="width: 80%">
-    <h1 class="pb-4"><%=household.name%></h1>
-    <div class="row bg-light rounded-lg p-2 m-0">
-        <div class="col-sm-6">
-            <h2 class="m-0">Total balance</h2>
-        </div>
-        <div class="col-sm-6 text-right">
-            <h2 class="m-0" id="householdSaldo"></h2>
+<h1 class="pb-4"><%=household.name%></h1>
+<div class="row bg-light rounded-lg p-2 m-0">
+    <div class="col-sm-6">
+        <h2 class="m-0">Total balance</h2>
+    </div>
+    <div class="col-sm-6 text-right">
+        <h2 class="m-0" id="householdSaldo"></h2>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-lg-3 pt-4">
+    <div class="col mb-4">
+        <div class="card bg-light text-white">
+            <h4 class="card-header">
+                <i class="bi-arrow-left-right text-primary"></i>
+                Payments
+            </h4>
+            <div class="card-body py-0">
+                <ul
+                    id="lastPaymentsList"
+                    class="list-group list-group-flush"
+                ></ul>
+            </div>
+            <div class="card-footer font-weight-bold">
+                <a href="/payments?hid=<%=urlHouseholdId%>">
+                    <div class="row">
+                        <div class="col-10">All payments</div>
+                        <div class="col-2 text-right text-primary">
+                            <i class="bi-chevron-right"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
-
-    <div class="row row-cols-1 row-cols-lg-3 pt-4">
-        <div class="col mb-4">
-            <div class="card bg-light text-white">
-                <h4 class="card-header">
-                    <i class="bi-arrow-left-right text-primary"></i>
-                    Payments
-                </h4>
-                <div class="card-body py-0">
-                    <ul
-                        id="lastPaymentsList"
-                        class="list-group list-group-flush"
-                    ></ul>
-                </div>
-                <div class="card-footer font-weight-bold">
-                    <a href="/payments?hid=<%=urlHouseholdId%>">
-                        <div class="row">
-                            <div class="col-10">All payments</div>
-                            <div class="col-2 text-right text-primary">
-                                <i class="bi-chevron-right"></i>
-                            </div>
+    <div class="col mb-4">
+        <div class="card bg-light text-white">
+            <h4 class="card-header">
+                <i class="bi-calendar-event text-primary"></i>
+                Preview
+            </h4>
+            <div class="card-body py-0">
+                <ul
+                    id="previewRecurringPaymentsList"
+                    class="list-group list-group-flush"
+                ></ul>
+            </div>
+            <div class="card-footer font-weight-bold">
+                <a href="/recurringPayments?hid=<%=urlHouseholdId%>">
+                    <div class="row">
+                        <div class="col-10">All recurring payments</div>
+                        <div class="col-2 text-right text-primary">
+                            <i class="bi-chevron-right"></i>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="col mb-4">
-            <div class="card bg-light text-white">
-                <h4 class="card-header">
-                    <i class="bi-calendar-event text-primary"></i>
-                    Preview
-                </h4>
-                <div class="card-body py-0">
-                    <ul
-                        id="previewRecurringPaymentsList"
-                        class="list-group list-group-flush"
-                    ></ul>
+    </div>
+    <div class="col mb-4">
+        <div class="card bg-light text-white">
+            <h4 class="card-header">
+                <i class="bi-tags text-primary"></i>
+                This Month
+            </h4>
+            <div class="card-body py-0">
+                <div class="row pt-2">
+                    <h5 class="col">Total</h5>
                 </div>
-                <div class="card-footer font-weight-bold">
-                    <a href="/recurringPayments?hid=<%=urlHouseholdId%>">
-                        <div class="row">
-                            <div class="col-10">All recurring payments</div>
-                            <div class="col-2 text-right text-primary">
-                                <i class="bi-chevron-right"></i>
-                            </div>
-                        </div>
-                    </a>
+                <div class="row">
+                    <div class="col">Income:</div>
+                    <div id="householdIncome" class="col text-right">450€</div>
+                </div>
+                <div class="row">
+                    <div class="col">Expenses:</div>
+                    <div id="householdExpenses" class="col text-right">
+                        -250€
+                    </div>
+                </div>
+                <div class="row py-4">
+                    <canvas id="thisMonthChart"></canvas>
                 </div>
             </div>
-        </div>
-        <div class="col mb-4">
-            <div class="card bg-light text-white">
-                <h4 class="card-header">
-                    <i class="bi-tags text-primary"></i>
-                    This Month
-                </h4>
-                <div class="card-body py-0">
-                    <div class="row pt-2">
-                        <h5 class="col">Total</h5>
-                    </div>
+            <div class="card-footer font-weight-bold">
+                <a href="/payments?hid=<%=urlHouseholdId%>">
                     <div class="row">
-                        <div class="col">Income:</div>
-                        <div id="householdIncome" class="col text-right">
-                            450€
+                        <div class="col-10">All payments</div>
+                        <div class="col-2 text-right text-primary">
+                            <i class="bi-chevron-right"></i>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">Expenses:</div>
-                        <div id="householdExpenses" class="col text-right">
-                            -250€
-                        </div>
-                    </div>
-                    <div class="row py-4">
-                        <canvas id="thisMonthChart"></canvas>
-                    </div>
-                </div>
-                <div class="card-footer font-weight-bold">
-                    <a href="/payments?hid=<%=urlHouseholdId%>">
-                        <div class="row">
-                            <div class="col-10">All payments</div>
-                            <div class="col-2 text-right text-primary">
-                                <i class="bi-chevron-right"></i>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
     </div>
 </div>
+
 <% } %>

@@ -7,75 +7,74 @@
 </div>
 
 <% } else{ %>
-<div class="mx-auto" style="width: 80%">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-5">
-                <h2 id="moneypoolName"></h2>
-                <p id="moneypoolDescription"></p>
-            </div>
-            <div class="col-lg-7">
-                <canvas id="memberAmountChart"></canvas>
-            </div>
+    
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5">
+            <h2 id="moneypoolName"></h2>
+            <p id="moneypoolDescription"></p>
+        </div>
+        <div class="col-lg-7">
+            <canvas id="memberAmountChart"></canvas>
         </div>
     </div>
-    <input id="currentUserId" class="d-none" value="<%=self.req.user.id%>"></input>
-    <div class="pt-4">
-        <label>Whole Moneypool progress</label>
-        <div class="progress font-weight-bold" style="height: 4em">
-            <div
-                id="neededMoneyProgressBar"
-                class="progress-bar progress-bar-striped text-dark"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-            ></div>
-            <div
-                id="missingMoneyProgressBar"
-                class="progress-bar progress-bar-striped bg-complementary text-dark"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-            ></div>
-        </div>
+</div>
+<input id="currentUserId" class="d-none" value="<%=self.req.user.id%>"></input>
+<div class="pt-4">
+    <label>Whole Moneypool progress</label>
+    <div class="progress font-weight-bold" style="height: 4em">
+        <div
+            id="neededMoneyProgressBar"
+            class="progress-bar progress-bar-striped text-dark"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+        ></div>
+        <div
+            id="missingMoneyProgressBar"
+            class="progress-bar progress-bar-striped bg-complementary text-dark"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+        ></div>
     </div>
-    <div class="pt-4">
-        <label>Own progress in moneypool</label>
-        <div class="progress font-weight-bold" style="height: 4em">
-            <div
-                id="ownNeededMoneyProgressBar"
-                class="progress-bar progress-bar-striped text-dark"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-            ></div>
-            <div
-                id="ownMissingMoneyProgressBar"
-                class="progress-bar progress-bar-striped bg-complementary text-dark"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-            ></div>
-        </div>
+</div>
+<div class="pt-4">
+    <label>Own progress in moneypool</label>
+    <div class="progress font-weight-bold" style="height: 4em">
+        <div
+            id="ownNeededMoneyProgressBar"
+            class="progress-bar progress-bar-striped text-dark"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+        ></div>
+        <div
+            id="ownMissingMoneyProgressBar"
+            class="progress-bar progress-bar-striped bg-complementary text-dark"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+        ></div>
     </div>
-    <div class="pt-4">
-        <%-include('../modals/addMoneypoolPaymentModal.html.ejs');-%>
-    </div>
-    <div class="pt-4">
-        <label>All moneypool payments</label>
-        <table
-            id="moneypoolPaymentsTable"
-            class="table table-hover table-dark bg-dark"
-        >
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Value</th>
-                    <th scope="col">From</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+</div>
+<div class="pt-4">
+    <%-include('../modals/addMoneypoolPaymentModal.html.ejs');-%>
+</div>
+<div class="pt-4">
+    <label>All moneypool payments</label>
+    <table
+        id="moneypoolPaymentsTable"
+        class="table table-hover table-dark bg-dark"
+    >
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Value</th>
+                <th scope="col">From</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 <% } %>

@@ -1,77 +1,67 @@
-<div class="mx-auto" style="width: 80%">
-    <a href="/dashboard?hid=<%=household.id%>" class="btn btn-primary"
-        >Go Back</a
-    >
+<%-include('../modals/addPaymentModal.html.ejs');-%>
 
-    <%-include('../modals/addPaymentModal.html.ejs');-%>
-
-    <form class="pt-4 mb-0 form-inline">
-        <label class="col-sm-1 col-form-label" for="startDateInput"
-            >Start</label
-        >
-        <!-- startDateInput - defaultValue: first day of the month -->
-        <input
-            type="date"
-            class="form-control"
-            id="startDateInput"
-            value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
+<form class="pt-4 mb-0 form-inline">
+    <label class="col-sm-1 col-form-label" for="startDateInput">Start</label>
+    <!-- startDateInput - defaultValue: first day of the month -->
+    <input
+        type="date"
+        class="form-control"
+        id="startDateInput"
+        value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
                 .toISOString().slice(0,10)%>"
-        />
-        <label class="col-sm-1 col-form-label" for="endDateInput">End</label>
-        <!-- endDateInput - defaultValue: today -->
-        <input
-            type="date"
-            class="form-control mr-4"
-            id="endDateInput"
-            value="<%=new Date().toISOString().slice(0,10)%>"
-        />
-        <button type="button" class="btn btn-primary" onclick="getPayments()">
-            Refresh
-        </button>
-    </form>
+    />
+    <label class="col-sm-1 col-form-label" for="endDateInput">End</label>
+    <!-- endDateInput - defaultValue: today -->
+    <input
+        type="date"
+        class="form-control mr-4"
+        id="endDateInput"
+        value="<%=new Date().toISOString().slice(0,10)%>"
+    />
+    <button type="button" class="btn btn-primary" onclick="getPayments()">
+        Refresh
+    </button>
+</form>
 
-    <div class="pt-4 mx-auto">
-        <canvas id="paymentHistoryChart"></canvas>
-    </div>
+<div class="pt-4 mx-auto">
+    <canvas id="paymentHistoryChart"></canvas>
+</div>
 
-    <div class="pt-4">
-        <label>All payments</label>
-        <div class="table-responsive-lg">
-            <table
-                id="paymentsTable"
-                class="table table-hover table-dark bg-dark"
-            >
-                <thead>
-                    <tr>
-                        <th
-                            scope="col"
-                            onclick="sortTable(0, false, 'paymentsTable')"
-                        >
-                            Purpose
-                        </th>
-                        <th
-                            scope="col"
-                            onclick="sortTable(1, false,'paymentsTable')"
-                        >
-                            Category
-                        </th>
-                        <th
-                            scope="col"
-                            onclick="sortTable(2, true, 'paymentsTable')"
-                        >
-                            Value
-                        </th>
-                        <th
-                            scope="col"
-                            onclick="sortTable(3, false,'paymentsTable')"
-                        >
-                            recurring
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+<div class="pt-4">
+    <label>All payments</label>
+    <div class="table-responsive-lg">
+        <table id="paymentsTable" class="table table-hover table-dark bg-dark">
+            <thead>
+                <tr>
+                    <th
+                        scope="col"
+                        onclick="sortTable(0, false, 'paymentsTable')"
+                    >
+                        Purpose
+                    </th>
+                    <th
+                        scope="col"
+                        onclick="sortTable(1, false,'paymentsTable')"
+                    >
+                        Category
+                    </th>
+                    <th
+                        scope="col"
+                        onclick="sortTable(2, true, 'paymentsTable')"
+                    >
+                        Value
+                    </th>
+                    <th
+                        scope="col"
+                        onclick="sortTable(3, false,'paymentsTable')"
+                    >
+                        recurring
+                    </th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
+
 <!-- need moment.js for chart.js usage with time x axis -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
