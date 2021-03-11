@@ -69,6 +69,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Home',
+            urlHouseholdId: self.param('hid'),
             users: users,
         });
     }
@@ -80,6 +81,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Imprint',
+            urlHouseholdId: self.param('hid'),
         });
     }
 
@@ -92,6 +94,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Login',
+            urlHouseholdId: self.param('hid'),
         });
     }
 
@@ -104,6 +107,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Register',
+            urlHouseholdId: self.param('hid'),
         });
     }
 
@@ -119,6 +123,7 @@ class PagesController extends Controller {
 
             self.render({
                 title: 'Dashboard',
+                urlHouseholdId: self.param('hid'),
                 isHouseholdChooser: true,
             });
         } else {
@@ -143,6 +148,7 @@ class PagesController extends Controller {
 
             self.render({
                 title: 'Dashboard ' + household.name,
+                urlHouseholdId: self.param('hid'),
                 household: household,
                 categories: categories,
                 isHouseholdChooser: false,
@@ -169,6 +175,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Payments',
+            urlHouseholdId: self.param('hid'),
             household: household,
             categories: categories,
         });
@@ -198,6 +205,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Payments',
+            urlHouseholdId: self.param('hid'),
             household: household,
             recurringPayments: recurringPayments,
             categories: categories,
@@ -245,6 +253,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Members',
+            urlHouseholdId: self.param('hid'),
             members: members,
             invites: invites,
         });
@@ -269,6 +278,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Moneypools',
+            urlHouseholdId: self.param('hid'),
             isMoneypoolChooser: isMoneypoolChooser,
         });
     }
@@ -288,6 +298,7 @@ class PagesController extends Controller {
 
         self.render({
             title: 'Todo',
+            urlHouseholdId: self.param('hid'),
             todos: todos,
         });
     }

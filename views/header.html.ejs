@@ -31,10 +31,45 @@
                             >Home <span class="sr-only">(current)</span></a
                         >
                     </li>
-                    <% } else { %>
+                    <% } else { %> <% if(urlHouseholdId) { %>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/dashboard"
-                            >Dashboard <span class="sr-only">(current)</span></a
+                        <a
+                            class="nav-link"
+                            href="/dashboard?hid=<%=urlHouseholdId%>"
+                            >Dashboard</a
+                        >
+                    </li>
+                    <% } else {%>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <% } %> <% } %> <% if(urlHouseholdId) { %>
+                    <li class="nav-item active">
+                        <a
+                            class="nav-link"
+                            href="/payments?hid=<%=urlHouseholdId%>"
+                            >Payments</a
+                        >
+                    </li>
+                    <li class="nav-item active">
+                        <a
+                            class="nav-link"
+                            href="/recurringPayments?hid=<%=urlHouseholdId%>"
+                            >Recurring payments</a
+                        >
+                    </li>
+                    <li class="nav-item active">
+                        <a
+                            class="nav-link"
+                            href="/moneypools?hid=<%=urlHouseholdId%>"
+                            >Moneypools</a
+                        >
+                    </li>
+                    <li class="nav-item active">
+                        <a
+                            class="nav-link"
+                            href="/members?hid=<%=urlHouseholdId%>"
+                            >Members</a
                         >
                     </li>
                     <% } %>
