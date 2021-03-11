@@ -1,31 +1,191 @@
 function refreshPage() {
-    getLastPayments()
+    getPayments()
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
                 showAlert('Found no payments', 'warning');
-                document.getElementById('mainChart').hidden = true;
+                // TODO document.getElementById('mainChart').hidden = true;
                 return;
             }
         })
         .then((data) => {
-            refreshHouseholdSaldo(data);
-            refreshLastPaymentsChart(data);
-            refreshLastPaymentsTable(data);
+            refreshHouseholdFixValues(data.payments);
+            refreshLastPayments(data.payments);
+            refreshThisMonthsPaymentsChart(data.payments);
+        });
+    getRecurringPayments()
+        .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+                return response.json();
+            } else {
+                showAlert('Found no recurring payments', 'warning');
+                return;
+            }
+        })
+        .then((data) => {
+            refreshPreviewRecurringPayments(data.recurringPayments);
         });
 }
 
-function refreshHouseholdSaldo(data) {
-    let saldoValue = 0;
-    data.payments.forEach((payment) => {
-        saldoValue += payment.value;
+function refreshHouseholdFixValues(data) {
+    let householdSaldo = 0;
+    let householdIncome = 0;
+    let householdExpenses = 0;
+
+    data.forEach((payment) => {
+        householdSaldo += payment.value;
+
+        // If payment was in current month
+        if (new Date().getMonth() === new Date(payment.createdAt).getMonth()) {
+            if (payment.value >= 0) {
+                householdIncome += payment.value;
+            } else {
+                householdExpenses += payment.value;
+            }
+        }
     });
+
+    if (householdSaldo < 0) {
+        document
+            .getElementById('householdSaldo')
+            .classList.add('text-complementary');
+    }
+
     document.getElementById('householdSaldo').innerHTML =
-        'Saldo ' + saldoValue.toString() + '€';
+        householdSaldo.toFixed(2) + '€';
+    document.getElementById('householdIncome').innerHTML =
+        householdIncome.toFixed(2) + '€';
+    document.getElementById('householdExpenses').innerHTML =
+        householdExpenses.toFixed(2) + '€';
 }
 
-function refreshLastPaymentsChart(data) {
+function refreshLastPayments(data) {
+    for (let i = 0; i < 5; i++) {
+        const createdAt = new Date(data[i].createdAt);
+        const date =
+            createdAt.getDate() +
+            '.' +
+            (createdAt.getMonth() + 1) +
+            '.' +
+            createdAt.getFullYear();
+        document
+            .getElementById('lastPaymentsList')
+            .appendChild(
+                createPaymentListElement(
+                    data[i].purpose,
+                    Number(data[i].value).toFixed(2) + '€',
+                    date
+                )
+            );
+    }
+}
+
+function refreshPreviewRecurringPayments(data) {
+    data.forEach((recurringPayment) => {
+        const startDate = new Date(recurringPayment.startDate);
+        const today = new Date();
+        let calculatedDate = today;
+
+        // TODO build up this switch
+        switch (recurringPayment.interval) {
+            case 'daily':
+                // Gets booked today so do nothing
+                break;
+            case 'weekly':
+                break;
+            case 'monthly':
+                calculatedDate.setDate(startDate.getDate());
+                if (today.getDate() < startDate.getDate())
+                    calculatedDate.setMonth(today.getMonth());
+                else calculatedDate.setMonth(today.getMonth() + 1);
+
+                break;
+            case 'quarterly':
+                calculatedDate.setDate(startDate.getDate());
+                break;
+            case 'yearly':
+                break;
+            default:
+                break;
+        }
+        let date =
+            calculatedDate.getDate() +
+            '.' +
+            (calculatedDate.getMonth() + 1) +
+            '.' +
+            calculatedDate.getFullYear();
+        document
+            .getElementById('previewRecurringPaymentsList')
+            .appendChild(
+                createPaymentListElement(
+                    recurringPayment.purpose,
+                    Number(recurringPayment.value).toFixed(2) + '€',
+                    date,
+                    recurringPayment.interval
+                )
+            );
+    });
+}
+
+function createPaymentListElement(
+    name = '',
+    value = '',
+    date = '',
+    interval = ''
+) {
+    // This functions creates a element looking like this:
+    // <li class="list-group-item bg-light px-0">
+    //     <div class="row font-weight-bold">
+    //         <div class="col">name</div>
+    //         <div class="col text-right">value</div>
+    //     </div>
+    //     <div class="row">
+    //         <div class="col">date</div>
+    //     </div>
+    // </li>
+
+    const element = document.createElement('li');
+    element.classList.add('list-group-item', 'bg-light', 'px-0');
+
+    const row1 = document.createElement('div');
+    row1.classList.add('row', 'font-weight-bold');
+
+    const row1div1 = document.createElement('div');
+    row1div1.classList.add('col');
+    row1div1.append(name);
+
+    const row1div2 = document.createElement('div');
+    row1div2.classList.add('col', 'text-right');
+    row1div2.append(value);
+
+    row1.append(row1div1);
+    row1.append(row1div2);
+
+    element.append(row1);
+
+    const row2 = document.createElement('div');
+    row2.classList.add('row');
+
+    const row2div1 = document.createElement('div');
+    row2div1.classList.add('col');
+    row2div1.append(date);
+
+    row2.append(row2div1);
+    if (interval) {
+        const row2div2 = document.createElement('div');
+        row2div2.classList.add('col', 'text-right');
+        row2div2.append(interval);
+
+        row2.append(row2div2);
+    }
+
+    element.append(row2);
+
+    return element;
+}
+
+function refreshThisMonthsPaymentsChart(data) {
     let labels = [];
     let values = [];
     let backgroundColors = [];
@@ -33,13 +193,16 @@ function refreshLastPaymentsChart(data) {
         return;
     }
     // go through all entries and filter out multiple categories and add up the value in one category
-    data.payments.forEach((payment) => {
+    data.forEach((payment) => {
         let category = payment.category;
-        if (labels.indexOf(category.name) == -1) {
-            labels.push(category.name);
-            values.push(payment.value);
-        } else {
-            values[labels.indexOf(category.name)] += payment.value;
+
+        if (new Date().getMonth() === new Date(payment.createdAt).getMonth()) {
+            if (labels.indexOf(category.name) == -1) {
+                labels.push(category.name);
+                values.push(payment.value);
+            } else {
+                values[labels.indexOf(category.name)] += payment.value;
+            }
         }
     });
 
@@ -48,15 +211,15 @@ function refreshLastPaymentsChart(data) {
         // Add the value to the money as we also want to set it
 
         if (value >= 0) {
-            backgroundColors.push('#7CFC00');
+            backgroundColors.push('#1DE9B6');
         } else {
-            backgroundColors.push('#F08080');
+            backgroundColors.push('#e91d50');
         }
     });
 
-    let ctx = mainChart.getContext('2d');
+    let ctx = document.getElementById('thisMonthChart');
     let config = {
-        type: 'doughnut',
+        type: 'pie',
         data: {
             labels: labels,
             datasets: [
@@ -72,6 +235,7 @@ function refreshLastPaymentsChart(data) {
                 text: 'Outgoing',
             },
             legend: {
+                display: false,
                 position: 'bottom',
             },
         },
@@ -80,28 +244,29 @@ function refreshLastPaymentsChart(data) {
     let chart = new Chart(ctx, config);
 }
 
-function refreshLastPaymentsTable(data) {
-    let tableData = [];
+async function getPayments() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const householdId = urlParams.get('hid');
 
-    let i = 1;
-    data.payments.forEach((payment) => {
-        tableData.push([
-            i,
-            payment.purpose,
-            payment.value > 0 ? '+' + payment.value + '€' : payment.value + '€',
-        ]);
-        i++;
+    const url = '/api/payments?hid=' + householdId + '&moneypoolId=null';
+
+    const response = await fetch(url, {
+        method: 'GET',
     });
 
-    refreshTable('lastPaymentsTable', tableData);
+    return response;
 }
 
-async function getLastPayments() {
+async function getRecurringPayments() {
     const urlParams = new URLSearchParams(window.location.search);
     const householdId = urlParams.get('hid');
 
     const url =
-        '/api/payments?hid=' + householdId + '&moneypoolId=null&limit=10';
+        '/api/recurringPayments?hid=' +
+        householdId +
+        '&start=' +
+        new Date().toJSON() +
+        '&limit=4';
 
     const response = await fetch(url, {
         method: 'GET',
