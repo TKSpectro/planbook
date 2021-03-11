@@ -42,11 +42,26 @@ class ApiRecurringPaymentsController extends Controller {
         let recurringPayments;
 
         try {
+            let where = { householdId: self.param('hid') };
+
+            if (self.param('start')) {
+                where['startDate'] = {
+                    [Op.lte]: new Date(self.param('start')),
+                };
+            }
+
+            let limit;
+            let order;
+            if (self.param('limit')) {
+                limit = Number(self.param('limit'));
+                order = [['startDate', 'ASC']];
+            }
+
             recurringPayments = await self.db.RecurringPayment.findAll({
                 include: self.db.RecurringPayment.extendInclude,
-                where: {
-                    householdId: self.param('hid'),
-                },
+                where: where,
+                limit: limit,
+                order: order,
             });
             if (!recurringPayments) {
                 throw new ApiError('No recurringPayments found', 404);
