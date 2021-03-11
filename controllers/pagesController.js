@@ -6,16 +6,13 @@ class PagesController extends Controller {
 
         self.css('custom');
 
-        self.before(
-            ['*', '-imprint', '-login', '-register', '-index'],
-            (next) => {
-                if (self.req.authorized === true) {
-                    next();
-                } else {
-                    self.redirect(self.urlFor('pages', 'login'));
-                }
+        self.before(['*', '-imprint', '-login', '-register'], (next) => {
+            if (self.req.authorized === true) {
+                next();
+            } else {
+                self.redirect(self.urlFor('pages', 'login'));
             }
-        );
+        });
 
         self.before(
             [
@@ -50,7 +47,7 @@ class PagesController extends Controller {
             }
         );
 
-        self.before(['login', 'register', 'index'], (next) => {
+        self.before(['login', 'register'], (next) => {
             if (self.req.authorized === true) {
                 self.redirect(self.urlFor('pages', 'dashboard'));
             } else {
