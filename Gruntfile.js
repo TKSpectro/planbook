@@ -25,8 +25,12 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['src/js/**', 'src/apidoc/**', 'assets/css/**'],
+                files: ['src/js/**', 'assets/css/**'],
                 tasks: ['uglify', 'copy'],
+            },
+            apiDoc: {
+                files: ['src/apidoc/**'],
+                tasks: ['apidoc'],
             },
         },
         apidoc: {
