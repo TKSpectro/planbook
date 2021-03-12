@@ -44,6 +44,7 @@ function refreshNeededMoneyProgress(moneypool) {
     });
 
     const percentage = (alreadyPaidMoney / moneypool.totalNeededMoney) * 100;
+
     const progressBar = document.getElementById('neededMoneyProgressBar');
 
     // Show text
@@ -77,6 +78,13 @@ function refreshNeededMoneyProgress(moneypool) {
             (moneypool.totalNeededMoney - alreadyPaidMoney) +
             '€'
     );
+
+    if (percentage >= 100) {
+        document
+            .getElementById('paymentModalContainer')
+            .classList.add('d-none');
+        missingMoneyProgressBar.classList.add('d-none');
+    }
 }
 
 function refreshOwnNeededMoneyProgress(moneypool) {
@@ -125,6 +133,10 @@ function refreshOwnNeededMoneyProgress(moneypool) {
             (ownMissingMoney - alreadyOwnPaidMoney) +
             '€'
     );
+
+    if (ownPercentage >= 100) {
+        missingMoneyProgressBar.classList.add('d-none');
+    }
 }
 
 function refreshMemberAmountChart(moneypool) {
