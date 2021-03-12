@@ -241,7 +241,12 @@ function refreshThisMonthsPaymentsChart(data) {
         },
     };
 
-    let chart = new Chart(ctx, config);
+    if (!window.thisMonthChart.config) {
+        window.thisMonthChart = new Chart(ctx, config);
+    } else {
+        window.thisMonthChart.config = config;
+        window.thisMonthChart.update();
+    }
 }
 
 async function getPayments() {

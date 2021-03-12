@@ -46,29 +46,33 @@ function refreshChart(payments) {
         chartElement.parentElement.classList.remove('d-none');
     }
 
-    const options = {
-        scales: {
-            xAxes: [
+    let config = {
+        type: 'line',
+
+        options: {
+            scales: {
+                xAxes: [
+                    {
+                        type: 'time',
+                        distribution: 'linear',
+                        time: { minUnit: 'day' },
+                    },
+                ],
+            },
+        },
+
+        data: {
+            labels: [],
+            datasets: [
                 {
-                    type: 'time',
-                    distribution: 'linear',
-                    time: { minUnit: 'day' },
+                    label: 'Value',
+                    data: [],
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderColor: '#1DE9B6',
+                    borderWidth: 1,
                 },
             ],
         },
-    };
-
-    let data = {
-        labels: [],
-        datasets: [
-            {
-                label: 'Value',
-                data: [],
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                borderColor: '#1DE9B6',
-                borderWidth: 1,
-            },
-        ],
     };
     let currentValue = 0;
     let tableData = [];
@@ -80,8 +84,8 @@ function refreshChart(payments) {
     payments.forEach((payment) => {
         // Write data for chart
         currentValue -= payment.value;
-        data.labels.push(payment.createdAt);
-        data.datasets[0].data.push({
+        config.data.labels.push(payment.createdAt);
+        config.data.datasets[0].data.push({
             t: payment.createdAt,
             y: currentValue,
         });
@@ -109,11 +113,12 @@ function refreshChart(payments) {
         ]);
     });
 
-    let paymentHistoryChart = new Chart(chartElement, {
-        type: 'line',
-        data: data,
-        options: options,
-    });
+    if (!window.paymentHistoryChart.config) {
+        window.paymentHistoryChart = new Chart(chartElement, config);
+    } else {
+        window.paymentHistoryChart.config = config;
+        window.paymentHistoryChart.update();
+    }
 
     refreshTable('paymentsTable', tableData);
 }
