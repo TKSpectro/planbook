@@ -16,15 +16,13 @@ IT-Praxisprojekt (4./5. Semester)
 
 #### Pages
 
-- [ ] Index - Homepage
 - [x] Login/Register
 - [x] Household Chooser
 - [x] Dashboard
 - [x] Member and invite management
 - [x] Payments with sorting and filtering
 - [x] Recurring payment management
-- [ ] Moneypool
-- [ ] To-Do lists
+- [x] Moneypool
 
 #### Functionality
 
