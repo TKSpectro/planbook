@@ -1,13 +1,19 @@
 <% if(isMoneypoolChooser == true){ %>
 
 <div class="container">
-    <%-include('../modals/addMoneypoolModal.html.ejs');-%>
+    <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#addMoneypoolModal"
+    >
+        Add Moneypool
+    </button>
 
     <div id="moneypoolList" class="list-group pt-4"></div>
 </div>
+<%-include('../modals/addMoneypoolModal.html.ejs');-%> <% } else{ %>
 
-<% } else{ %>
-    
 <div class="container">
     <div class="row">
         <div class="col-lg-5">
@@ -19,7 +25,7 @@
         </div>
     </div>
 </div>
-<input id="currentUserId" class="d-none" value="<%=self.req.user.id%>"></input>
+<input id="currentUserId" class="d-none" value="<%=self.req.user.id%>" />
 <div class="pt-4">
     <label>Whole Moneypool progress</label>
     <div class="progress font-weight-bold" style="height: 4em">
@@ -58,16 +64,32 @@
         ></div>
     </div>
 </div>
-<div id="paymentModalContainer" class="pt-4">
-    <%-include('../modals/addMoneypoolPaymentModal.html.ejs');-%>
+<div class="container text-center">
+    <a
+        type="button"
+        class="btn btn-primary mt-4 mx-4 px-4"
+        data-toggle="modal"
+        data-target="#addMoneypoolPaymentModal"
+    >
+        Add Payment
+    </a>
+    <a
+        type="button"
+        class="btn btn-primary mt-4 mx-4 px-4"
+        data-toggle="modal"
+        data-target="#editMoneypoolModal"
+    >
+        Edit Moneypool
+    </a>
 </div>
+
 <div class="pt-4">
     <label>All moneypool payments</label>
     <div class="table-responsive-lg">
         <table
             id="moneypoolPaymentsTable"
             class="table table-hover table-dark bg-dark"
-            >
+        >
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -79,4 +101,4 @@
         </table>
     </div>
 </div>
-<% } %>
+<%-include('../modals/addMoneypoolPaymentModal.html.ejs');-%> <% } %>
