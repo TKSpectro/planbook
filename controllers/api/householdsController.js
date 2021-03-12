@@ -27,11 +27,14 @@ class ApiHouseholdsController extends Controller {
     async actionCreate() {
         const self = this;
 
-        let remoteData = self.param('household') || {};
         let household = null;
         let error = null;
-
         try {
+            let remoteData = self.param('household');
+            if (!remoteData) {
+                throw new ApiError('No json body given', 400);
+            }
+
             household = await self.db.sequelize.transaction(async (t) => {
                 let newHousehold = self.db.Household.build();
                 // create the household
@@ -67,13 +70,15 @@ class ApiHouseholdsController extends Controller {
     async actionUpdate() {
         const self = this;
 
-        let remoteData = self.param('household');
-
         let household = null;
         let error = null;
-
+        // TODO get the id from the parameters and not from the remote data
         //Get the household
         try {
+            let remoteData = self.param('household');
+            if (!remoteData) {
+                throw new ApiError('No json body given', 400);
+            }
             household = await self.db.sequelize.transaction(async (t) => {
                 let updateHousehold = await self.db.Household.findOne(
                     {
@@ -122,15 +127,17 @@ class ApiHouseholdsController extends Controller {
         }
     }
 
+    // TODO remove all householdUsers for this household
     // delete the household with the given id
     async actionDelete() {
         const self = this;
 
-        let householdId = self.param('hid');
+        let household;
         let error = null;
 
         // delete the household
         try {
+            let householdId = self.param('hid');
             if (!householdId) {
                 throw new ApiError('No householdId specified.', 400);
             }
