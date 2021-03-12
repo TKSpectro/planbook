@@ -116,5 +116,73 @@ class ApiMoneypoolsController extends Controller {
             );
         }
     }
+
+    async actionUpdate() {
+        const self = this;
+
+        let moneypool;
+        let error;
+
+        try {
+            let remoteData = self.param('moneypool');
+            if (!remoteData) {
+                throw new ApiError('no moneypool object found in body', 400);
+            }
+            const householdId = self.param('hid');
+            const moneypoolId = self.param('id');
+            if (!moneypoolId) {
+                throw new ApiError('no id was send', 400);
+            }
+
+            moneypool = await self.db.sequelize.transaction(async (t) => {
+                let updatedMoneypool = await self.db.Moneypool.findOne(
+                    {
+                        where: {
+                            id: moneypoolId,
+                            householdId: householdId,
+                        },
+                    },
+                    { transaction: t }
+                );
+                if (updatedMoneypool) {
+                    await updatedMoneypool.update(
+                        {
+                            updatedAt: new Date(),
+                            name: remoteData['name'],
+                            description: remoteData['description'],
+                            totalNeededMoney: remoteData['totalNeededMoney'],
+                        },
+                        {
+                            where: {
+                                id: moneypoolId,
+                            },
+                        },
+                        { transaction: t, lock: true }
+                    );
+                }
+
+                return updatedMoneypool;
+            });
+
+            if (!moneypool) {
+                throw new ApiError('Moneypool could not be updated', 404);
+            }
+        } catch (err) {
+            error = err;
+        }
+
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {
+                    moneypool: moneypool,
+                },
+                {
+                    statusCode: 202,
+                }
+            );
+        }
+    }
 }
 module.exports = ApiMoneypoolsController;
