@@ -16,6 +16,7 @@ function refreshPage() {
             refreshNeededMoneyProgress(moneypool);
             refreshOwnNeededMoneyProgress(moneypool);
             refreshMoneypoolPaymentsTable(moneypool);
+            refreshEditMoneypoolModal(moneypool);
 
             // Enable all tooltips
             $('[data-toggle="tooltip"]').tooltip();
@@ -80,9 +81,7 @@ function refreshNeededMoneyProgress(moneypool) {
     );
 
     if (percentage >= 100) {
-        document
-            .getElementById('paymentModalContainer')
-            .classList.add('d-none');
+        document.getElementById('addPaymentButton').classList.add('d-none');
         missingMoneyProgressBar.classList.add('d-none');
     }
 }
@@ -204,7 +203,12 @@ function refreshMemberAmountChart(moneypool) {
         },
     };
 
-    let memberAmountChart = new Chart(ctx, config);
+    if (!window.memberAmountChart.config) {
+        window.memberAmountChart = new Chart(ctx, config);
+    } else {
+        window.memberAmountChart.config = config;
+        window.memberAmountChart.update();
+    }
 }
 
 function refreshMoneypoolPaymentsTable(moneypool) {
@@ -251,6 +255,40 @@ function savePayment(event) {
     return false;
 }
 
+function updateMoneypool(event) {
+    event.preventDefault();
+
+    const data = {
+        moneypool: {
+            name: document.getElementById('editNameInput').value,
+            description: document.getElementById('editDescriptionInput').value,
+            totalNeededMoney: document.getElementById('editNeededMoneyInput')
+                .value,
+        },
+    };
+
+    // Send the payment to the api
+    putMoneypool(data).then((data) => {
+        showAlert('The moneypool was updated!', 'success');
+        refreshPage();
+
+        $('#editMoneypoolModal').modal('hide');
+
+        return;
+    });
+
+    return false;
+}
+
+function refreshEditMoneypoolModal(moneypool) {
+    document.getElementById('editNameInput').value = moneypool.name;
+    document.getElementById('editDescriptionInput').value =
+        moneypool.description;
+    document.getElementById('editNeededMoneyInput').value = Number(
+        moneypool.totalNeededMoney
+    );
+}
+
 async function getMoneypool() {
     const urlParams = new URLSearchParams(window.location.search);
     const householdId = urlParams.get('hid');
@@ -268,6 +306,23 @@ async function getMoneypool() {
 async function postPayment(url = '', data = {}) {
     const response = await fetch(url, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    return response.json();
+}
+
+async function putMoneypool(data = {}) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const householdId = urlParams.get('hid');
+    const moneypoolId = urlParams.get('id');
+
+    const url = '/api/moneypools?hid=' + householdId + '&id=' + moneypoolId;
+
+    const response = await fetch(url, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
