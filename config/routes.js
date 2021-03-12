@@ -57,10 +57,8 @@ let routes = {
         controller: ApiCategoriesController,
         actions: [
             { path: '/api/categories', action: 'getAll', method: 'GET' },
-            { path: '/api/categories/:id', action: 'getOne', method: 'GET' },
-            //no put because categories should not be updated
             { path: '/api/categories', action: 'create', method: 'POST' },
-            { path: '/api/categories/:id', action: 'delete', method: 'DELETE' },
+            { path: '/api/categories', action: 'delete', method: 'DELETE' },
         ],
     },
     'api/households': {
