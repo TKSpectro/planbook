@@ -16,15 +16,20 @@
         <% } %>
 
         <style>
-            #menu-toggle:checked + #menu {
-                display: block;
+            .body {
+                width: 80%;
+            }
+            @media screen and (min-width: 1500px) {
+                .body {
+                    width: 70%;
+                }
             }
         </style>
     </head>
 
     <body class="bg-dark">
         <%-include('./header.html.ejs');-%>
-        <div class="pt-4 text-primary mx-auto" style="width: 80%">
+        <div class="pt-4 text-primary mx-auto body">
             <div id="alertPlaceholder"></div>
             <%-body%>
         </div>
