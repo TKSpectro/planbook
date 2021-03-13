@@ -31,10 +31,7 @@ class ApiUsersController extends Controller {
     async actionGetAll() {
         const self = this;
         if (!self.req.user.isAdmin) {
-            throw new ApiError(
-                'You are not allowed to access this endpoint',
-                403
-            );
+            throw new ApiError('You are not allowed to access this endpoint', 403);
         }
 
         let users = [];
@@ -75,10 +72,7 @@ class ApiUsersController extends Controller {
         let user = null;
         try {
             if (!self.req.user.isAdmin) {
-                throw new ApiError(
-                    'You are not allowed to access this endpoint',
-                    403
-                );
+                throw new ApiError('You are not allowed to access this endpoint', 403);
             }
 
             user = await self.db.User.findOne({
@@ -264,17 +258,8 @@ class ApiUsersController extends Controller {
                     email: remoteData.email,
                 },
             });
-            if (
-                !user ||
-                !Passport.comparePassword(
-                    remoteData.password,
-                    user.passwordHash
-                )
-            ) {
-                throw new ApiError(
-                    'Could not find user with this email or password.',
-                    404
-                );
+            if (!user || !Passport.comparePassword(remoteData.password, user.passwordHash)) {
+                throw new ApiError('Could not find user with this email or password.', 404);
             }
         } catch (err) {
             error = err;
@@ -283,11 +268,7 @@ class ApiUsersController extends Controller {
         if (error) {
             self.handleError(error);
         } else {
-            let token = Passport.authorizeUserWithCookie(
-                self.req,
-                self.res,
-                user.id
-            );
+            let token = Passport.authorizeUserWithCookie(self.req, self.res, user.id);
 
             self.render(
                 {
@@ -300,8 +281,6 @@ class ApiUsersController extends Controller {
         }
     }
 
-    // TODO stop using invite token here
-    // TODO dont create a empty household
     async actionRegister() {
         const self = this;
 
@@ -326,74 +305,15 @@ class ApiUsersController extends Controller {
 
                 let newUser = self.db.User.build();
                 //If a inviteLink was send then use the invite
-                if (remoteData.link) {
-                    //Take the corresponding invite from the database
-                    let invite = await self.db.Invite.findOne({
-                        where: {
-                            link: remoteData.link,
-                        },
-                        include: self.db.Invite.extendInclude,
-                        transaction: t,
-                    });
-                    if (!invite) {
-                        throw new ApiError('Invite token does not exist', 400);
-                    }
-                    if (
-                        invite.createdAt.getTime() !==
-                        invite.updatedAt.getTime()
-                    ) {
-                        throw new ApiError(
-                            'Invite token was already used',
-                            400
-                        );
-                    }
 
-                    //Set the household id to the one from the invite sender
-                    let householdId = invite.dataValues.sender.householdId;
-                    remoteData.householdId = householdId;
+                newUser.writeRemotes(remoteData);
+                await newUser.save({
+                    transaction: t,
+                    lock: true,
+                    include: self.db.User.extendInclude,
+                });
 
-                    //Update the invite to mark as used
-                    invite.changed('updatedAt', true);
-
-                    await invite.update(
-                        {
-                            updatedAt: new Date(),
-                        },
-                        {
-                            where: {
-                                link: remoteData.link,
-                            },
-                        },
-                        { transaction: t, lock: true }
-                    );
-
-                    newUser.writeRemotes(remoteData);
-                    await newUser.save({
-                        transaction: t,
-                        lock: true,
-                        include: self.db.User.extendInclude,
-                    });
-
-                    return newUser;
-                } else {
-                    newUser.writeRemotes(remoteData);
-                    await newUser.save({
-                        transaction: t,
-                        lock: true,
-                        include: self.db.User.extendInclude,
-                    });
-
-                    //Create a new household and set id in the new user
-                    let household = self.db.Household.build();
-                    household.name = 'New household';
-                    household.ownerId = newUser.id;
-                    let newHousehold = await household.save({
-                        transaction: t,
-                        lock: true,
-                    });
-
-                    return newUser;
-                }
+                return newUser;
             });
         } catch (err) {
             error = err;

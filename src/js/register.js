@@ -10,19 +10,12 @@ function registerPressed(event) {
         },
     };
 
-    if (document.getElementById('link').value) {
-        data.user['link'] = document.getElementById('link').value;
-    }
-
     postRegister(data).then((response) => {
         if (response.user) {
             window.location.href = '/dashboard';
             return;
         } else {
-            showAlert(
-                'Register was not possible. Please contact our support',
-                'warning'
-            );
+            showAlert('Register was not possible. Please contact our support', 'warning');
             return;
         }
     });
