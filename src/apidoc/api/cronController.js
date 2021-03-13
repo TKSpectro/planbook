@@ -1,5 +1,5 @@
 /**
- * @api {get} /cron/bookRecurringPayments
+ * @api {get} /cron/bookRecurringPayments BookRecurringPayments
  *
  * @apiDescription Books all recurring payments which were today. This route should only be called by the server itself.
  *

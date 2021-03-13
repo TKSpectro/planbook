@@ -47,7 +47,7 @@ class PagesController extends Controller {
             }
         );
 
-        self.before(['login', 'register'], (next) => {
+        self.before(['login', 'register', 'index'], (next) => {
             if (self.req.authorized === true) {
                 self.redirect(self.urlFor('pages', 'dashboard'));
             } else {
