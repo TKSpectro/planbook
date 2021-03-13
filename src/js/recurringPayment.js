@@ -27,7 +27,6 @@ function refreshCalculations(data) {
         let daily = 0,
             weekly = 0,
             monthly = 0,
-            quarterly = 0,
             yearly = 0;
         data.recurringPayments.forEach((recurringPayment) => {
             if (recurringPayment.interval === 'daily') {
@@ -39,18 +38,14 @@ function refreshCalculations(data) {
             if (recurringPayment.interval === 'monthly') {
                 monthly += recurringPayment.value;
             }
-            if (recurringPayment.interval === 'quarterly') {
-                quarterly += recurringPayment.value;
-            }
             if (recurringPayment.interval === 'yearly') {
                 yearly += recurringPayment.value;
             }
         });
         weekly += daily * 7;
         monthly += weekly * 30;
-        quarterly += monthly * 3;
-        yearly += quarterly * 4;
-        tableData.push([daily, weekly, monthly, quarterly, yearly]);
+        yearly += monthly * 12;
+        tableData.push([daily, weekly, monthly, yearly]);
 
         refreshTable('calculatedTable', tableData);
     }
@@ -69,9 +64,7 @@ function refreshRecurringPaymentsTable(data) {
                 i,
                 recurringPayment.purpose,
                 new Date(recurringPayment.startDate).toDateString(),
-                recurringPayment.endDate
-                    ? new Date(recurringPayment.endDate).toDateString()
-                    : '',
+                recurringPayment.endDate ? new Date(recurringPayment.endDate).toDateString() : '',
                 recurringPayment.interval,
                 recurringPayment.value > 0
                     ? '+' + recurringPayment.value + '€'
@@ -85,11 +78,9 @@ function refreshRecurringPaymentsTable(data) {
     }
 
     // Setup clickListener for removing
-    document
-        .querySelectorAll('#recurringPaymentsTable tbody tr')
-        .forEach((e) => {
-            e.addEventListener('click', clickHandler);
-        });
+    document.querySelectorAll('#recurringPaymentsTable tbody tr').forEach((e) => {
+        e.addEventListener('click', clickHandler);
+    });
 }
 
 function clickHandler() {
@@ -97,32 +88,28 @@ function clickHandler() {
     document.querySelector('#editPaymentId').value = this.children[7].innerHTML;
 
     // Set the purpose
-    document.querySelector(
-        '#editPurposeInput'
-    ).value = this.children[1].innerHTML;
+    document.querySelector('#editPurposeInput').value = this.children[1].innerHTML;
 
     // Set the category -> need to remove \n and remove whitespaces
-    document.querySelector(
-        '#editCategorySelect'
-    ).value = this.children[6].innerText.replace('\n', '').trim();
+    document.querySelector('#editCategorySelect').value = this.children[6].innerText
+        .replace('\n', '')
+        .trim();
 
     // Set the value -> need to remove the '€' from the string
-    document.querySelector(
-        '#editValueInput'
-    ).value = this.children[5].innerText.replace('€', '').replace('+', '');
+    document.querySelector('#editValueInput').value = this.children[5].innerText
+        .replace('€', '')
+        .replace('+', '');
 
     // Set the start and end dates -> use the HTMLDateToJSDate function
-    document.querySelector(
-        '#editStartDateInput'
-    ).value = convertHTMLDateToJSDate(this.children[2].innerText);
+    document.querySelector('#editStartDateInput').value = convertHTMLDateToJSDate(
+        this.children[2].innerText
+    );
     document.querySelector('#editEndDateInput').value = convertHTMLDateToJSDate(
         this.children[3].innerText
     );
 
     // Set the interval
-    document.querySelector(
-        '#editIntervalSelect'
-    ).value = this.children[4].innerText;
+    document.querySelector('#editIntervalSelect').value = this.children[4].innerText;
 
     // Show the edit modal
     $('#editRecurringPaymentModal').modal();
@@ -146,20 +133,16 @@ function saveRecurringPayment(event, form = '') {
     }
 
     const sel = document.querySelector('#' + form + 'CategorySelect');
-    const categoryId = sel.options[sel.selectedIndex]
-        .getAttribute('data-tokens')
-        .split('/')[1];
+    const categoryId = sel.options[sel.selectedIndex].getAttribute('data-tokens').split('/')[1];
 
     const data = {
         recurringPayment: {
             purpose: document.querySelector('#' + form + 'PurposeInput').value,
             value: document.querySelector('#' + form + 'ValueInput').value,
             categoryId: categoryId,
-            startDate: document.querySelector('#' + form + 'StartDateInput')
-                .value,
+            startDate: document.querySelector('#' + form + 'StartDateInput').value,
             endDate: document.querySelector('#' + form + 'EndDateInput').value,
-            interval: document.querySelector('#' + form + 'IntervalSelect')
-                .value,
+            interval: document.querySelector('#' + form + 'IntervalSelect').value,
         },
     };
 
@@ -210,13 +193,7 @@ function convertHTMLDateToJSDate(htmlDate) {
     const day = ('0' + date.getDate()).slice(-2);
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
 
-    return (
-        date.getFullYear() +
-        '-' +
-        ('0' + (date.getMonth() + 1)).slice(-2) +
-        '-' +
-        day
-    );
+    return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + day;
 }
 
 refreshPage();

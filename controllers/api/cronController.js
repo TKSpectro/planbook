@@ -42,17 +42,12 @@ class ApiCronController extends Controller {
                 // Then check if the payment should happen today
                 let today = new Date();
                 if (
-                    (typeof payment.endDate !== 'undefined' ||
-                        payment.endDate > today) &&
+                    (typeof payment.endDate !== 'undefined' || payment.endDate > today) &&
                     (payment.interval === 'daily' ||
                         (payment.interval === 'weekly' &&
                             payment.startDate.getDay() === today.getDay()) ||
                         (payment.interval === 'monthly' &&
                             payment.startDate.getDate() === today.getDate()) ||
-                        (payment.interval === 'quarterly' &&
-                            payment.startDate.getDate() === today.getDate() &&
-                            payment.startDate.getMonth() % 4 ===
-                                new Date.getMonth() % 4) ||
                         (payment.interval === 'yearly' &&
                             payment.startDate.getDate() === today.getDate() &&
                             payment.startDate.getMonth() === today.getMonth()))
@@ -76,9 +71,7 @@ class ApiCronController extends Controller {
 
             let timerEnd = performance.now();
             console.log(
-                'Finished booking recurringPayments\nTook:' +
-                    (timerEnd - timer) +
-                    ' milliseconds'
+                'Finished booking recurringPayments\nTook:' + (timerEnd - timer) + ' milliseconds'
             );
         } catch (err) {
             error = err;
