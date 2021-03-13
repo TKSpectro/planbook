@@ -72,9 +72,13 @@ class ApiHouseholdsController extends Controller {
 
         let household = null;
         let error = null;
-        // TODO get the id from the parameters and not from the remote data
+
         //Get the household
         try {
+            const householdId = self.param('hid');
+            if (!householdId) {
+                throw new ApiError('No household id given as parameter', 400);
+            }
             let remoteData = self.param('household');
             if (!remoteData) {
                 throw new ApiError('No json body given', 400);
@@ -83,7 +87,7 @@ class ApiHouseholdsController extends Controller {
                 let updateHousehold = await self.db.Household.findOne(
                     {
                         where: {
-                            id: remoteData.id,
+                            id: householdId,
                             ownerId: self.req.user.id,
                         },
                     },
@@ -97,7 +101,7 @@ class ApiHouseholdsController extends Controller {
                         },
                         {
                             where: {
-                                id: remoteData.id,
+                                id: householdId,
                             },
                         },
                         { transaction: t, lock: true }

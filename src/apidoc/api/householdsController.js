@@ -4,7 +4,10 @@
  * @apiName PostHousehold
  * @apiGroup Household
  *
- * @apiParam {String} name  name of the household.
+ * @apiParam {Number} hid   id of the household
+ *
+ * @apiParam {Object} household         Object in json format
+ * @apiParam {String} household.name    name of the household.
  *
  * @apiSuccess {Object}   household            The created household
  *
