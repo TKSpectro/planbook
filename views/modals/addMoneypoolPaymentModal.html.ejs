@@ -8,38 +8,20 @@
     <div class="modal-dialog">
         <div class="modal-content bg-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="addMoneypoolPaymentLabel">
-                    Add new Payment
-                </h5>
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                >
+                <h5 class="modal-title" id="addMoneypoolPaymentLabel">Add new Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="text-white">&times;</span>
                 </button>
             </div>
-            <form
-                id="addMoneypoolPaymentForm"
-                onsubmit="return savePayment(event)"
-            >
+            <form id="addMoneypoolPaymentForm" onsubmit="return savePayment(event)">
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">
-                            Value
-                        </label>
+                        <label for="" class="col-sm-2 col-form-label"> Value </label>
                         <div class="input-group col-sm-10">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
-                            <input
-                                id="valueInput"
-                                type="number"
-                                class="form-control"
-                                min="0.01"
-                                required
-                            />
+                            <input id="valueInput" type="number" class="form-control" min="1" required />
                         </div>
                     </div>
                 </div>

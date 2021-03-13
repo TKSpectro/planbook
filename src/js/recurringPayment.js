@@ -58,7 +58,7 @@ function refreshCalculations(data) {
 
 function refreshRecurringPaymentsTable(data) {
     if (data.recurringPayments.length === 0) {
-        showAlert('Found no recurring Payments!', 'danger');
+        showAlert('Found no recurring Payments!', 'warning');
         refreshTable('recurringPaymentsTable');
         return;
     } else {

@@ -15,23 +15,25 @@ function refreshMoneypoolList() {
                     'Could not find any moneypools. Please create a new one',
                     'warning'
                 );
-                return;
+                return response.json();
             }
         })
         .then((data) => {
-            const moneypoolList = document.getElementById('moneypoolList');
-            moneypoolList.innerHTML = '';
-            data.moneypools.forEach((moneypool) => {
-                moneypoolList.innerHTML +=
-                    '<a href="/moneypools?hid=' +
-                    householdId +
-                    '&id=' +
-                    moneypool.id +
-                    '"' +
-                    'class="list-group-item mt-2 active text-dark text-center font-weight-bold">' +
-                    moneypool.name +
-                    '</a>';
-            });
+            if (data.moneypools) {
+                const moneypoolList = document.getElementById('moneypoolList');
+                moneypoolList.innerHTML = '';
+                data.moneypools.forEach((moneypool) => {
+                    moneypoolList.innerHTML +=
+                        '<a href="/moneypools?hid=' +
+                        householdId +
+                        '&id=' +
+                        moneypool.id +
+                        '"' +
+                        'class="list-group-item mt-2 active text-dark text-center font-weight-bold">' +
+                        moneypool.name +
+                        '</a>';
+                });
+            }
         });
 }
 

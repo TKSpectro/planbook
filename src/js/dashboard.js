@@ -5,14 +5,19 @@ function refreshPage() {
                 return response.json();
             } else {
                 showAlert('Found no payments', 'warning');
-                // TODO document.getElementById('mainChart').hidden = true;
+                document.getElementById('thisMonthChart').hidden = true;
                 return;
             }
         })
         .then((data) => {
-            refreshHouseholdFixValues(data.payments);
-            refreshLastPayments(data.payments);
-            refreshThisMonthsPaymentsChart(data.payments);
+            if (data.payments.length === 0) {
+                showAlert('Found no payments', 'warning');
+                document.getElementById('thisMonthChart').hidden = true;
+            } else {
+                refreshHouseholdFixValues(data.payments);
+                refreshLastPayments(data.payments);
+                refreshThisMonthsPaymentsChart(data.payments);
+            }
         });
     getRecurringPayments()
         .then((response) => {
@@ -24,7 +29,9 @@ function refreshPage() {
             }
         })
         .then((data) => {
-            refreshPreviewRecurringPayments(data.recurringPayments);
+            if (data.recurringPayments.length > 0) {
+                refreshPreviewRecurringPayments(data.recurringPayments);
+            }
         });
 }
 
@@ -62,22 +69,24 @@ function refreshHouseholdFixValues(data) {
 
 function refreshLastPayments(data) {
     for (let i = 0; i < 5; i++) {
-        const createdAt = new Date(data[i].createdAt);
-        const date =
-            createdAt.getDate() +
-            '.' +
-            (createdAt.getMonth() + 1) +
-            '.' +
-            createdAt.getFullYear();
-        document
-            .getElementById('lastPaymentsList')
-            .appendChild(
-                createPaymentListElement(
-                    data[i].purpose,
-                    Number(data[i].value).toFixed(2) + '€',
-                    date
-                )
-            );
+        if (data[i]) {
+            const createdAt = new Date(data[i].createdAt);
+            const date =
+                createdAt.getDate() +
+                '.' +
+                (createdAt.getMonth() + 1) +
+                '.' +
+                createdAt.getFullYear();
+            document
+                .getElementById('lastPaymentsList')
+                .appendChild(
+                    createPaymentListElement(
+                        data[i].purpose,
+                        Number(data[i].value).toFixed(2) + '€',
+                        date
+                    )
+                );
+        }
     }
 }
 

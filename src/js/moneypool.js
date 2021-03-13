@@ -5,11 +5,17 @@ function refreshPage() {
                 return response.json();
             } else {
                 showAlert('Found no payments', 'warning');
-                // TODO document.getElementById('mainChart').hidden = true;
                 return;
             }
         })
         .then((data) => {
+            if (data.moneypools[0].payments.length === 0) {
+                showAlert('No payments found', 'warning');
+                document.getElementById('memberAmountChart').parentElement.hidden = true;
+            } else {
+                document.getElementById('memberAmountChart').parentElement.hidden = false;
+            }
+
             const moneypool = data.moneypools[0];
             refreshNameAndDescription(moneypool);
             refreshMemberAmountChart(moneypool);
@@ -25,8 +31,7 @@ function refreshPage() {
 
 function refreshNameAndDescription(moneypool) {
     document.getElementById('moneypoolName').innerHTML = moneypool.name;
-    document.getElementById('moneypoolDescription').innerHTML =
-        moneypool.description;
+    document.getElementById('moneypoolDescription').innerHTML = moneypool.description;
 }
 
 function refreshNeededMoneyProgress(moneypool) {
@@ -56,14 +61,9 @@ function refreshNeededMoneyProgress(moneypool) {
     // Build the tooltip
     progressBar.setAttribute('data-toggle', 'tooltip');
     progressBar.setAttribute('data-placement', 'bottom');
-    progressBar.setAttribute(
-        'title',
-        percentage.toFixed(2) + '% = ' + alreadyPaidMoney + '€'
-    );
+    progressBar.setAttribute('title', percentage.toFixed(2) + '% = ' + alreadyPaidMoney + '€');
 
-    const missingMoneyProgressBar = document.getElementById(
-        'missingMoneyProgressBar'
-    );
+    const missingMoneyProgressBar = document.getElementById('missingMoneyProgressBar');
     const missingPercentage = 100 - percentage + 0.005;
     missingMoneyProgressBar.style.width = missingPercentage + '%';
     missingMoneyProgressBar.setAttribute('aria-valuenow', missingPercentage);
@@ -74,10 +74,7 @@ function refreshNeededMoneyProgress(moneypool) {
     missingMoneyProgressBar.setAttribute('data-placement', 'bottom');
     missingMoneyProgressBar.setAttribute(
         'title',
-        missingPercentage.toFixed(2) +
-            '% = ' +
-            (moneypool.totalNeededMoney - alreadyPaidMoney) +
-            '€'
+        missingPercentage.toFixed(2) + '% = ' + (moneypool.totalNeededMoney - alreadyPaidMoney) + '€'
     );
 
     if (percentage >= 100) {
@@ -87,8 +84,7 @@ function refreshNeededMoneyProgress(moneypool) {
 }
 
 function refreshOwnNeededMoneyProgress(moneypool) {
-    ownMissingMoney =
-        moneypool.totalNeededMoney / moneypool.household.members.length;
+    ownMissingMoney = moneypool.totalNeededMoney / moneypool.household.members.length;
 
     let alreadyOwnPaidMoney = 0;
     moneypool.payments.forEach((payment) => {
@@ -109,14 +105,9 @@ function refreshOwnNeededMoneyProgress(moneypool) {
     // Build the tooltip
     progressBar.setAttribute('data-toggle', 'tooltip');
     progressBar.setAttribute('data-placement', 'bottom');
-    progressBar.setAttribute(
-        'title',
-        ownPercentage.toFixed(2) + '% = ' + alreadyOwnPaidMoney + '€'
-    );
+    progressBar.setAttribute('title', ownPercentage.toFixed(2) + '% = ' + alreadyOwnPaidMoney + '€');
 
-    const missingMoneyProgressBar = document.getElementById(
-        'ownMissingMoneyProgressBar'
-    );
+    const missingMoneyProgressBar = document.getElementById('ownMissingMoneyProgressBar');
     const ownMissingPercentage = 100 - ownPercentage + 0.005;
     missingMoneyProgressBar.style.width = ownMissingPercentage + '%';
     missingMoneyProgressBar.setAttribute('aria-valuenow', ownMissingPercentage);
@@ -127,10 +118,7 @@ function refreshOwnNeededMoneyProgress(moneypool) {
     missingMoneyProgressBar.setAttribute('data-placement', 'bottom');
     missingMoneyProgressBar.setAttribute(
         'title',
-        ownMissingPercentage.toFixed(2) +
-            '% = ' +
-            (ownMissingMoney - alreadyOwnPaidMoney) +
-            '€'
+        ownMissingPercentage.toFixed(2) + '% = ' + (ownMissingMoney - alreadyOwnPaidMoney) + '€'
     );
 
     if (ownPercentage >= 100) {
@@ -262,8 +250,7 @@ function updateMoneypool(event) {
         moneypool: {
             name: document.getElementById('editNameInput').value,
             description: document.getElementById('editDescriptionInput').value,
-            totalNeededMoney: document.getElementById('editNeededMoneyInput')
-                .value,
+            totalNeededMoney: document.getElementById('editNeededMoneyInput').value,
         },
     };
 
@@ -282,11 +269,8 @@ function updateMoneypool(event) {
 
 function refreshEditMoneypoolModal(moneypool) {
     document.getElementById('editNameInput').value = moneypool.name;
-    document.getElementById('editDescriptionInput').value =
-        moneypool.description;
-    document.getElementById('editNeededMoneyInput').value = Number(
-        moneypool.totalNeededMoney
-    );
+    document.getElementById('editDescriptionInput').value = moneypool.description;
+    document.getElementById('editNeededMoneyInput').value = Number(moneypool.totalNeededMoney);
 }
 
 async function getMoneypool() {
