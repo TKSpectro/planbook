@@ -131,7 +131,6 @@ class ApiHouseholdsController extends Controller {
         }
     }
 
-    // TODO remove all householdUsers for this household
     // delete the household with the given id
     async actionDelete() {
         const self = this;
@@ -146,6 +145,41 @@ class ApiHouseholdsController extends Controller {
                 throw new ApiError('No householdId specified.', 400);
             }
             household = await self.db.sequelize.transaction(async (t) => {
+                await self.db.HouseholdUser.destroy(
+                    {
+                        where: { householdId: householdId },
+                    },
+                    { transaction: t, lock: true }
+                );
+
+                await self.db.Payment.destroy(
+                    {
+                        where: { householdId: householdId },
+                    },
+                    { transaction: t, lock: true }
+                );
+
+                await self.db.RecurringPayment.destroy(
+                    {
+                        where: { householdId: householdId },
+                    },
+                    { transaction: t, lock: true }
+                );
+
+                await self.db.Todo.destroy(
+                    {
+                        where: { householdId: householdId },
+                    },
+                    { transaction: t, lock: true }
+                );
+
+                await self.db.Moneypool.destroy(
+                    {
+                        where: { householdId: householdId },
+                    },
+                    { transaction: t, lock: true }
+                );
+
                 household = await self.db.Household.destroy(
                     {
                         where: {
@@ -160,10 +194,7 @@ class ApiHouseholdsController extends Controller {
             });
             // if no household was found with this id throw an error
             if (!household) {
-                throw new ApiError(
-                    'Found no household with given id or you do not have permissions',
-                    404
-                );
+                throw new ApiError('Found no household with given id or you do not have permissions', 404);
             }
         } catch (err) {
             error = err;
