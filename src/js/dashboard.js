@@ -54,17 +54,12 @@ function refreshHouseholdFixValues(data) {
     });
 
     if (householdSaldo < 0) {
-        document
-            .getElementById('householdSaldo')
-            .classList.add('text-complementary');
+        document.getElementById('householdSaldo').classList.add('text-complementary');
     }
 
-    document.getElementById('householdSaldo').innerHTML =
-        householdSaldo.toFixed(2) + '€';
-    document.getElementById('householdIncome').innerHTML =
-        householdIncome.toFixed(2) + '€';
-    document.getElementById('householdExpenses').innerHTML =
-        householdExpenses.toFixed(2) + '€';
+    document.getElementById('householdSaldo').innerHTML = householdSaldo.toFixed(2) + '€';
+    document.getElementById('householdIncome').innerHTML = householdIncome.toFixed(2) + '€';
+    document.getElementById('householdExpenses').innerHTML = householdExpenses.toFixed(2) + '€';
 }
 
 function refreshLastPayments(data) {
@@ -90,30 +85,60 @@ function refreshLastPayments(data) {
     }
 }
 
+function nextWeekdayDate(date, day_in_week) {
+    let result = new Date(date || new Date());
+    result.setDate(result.getDate() + ((day_in_week - 1 - result.getDay() + 7) % 7) + 1);
+    return result;
+}
+
+function nextDayInMonthDate(date, day_in_month) {
+    let result = new Date(date || new Date());
+    result.setDate(result.getDate() + ((day_in_month - result.getDate() + 31) % 31));
+    return result;
+}
+
+function getDayOfYear(date) {
+    var now = new Date(date || new Date());
+    var start = new Date(now.getFullYear(), 0, 0);
+    var diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+    var oneDay = 1000 * 60 * 60 * 24;
+    var day = Math.floor(diff / oneDay);
+    return day;
+}
+
+function nextDayInYearDate(date, startDate) {
+    let result = new Date(date || new Date());
+
+    if (getDayOfYear(date) <= getDayOfYear(startDate)) {
+        result.setFullYear(result.getFullYear());
+    } else {
+        result.setFullYear(result.getFullYear() + 1);
+    }
+
+    result.setMonth(startDate.getMonth());
+    result.setDate(startDate.getDate());
+
+    return result;
+}
+
 function refreshPreviewRecurringPayments(data) {
     data.forEach((recurringPayment) => {
         const startDate = new Date(recurringPayment.startDate);
         const today = new Date();
         let calculatedDate = today;
 
-        // TODO build up this switch
         switch (recurringPayment.interval) {
             case 'daily':
                 // Gets booked today so do nothing
                 break;
             case 'weekly':
+                calculatedDate = nextWeekdayDate(today, startDate.getDay() - 1);
                 break;
             case 'monthly':
-                calculatedDate.setDate(startDate.getDate());
-                if (today.getDate() < startDate.getDate())
-                    calculatedDate.setMonth(today.getMonth());
-                else calculatedDate.setMonth(today.getMonth() + 1);
-
-                break;
-            case 'quarterly':
-                calculatedDate.setDate(startDate.getDate());
+                calculatedDate = nextDayInMonthDate(today, startDate.getDate());
                 break;
             case 'yearly':
+                calculatedDate = nextDayInYearDate(today, startDate);
                 break;
             default:
                 break;
@@ -137,12 +162,7 @@ function refreshPreviewRecurringPayments(data) {
     });
 }
 
-function createPaymentListElement(
-    name = '',
-    value = '',
-    date = '',
-    interval = ''
-) {
+function createPaymentListElement(name = '', value = '', date = '', interval = '') {
     // This functions creates a element looking like this:
     // <li class="list-group-item bg-light px-0">
     //     <div class="row font-weight-bold">
@@ -276,11 +296,7 @@ async function getRecurringPayments() {
     const householdId = urlParams.get('hid');
 
     const url =
-        '/api/recurringPayments?hid=' +
-        householdId +
-        '&start=' +
-        new Date().toJSON() +
-        '&limit=4';
+        '/api/recurringPayments?hid=' + householdId + '&start=' + new Date().toJSON() + '&limit=4';
 
     const response = await fetch(url, {
         method: 'GET',
