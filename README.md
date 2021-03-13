@@ -9,6 +9,7 @@ IT-Praxisprojekt (4./5. Semester)
 - [x] database (mysql)
 - [x] continuous deployment on heroku -> <https://planbook-project.herokuapp.com/>
 - [x] setup linode server -> <https://www.planbook.online/>
+- [x] automatic api documentation generation -> <https://www.planbook.online/apidoc/>
 - [x] bootstrap and sass compiling
 - [x] integration of chart.js
 
