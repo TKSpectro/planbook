@@ -45,14 +45,17 @@ function leaveOwnedHousehold(event) {
     const newOwnerId = sel.options[sel.selectedIndex].getAttribute('data-tokens').split('/')[1];
 
     const householdUserUrl =
-        '/api/householdsUsers?hid=' + householdId + '&id=' + document.getElementById('userId').value;
+        '/api/householdsUsers?hid=' +
+        householdId +
+        '&id=' +
+        document.getElementById('userId').value;
 
     deleteMember(householdUserUrl)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return;
             } else {
-                alertShow('Could not update householdUser', 'danger');
+                showAlert('Could not update householdUser', 'danger');
             }
         })
         .then(() => {
@@ -68,7 +71,7 @@ function leaveOwnedHousehold(event) {
                     if (response.status >= 200 && response.status < 400) {
                         return;
                     } else {
-                        alertShow('Could not update household', 'danger');
+                        showAlert('Could not update household', 'danger');
                     }
                 })
                 .then(() => {
@@ -80,9 +83,15 @@ function leaveOwnedHousehold(event) {
 }
 
 function removeMember() {
-    const url = '/api/householdsUsers?hid=' + householdId + '&id=' + document.querySelector('#chosenMemberId').value;
+    const url =
+        '/api/householdsUsers?hid=' +
+        householdId +
+        '&id=' +
+        document.querySelector('#chosenMemberId').value;
 
-    if (document.getElementById('chosenMemberId').value === document.getElementById('userId').value) {
+    if (
+        document.getElementById('chosenMemberId').value === document.getElementById('userId').value
+    ) {
         showAlert('You cant remove yourself', 'warning');
     } else {
         deleteMember(url).then((response) => {
