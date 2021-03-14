@@ -25,7 +25,7 @@ function savePayment(event) {
     // Send the payment to the api
     postPayment(url, data).then((data) => {
         showAlert('The payment was created!', 'success');
-        // TODO close modal
+        $('#addPaymentModal').modal('hide');
         refreshPage();
         return;
     });
