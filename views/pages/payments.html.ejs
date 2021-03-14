@@ -1,10 +1,9 @@
+<%-include('../modals/addPaymentModal.html.ejs');-%>
 <div class="container">
     <div class="row">
         <div class="col-md-9">
             <form class="mb-0 form-inline">
-                <label class="mx-2 mt-2 col-form-label" for="startDateInput"
-                    >Start</label
-                >
+                <label class="mx-2 mt-2 col-form-label" for="startDateInput">Start</label>
                 <!-- startDateInput - defaultValue: first day of the month -->
                 <input
                     type="date"
@@ -13,9 +12,7 @@
                     value="<%=new Date(new Date().setDate(new Date().getMonth() - 1))
                 .toISOString().slice(0,10)%>"
                 />
-                <label class="mx-2 mt-2 col-form-label" for="endDateInput"
-                    >End</label
-                >
+                <label class="mx-2 mt-2 col-form-label" for="endDateInput">End</label>
                 <!-- endDateInput - defaultValue: today -->
                 <input
                     type="date"
@@ -23,17 +20,20 @@
                     id="endDateInput"
                     value="<%=new Date().toISOString().slice(0,10)%>"
                 />
-                <button
-                    type="button"
-                    class="ml-3 mt-2 btn btn-primary"
-                    onclick="getPayments()"
-                >
+                <button type="button" class="ml-3 mt-2 btn btn-primary" onclick="getPayments()">
                     Refresh
                 </button>
             </form>
         </div>
         <div class="col-md-3 mt-2 text-right">
-            <%-include('../modals/addPaymentModal.html.ejs');-%>
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#addPaymentModal"
+            >
+                Add Payment
+            </button>
         </div>
     </div>
 </div>
@@ -47,30 +47,10 @@
         <table id="paymentsTable" class="table table-hover table-dark bg-dark">
             <thead>
                 <tr>
-                    <th
-                        scope="col"
-                        onclick="sortTable(0, false, 'paymentsTable')"
-                    >
-                        Purpose
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(1, false,'paymentsTable')"
-                    >
-                        Category
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(2, true, 'paymentsTable')"
-                    >
-                        Value
-                    </th>
-                    <th
-                        scope="col"
-                        onclick="sortTable(3, false,'paymentsTable')"
-                    >
-                        recurring
-                    </th>
+                    <th scope="col" onclick="sortTable(0, false, 'paymentsTable')">Purpose</th>
+                    <th scope="col" onclick="sortTable(1, false,'paymentsTable')">Category</th>
+                    <th scope="col" onclick="sortTable(2, true, 'paymentsTable')">Value</th>
+                    <th scope="col" onclick="sortTable(3, false,'paymentsTable')">recurring</th>
                 </tr>
             </thead>
         </table>

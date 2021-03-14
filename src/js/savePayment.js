@@ -2,14 +2,20 @@ function savePayment(event) {
     event.preventDefault();
 
     const sel = document.querySelector('#categorySelect');
-    const categoryId = sel.options[sel.selectedIndex]
-        .getAttribute('data-tokens')
-        .split('/')[1];
+    const categoryId = sel.options[sel.selectedIndex].getAttribute('data-tokens').split('/')[1];
 
+    let value;
+    value = document.querySelector('#valueInput').value;
+    if (document.querySelector('#valueRadioIncome').checked) {
+        value = Math.abs(value);
+    }
+    if (document.querySelector('#valueRadioExpense').checked) {
+        value = Math.abs(value) * -1;
+    }
     const data = {
         payment: {
             purpose: document.querySelector('#purposeInput').value,
-            value: document.querySelector('#valueInput').value,
+            value: value,
             categoryId: categoryId,
         },
     };
@@ -19,6 +25,7 @@ function savePayment(event) {
     // Send the payment to the api
     postPayment(url, data).then((data) => {
         showAlert('The payment was created!', 'success');
+        // TODO close modal
         refreshPage();
         return;
     });
