@@ -26,7 +26,7 @@ function getPayments() {
         })
         .then((data) => {
             if (data.payments.length === 0) {
-                showAlert('No payments found!', 'warning');
+                showAlert('Found no payments', 'warning');
                 refreshChart();
                 return;
             } else {

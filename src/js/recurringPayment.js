@@ -53,7 +53,7 @@ function refreshCalculations(data) {
 
 function refreshRecurringPaymentsTable(data) {
     if (data.recurringPayments.length === 0) {
-        showAlert('Found no recurring Payments!', 'warning');
+        showAlert('Found no recurring payments.', 'warning');
         refreshTable('recurringPaymentsTable');
         return;
     } else {
@@ -147,7 +147,7 @@ function saveRecurringPayment(event, form = '') {
     };
 
     putRecurringPayment(url, data, method).then((data) => {
-        showAlert('The recurring payment was saved!', 'success');
+        showAlert('The recurring payment was updated.', 'success');
         $('#addRecurringPaymentModal').modal('hide');
         $('#editRecurringPaymentModal').modal('hide');
         refreshPage();
@@ -162,7 +162,7 @@ function removeRecurringPayment() {
         document.querySelector('#editPaymentId').value;
 
     deleteRecurringPayment(url).then((res) => {
-        showAlert('The recurring payment was deleted!', 'success');
+        showAlert('The recurring payment was deleted.', 'success');
         refreshPage();
     });
 }

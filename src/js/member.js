@@ -55,7 +55,7 @@ function leaveOwnedHousehold(event) {
             if (response.status >= 200 && response.status < 400) {
                 return;
             } else {
-                showAlert('Could not update householdUser', 'danger');
+                showAlert('Could not update householdUser.', 'danger');
             }
         })
         .then(() => {
@@ -71,7 +71,7 @@ function leaveOwnedHousehold(event) {
                     if (response.status >= 200 && response.status < 400) {
                         return;
                     } else {
-                        showAlert('Could not update household', 'danger');
+                        showAlert('Could not update household.', 'danger');
                     }
                 })
                 .then(() => {
@@ -92,10 +92,10 @@ function removeMember() {
     if (
         document.getElementById('chosenMemberId').value === document.getElementById('userId').value
     ) {
-        showAlert('You cant remove yourself', 'warning');
+        showAlert('You cannot remove yourself.', 'warning');
     } else {
         deleteMember(url).then((response) => {
-            showAlert('The member was deleted!', 'success');
+            showAlert('The member was deleted.', 'success');
             refreshMembersTable();
         });
     }
@@ -116,7 +116,7 @@ function saveInvite(event) {
     };
 
     postInvite(url, data).then((response) => {
-        showAlert('The invite was created!', 'success');
+        showAlert('The invite was created.', 'success');
         refreshPage();
     });
 
@@ -128,14 +128,14 @@ function removeInvite() {
     const id = document.getElementById('chosenInviteId').value;
     const url = '/api/invites?hid=' + householdId + '&id=' + id;
     deleteInvite(url).then((response) => {
-        showAlert('The invite was removed!', 'success');
+        showAlert('The invite was removed.', 'success');
         refreshPage();
     });
 }
 
 function refreshMembersTable(data) {
     if (data.households.length === 0) {
-        showAlert('Found no households!', 'warning');
+        showAlert('Found no households.', 'warning');
         refreshTable('membersTable');
         return;
     } else {
@@ -184,7 +184,7 @@ function refreshMembersTable(data) {
 
 function refreshPendingInvitesTable(data) {
     if (data.invites.length === 0) {
-        showAlert('Found no invites!', 'warning');
+        showAlert('Found no invites.', 'warning');
         refreshTable('pendingInvitesTable');
         return;
     } else {

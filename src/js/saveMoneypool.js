@@ -8,8 +8,7 @@ function saveMoneypool(event) {
         moneypool: {
             name: document.getElementById('nameInput').value,
             description: document.getElementById('descriptionInput').value,
-            currentNeededMoney: document.getElementById('neededMoneyInput')
-                .value,
+            currentNeededMoney: document.getElementById('neededMoneyInput').value,
             totalNeededMoney: document.getElementById('neededMoneyInput').value,
             householdId: householdId,
         },
@@ -17,7 +16,7 @@ function saveMoneypool(event) {
 
     // Send the moneypool to the api
     postMoneypool(url, data).then((data) => {
-        showAlert('The moneypool was created!', 'success');
+        showAlert('The moneypool was created.', 'success');
         refreshPage();
         return;
     });

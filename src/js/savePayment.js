@@ -24,7 +24,7 @@ function savePayment(event) {
     const url = '/api/payments/?hid=' + householdId;
     // Send the payment to the api
     postPayment(url, data).then((data) => {
-        showAlert('The payment was created!', 'success');
+        showAlert('The payment was created.', 'success');
         $('#addPaymentModal').modal('hide');
         refreshPage();
         return;

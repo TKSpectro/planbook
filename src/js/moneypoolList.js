@@ -11,10 +11,7 @@ function refreshMoneypoolList() {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
-                showAlert(
-                    'Could not find any moneypools. Please create a new one',
-                    'warning'
-                );
+                showAlert('Found no moneypools. Please create a new one.', 'warning');
                 return response.json();
             }
         })

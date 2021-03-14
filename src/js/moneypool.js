@@ -4,13 +4,13 @@ function refreshPage() {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
-                showAlert('Found no payments', 'warning');
+                showAlert('Found no payments.', 'warning');
                 return;
             }
         })
         .then((data) => {
             if (data.moneypools[0].payments.length === 0) {
-                showAlert('No payments found', 'warning');
+                showAlert('Found no payments.', 'warning');
                 document.getElementById('memberAmountChart').parentElement.hidden = true;
             } else {
                 document.getElementById('memberAmountChart').parentElement.hidden = false;
@@ -74,7 +74,10 @@ function refreshNeededMoneyProgress(moneypool) {
     missingMoneyProgressBar.setAttribute('data-placement', 'bottom');
     missingMoneyProgressBar.setAttribute(
         'title',
-        missingPercentage.toFixed(2) + '% = ' + (moneypool.totalNeededMoney - alreadyPaidMoney) + '€'
+        missingPercentage.toFixed(2) +
+            '% = ' +
+            (moneypool.totalNeededMoney - alreadyPaidMoney) +
+            '€'
     );
 
     if (percentage >= 100) {
@@ -105,7 +108,10 @@ function refreshOwnNeededMoneyProgress(moneypool) {
     // Build the tooltip
     progressBar.setAttribute('data-toggle', 'tooltip');
     progressBar.setAttribute('data-placement', 'bottom');
-    progressBar.setAttribute('title', ownPercentage.toFixed(2) + '% = ' + alreadyOwnPaidMoney + '€');
+    progressBar.setAttribute(
+        'title',
+        ownPercentage.toFixed(2) + '% = ' + alreadyOwnPaidMoney + '€'
+    );
 
     const missingMoneyProgressBar = document.getElementById('ownMissingMoneyProgressBar');
     const ownMissingPercentage = 100 - ownPercentage + 0.005;
@@ -232,7 +238,7 @@ function savePayment(event) {
     const url = '/api/payments/?hid=' + householdId;
     // Send the payment to the api
     postPayment(url, data).then((data) => {
-        showAlert('The payment was created!', 'success');
+        showAlert('The payment was created.', 'success');
         refreshPage();
 
         $('#addMoneypoolPaymentModal').modal('hide');
@@ -256,7 +262,7 @@ function updateMoneypool(event) {
 
     // Send the payment to the api
     putMoneypool(data).then((data) => {
-        showAlert('The moneypool was updated!', 'success');
+        showAlert('The moneypool was updated.', 'success');
         refreshPage();
 
         $('#editMoneypoolModal').modal('hide');

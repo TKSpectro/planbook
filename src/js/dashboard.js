@@ -4,14 +4,14 @@ function refreshPage() {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
-                showAlert('Found no payments', 'warning');
+                showAlert('Found no payments.', 'warning');
                 document.getElementById('thisMonthChart').hidden = true;
                 return;
             }
         })
         .then((data) => {
             if (data.payments.length === 0) {
-                showAlert('Found no payments', 'warning');
+                showAlert('Found no payments.', 'warning');
                 document.getElementById('thisMonthChart').hidden = true;
             } else {
                 refreshHouseholdFixValues(data.payments);
@@ -24,7 +24,7 @@ function refreshPage() {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
-                showAlert('Found no recurring payments', 'warning');
+                showAlert('Found no recurring payments.', 'warning');
                 return;
             }
         })

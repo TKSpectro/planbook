@@ -15,7 +15,10 @@ function registerPressed(event) {
             window.location.href = '/dashboard';
             return;
         } else {
-            showAlert('Register was not possible. Please contact our support', 'warning');
+            showAlert(
+                'Register was not possible. Try again or please contact our support.',
+                'warning'
+            );
             return;
         }
     });

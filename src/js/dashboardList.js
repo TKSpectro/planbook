@@ -5,7 +5,7 @@ function refreshHouseholdList() {
                 return response.json();
             } else {
                 showAlert(
-                    'Could not find any households you are part of. Please create a new one',
+                    'Found no households you are part of. Please create a new one.',
                     'warning'
                 );
                 return;
@@ -43,10 +43,7 @@ function createHousehold(event) {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
-                showAlert(
-                    'Could not create a household. Please contact the support',
-                    'warning'
-                );
+                showAlert('Could not create a household. Please contact the support', 'warning');
                 return;
             }
         })
@@ -70,8 +67,7 @@ function createHousehold(event) {
                     }
                 })
                 .then((data) => {
-                    window.location.href =
-                        '/dashboard?hid=' + data.householdUser.householdId;
+                    window.location.href = '/dashboard?hid=' + data.householdUser.householdId;
                     return;
                 });
             return;
