@@ -45,7 +45,7 @@ function refreshCalculations(data) {
         weekly += daily * 7;
         monthly += weekly * 30;
         yearly += monthly * 12;
-        tableData.push([daily, weekly, monthly, yearly]);
+        tableData.push([daily + '€', weekly + '€', monthly + '€', yearly + '€']);
 
         refreshTable('calculatedTable', tableData);
     }

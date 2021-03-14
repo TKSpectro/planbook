@@ -1,18 +1,29 @@
 <%-include('../modals/addRecurringPaymentModal.html.ejs');-%>
+<div class="card bg-light text-white mt-4">
+    <h4 class="card-header">
+        <i class="bi-arrow-left-right text-primary"></i>
+        Pre calculated payments
+    </h4>
+    <h5 class="card-body m-0">
+        Here you can see how much money you have as income/expense added up.
+    </h5>
 
-<div class="pt-4">
-    <label>recurring Payments calculated</label>
-    <div class="table-responsive-lg">
-        <table id="calculatedTable" class="table table-hover table-dark bg-dark">
-            <thead>
-                <tr>
-                    <th scope="col">per Day</th>
-                    <th scope="col">per Week</th>
-                    <th scope="col">per Month</th>
-                    <th scope="col">per Year</th>
-                </tr>
-            </thead>
-        </table>
+    <div class="card-footer py-0">
+        <div class="table-responsive-lg">
+            <table
+                id="calculatedTable"
+                class="table table-borderless table-hover table-dark bg-light"
+            >
+                <thead>
+                    <tr>
+                        <th scope="col">per Day</th>
+                        <th scope="col">per Week</th>
+                        <th scope="col">per Month</th>
+                        <th scope="col">per Year</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 
