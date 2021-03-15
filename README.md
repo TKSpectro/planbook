@@ -39,7 +39,7 @@ IT-Praxisprojekt (4./5. Semester)
 
 #### API
 
-- [ ] Documentation
+- [x] Documentation
 - [x] Login/Register
 - [x] Users
 - [x] Categories
