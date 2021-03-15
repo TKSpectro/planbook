@@ -159,7 +159,7 @@
  * @api {delete} /recurringPayments Delete recurringPayment
  * @apiDescription Deletes the recurringPayment with the specified id
  * @apiName DeleteRecurringPayment
- * @apiGroup recurringPayment
+ * @apiGroup RecurringPayment
  *
  * @apiParam {Number}   hid Id of the household.
  * @apiParam {Number}   id Id of the recurringPayment.
