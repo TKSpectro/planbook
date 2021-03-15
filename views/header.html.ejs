@@ -4,11 +4,7 @@
             <div class="">
                 <a <%if(!self.req.authorized) { %>
                     href="/" <% } else { %> href="/dashboard" <% } %>>
-                    <img
-                        src="../assets/images/logo.svg"
-                        width="40"
-                        height="42"
-                    />
+                    <img src="../assets/images/logo.svg" width="40" height="42" />
                 </a>
             </div>
             <button
@@ -27,17 +23,11 @@
                 <ul class="navbar-nav mr-auto">
                     <%if(!self.req.authorized) { %>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/"
-                            >Home <span class="sr-only">(current)</span></a
-                        >
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <% } else { %> <% if(urlHouseholdId) { %>
                     <li class="nav-item active">
-                        <a
-                            class="nav-link"
-                            href="/dashboard?hid=<%=urlHouseholdId%>"
-                            >Dashboard</a
-                        >
+                        <a class="nav-link" href="/dashboard?hid=<%=urlHouseholdId%>">Dashboard</a>
                     </li>
                     <% } else {%>
                     <li class="nav-item active">
@@ -45,34 +35,23 @@
                     </li>
                     <% } %> <% } %> <% if(urlHouseholdId) { %>
                     <li class="nav-item active">
-                        <a
-                            class="nav-link"
-                            href="/payments?hid=<%=urlHouseholdId%>"
-                            >Payments</a
-                        >
+                        <a class="nav-link" href="/payments?hid=<%=urlHouseholdId%>">Payments</a>
                     </li>
                     <li class="nav-item active">
-                        <a
-                            class="nav-link"
-                            href="/recurringPayments?hid=<%=urlHouseholdId%>"
+                        <a class="nav-link" href="/recurringPayments?hid=<%=urlHouseholdId%>"
                             >Recurring payments</a
                         >
                     </li>
                     <li class="nav-item active">
-                        <a
-                            class="nav-link"
-                            href="/moneypools?hid=<%=urlHouseholdId%>"
+                        <a class="nav-link" href="/moneypools?hid=<%=urlHouseholdId%>"
                             >Moneypools</a
                         >
                     </li>
+                    <% if(isOwner == true) {%>
                     <li class="nav-item active">
-                        <a
-                            class="nav-link"
-                            href="/members?hid=<%=urlHouseholdId%>"
-                            >Members</a
-                        >
+                        <a class="nav-link" href="/members?hid=<%=urlHouseholdId%>">Members</a>
                     </li>
-                    <% } %>
+                    <% }%> <% } %>
                 </ul>
 
                 <%if(!self.req.authorized) { %>
@@ -96,10 +75,7 @@
                 </div>
                 <% } else { %>
                 <div>
-                    <button
-                        class="btn btn-sm btn-primary btn-block"
-                        onclick="logout();"
-                    >
+                    <button class="btn btn-sm btn-primary btn-block" onclick="logout();">
                         Logout
                     </button>
                 </div>
@@ -110,9 +86,7 @@
     <div style="width: 100%; height: 0.5%" class="bg-primary"></div>
     <script>
         function logout() {
-            document.cookie =
-                'planbook_auth_jwt' +
-                '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            document.cookie = 'planbook_auth_jwt' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             window.location.href = '/login';
         }
     </script>

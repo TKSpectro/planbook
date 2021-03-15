@@ -1,4 +1,5 @@
 const Controller = require('./mainController.js');
+let isOwner = false;
 class PagesController extends Controller {
     constructor(...args) {
         super(...args);
@@ -15,25 +16,24 @@ class PagesController extends Controller {
         });
 
         self.before(
-            [
-                'dashboard',
-                'payments',
-                'recurringPayments',
-                'members',
-                'moneypools',
-            ],
+            ['dashboard', 'payments', 'recurringPayments', 'members', 'moneypools'],
             async (next) => {
                 if (self.param('hid')) {
                     const householdUsers = await self.db.HouseholdUser.findAll({
+                        include: self.db.HouseholdUser.extendIncludeHousehold,
                         where: {
                             householdId: self.param('hid'),
                         },
                     });
 
                     let isInHousehold = false;
+                    isOwner = false;
                     householdUsers.forEach((householdUser) => {
                         if (self.req.user.id == householdUser.userId) {
                             isInHousehold = true;
+                            if (householdUser.household.ownerId === householdUser.userId) {
+                                isOwner = true;
+                            }
                         }
                     });
                     if (isInHousehold) {
@@ -67,6 +67,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Home',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
             users: users,
         });
     }
@@ -79,6 +80,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Imprint',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
         });
     }
 
@@ -92,6 +94,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Login',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
         });
     }
 
@@ -105,6 +108,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Register',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
         });
     }
 
@@ -121,6 +125,7 @@ class PagesController extends Controller {
             self.render({
                 title: 'Dashboard',
                 urlHouseholdId: self.param('hid'),
+                isOwner: isOwner,
                 isHouseholdChooser: true,
             });
         } else {
@@ -146,6 +151,7 @@ class PagesController extends Controller {
             self.render({
                 title: 'Dashboard ' + household.name,
                 urlHouseholdId: self.param('hid'),
+                isOwner: isOwner,
                 household: household,
                 categories: categories,
                 isHouseholdChooser: false,
@@ -173,6 +179,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Payments',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
             household: household,
             categories: categories,
         });
@@ -203,6 +210,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Payments',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
             household: household,
             recurringPayments: recurringPayments,
             categories: categories,
@@ -251,6 +259,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Members',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
             members: members,
             invites: invites,
         });
@@ -276,6 +285,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Moneypools',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
             isMoneypoolChooser: isMoneypoolChooser,
         });
     }
@@ -296,6 +306,7 @@ class PagesController extends Controller {
         self.render({
             title: 'Todo',
             urlHouseholdId: self.param('hid'),
+            isOwner: isOwner,
             todos: todos,
         });
     }
