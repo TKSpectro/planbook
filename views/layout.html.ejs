@@ -30,7 +30,7 @@
     <body class="bg-dark">
         <%-include('./header.html.ejs');-%>
         <div class="pt-4 text-primary mx-auto body">
-            <div id="alertPlaceholder"></div>
+            <div id="alertPlaceholder" class="mx-auto" style="max-width: 50em"></div>
             <%-body%>
         </div>
         <% for (let index = 0; index < self.jsFiles.length; index++) { %>
