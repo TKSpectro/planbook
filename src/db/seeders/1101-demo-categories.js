@@ -27,6 +27,11 @@ module.exports = {
                 {
                     createdAt: new Date(),
                     updatedAt: new Date(),
+                    name: 'Refund',
+                },
+                {
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
                     name: 'Rent',
                 },
                 {
