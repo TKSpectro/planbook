@@ -2,8 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 function refreshPage() {
-    const urlHouseholdsUsers = '/api/householdsUsers?hid=' + householdId;
-    getHouseholdsUsers(urlHouseholdsUsers)
+    fetch(`/api/householdsUsers?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
@@ -13,8 +12,7 @@ function refreshPage() {
             refreshMembersTable(data);
         });
 
-    const urlInvites = '/api/invites?hid=' + householdId;
-    getInvites(urlInvites)
+    fetch(`/api/invites?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();

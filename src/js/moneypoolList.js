@@ -6,7 +6,7 @@ function refreshPage() {
 }
 
 function refreshMoneypoolList() {
-    getMoneypools()
+    fetch(`/api/moneypools?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
@@ -32,16 +32,6 @@ function refreshMoneypoolList() {
                 });
             }
         });
-}
-
-async function getMoneypools() {
-    const url = '/api/moneypools?hid=' + householdId;
-
-    const response = await fetch(url, {
-        method: 'GET',
-    });
-
-    return response;
 }
 
 refreshPage();

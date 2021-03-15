@@ -1,5 +1,9 @@
+const urlParams = new URLSearchParams(window.location.search);
+const householdId = urlParams.get('hid');
+const moneypoolId = urlParams.get('id');
+
 function refreshPage() {
-    getMoneypool()
+    fetch(`/api/moneypools?hid=${householdId}&id=${moneypoolId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
@@ -277,20 +281,6 @@ function refreshEditMoneypoolModal(moneypool) {
     document.getElementById('editNameInput').value = moneypool.name;
     document.getElementById('editDescriptionInput').value = moneypool.description;
     document.getElementById('editNeededMoneyInput').value = Number(moneypool.totalNeededMoney);
-}
-
-async function getMoneypool() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const householdId = urlParams.get('hid');
-    const moneypoolId = urlParams.get('id');
-
-    const url = '/api/moneypools?hid=' + householdId + '&id=' + moneypoolId;
-
-    const response = await fetch(url, {
-        method: 'GET',
-    });
-
-    return response;
 }
 
 async function postPayment(url = '', data = {}) {

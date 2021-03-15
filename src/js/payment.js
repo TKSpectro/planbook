@@ -9,16 +9,7 @@ function getPayments() {
     endDate.setHours(new Date().getHours());
     endDate.setMinutes(new Date().getMinutes() + 5);
 
-    let url =
-        '/api/payments?hid=' +
-        householdId +
-        '&start=' +
-        startDate +
-        '&end=' +
-        endDate +
-        '&moneypoolId=null';
-
-    fetch(url)
+    fetch(`/api/payments?hid=${householdId}&start=${startDate}&end=${endDate}&moneypoolId=null`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();

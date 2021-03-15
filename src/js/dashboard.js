@@ -1,12 +1,15 @@
+const urlParams = new URLSearchParams(window.location.search);
+const householdId = urlParams.get('hid');
+
 function refreshPage() {
-    getPayments()
+    fetch(`/api/payments?hid=${householdId}&moneypoolId=null`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
             } else {
                 showAlert('Found no payments.', 'warning');
                 document.getElementById('thisMonthChart').hidden = true;
-                return;
+                return response.json();
             }
         })
         .then((data) => {
@@ -19,7 +22,7 @@ function refreshPage() {
                 refreshThisMonthsPaymentsChart(data.payments);
             }
         });
-    getRecurringPayments()
+    fetch(`/api/recurringPayments?hid=${householdId}&start=${new Date().toJSON()}&limit=4`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
@@ -276,33 +279,6 @@ function refreshThisMonthsPaymentsChart(data) {
         window.thisMonthChart.config = config;
         window.thisMonthChart.update();
     }
-}
-
-async function getPayments() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const householdId = urlParams.get('hid');
-
-    const url = '/api/payments?hid=' + householdId + '&moneypoolId=null';
-
-    const response = await fetch(url, {
-        method: 'GET',
-    });
-
-    return response;
-}
-
-async function getRecurringPayments() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const householdId = urlParams.get('hid');
-
-    const url =
-        '/api/recurringPayments?hid=' + householdId + '&start=' + new Date().toJSON() + '&limit=4';
-
-    const response = await fetch(url, {
-        method: 'GET',
-    });
-
-    return response;
 }
 
 refreshPage();

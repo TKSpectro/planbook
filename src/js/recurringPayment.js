@@ -2,11 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 function refreshPage() {
-    const householdId = new URLSearchParams(window.location.search).get('hid');
-
-    const url = '/api/recurringPayments?hid=' + householdId;
-
-    fetch(url)
+    fetch(`/api/recurringPayments?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();

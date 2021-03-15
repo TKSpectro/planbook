@@ -1,5 +1,5 @@
 function refreshHouseholdList() {
-    getHouseholds()
+    fetch('/api/householdsUsers')
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
                 return response.json();
@@ -102,16 +102,6 @@ function useInvite(event) {
 
     $('#useInviteModal').modal('hide');
     return false;
-}
-
-async function getHouseholds() {
-    const url = '/api/householdsUsers';
-
-    const response = await fetch(url, {
-        method: 'GET',
-    });
-
-    return response;
 }
 
 async function postHousehold(data) {
