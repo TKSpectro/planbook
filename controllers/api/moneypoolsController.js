@@ -87,6 +87,8 @@ class ApiMoneypoolsController extends Controller {
 
             let remoteData = self.param('moneypool');
 
+            remoteData['householdId'] = self.param('hid');
+
             moneypool = await self.db.sequelize.transaction(async (t) => {
                 let newMoneypool = self.db.Moneypool.build();
 

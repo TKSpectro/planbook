@@ -75,6 +75,10 @@ class ApiPaymentsController extends Controller {
                 }
             }
 
+            if (self.param('id')) {
+                where['id'] = self.param('id');
+            }
+
             let limit;
             if (self.param('limit')) {
                 limit = Number(self.param('limit'));
@@ -106,45 +110,6 @@ class ApiPaymentsController extends Controller {
                     statusCode: 200,
                 }
             );
-        }
-    }
-
-    async actionGetOne() {
-        const self = this;
-
-        let payment = null;
-        let error = null;
-
-        try {
-            if (!self.param('id')) {
-                throw new ApiError('No payment id given');
-            }
-
-            let where = {
-                id: self.param('id'),
-                householdId: self.param('hid'),
-            };
-
-            payment = await self.db.Payment.findOne({
-                where: where,
-                include: self.db.Payment.extendInclude,
-            });
-            if (!payment) {
-                throw new ApiError(
-                    'No payment found with this id or you are not allowed to see it',
-                    404
-                );
-            }
-        } catch (err) {
-            error = err;
-        }
-
-        if (error) {
-            self.handleError(error);
-        } else {
-            self.render({
-                payment: payment,
-            });
         }
     }
 

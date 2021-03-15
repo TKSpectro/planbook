@@ -93,27 +93,22 @@ class ApiRecurringPaymentsController extends Controller {
         try {
             let remoteData = self.param('recurringPayment');
             if (!remoteData) {
-                throw new ApiError(
-                    'no recurringPayment object found in body',
-                    400
-                );
+                throw new ApiError('no recurringPayment object found in body', 400);
             }
             remoteData['householdId'] = self.param('hid');
 
-            recurringPayment = await self.db.sequelize.transaction(
-                async (t) => {
-                    let newRecurringPayment = self.db.RecurringPayment.build();
+            recurringPayment = await self.db.sequelize.transaction(async (t) => {
+                let newRecurringPayment = self.db.RecurringPayment.build();
 
-                    newRecurringPayment.writeRemotes(remoteData);
+                newRecurringPayment.writeRemotes(remoteData);
 
-                    await newRecurringPayment.save({
-                        transaction: t,
-                        lock: true,
-                    });
+                await newRecurringPayment.save({
+                    transaction: t,
+                    lock: true,
+                });
 
-                    return newRecurringPayment;
-                }
-            );
+                return newRecurringPayment;
+            });
         } catch (err) {
             error = err;
         }
@@ -141,10 +136,7 @@ class ApiRecurringPaymentsController extends Controller {
         try {
             let remoteData = self.param('recurringPayment');
             if (!remoteData) {
-                throw new ApiError(
-                    'no recurringPayment object found in body',
-                    400
-                );
+                throw new ApiError('no recurringPayment object found in body', 400);
             }
 
             const recurringPaymentId = self.param('id');
@@ -157,46 +149,41 @@ class ApiRecurringPaymentsController extends Controller {
                 remoteData['endDate'] = null;
             }
 
-            recurringPayment = await self.db.sequelize.transaction(
-                async (t) => {
-                    let updateRecurringPayment = await self.db.RecurringPayment.findOne(
+            recurringPayment = await self.db.sequelize.transaction(async (t) => {
+                let updateRecurringPayment = await self.db.RecurringPayment.findOne(
+                    {
+                        where: {
+                            id: recurringPaymentId,
+                            householdId: self.param('hid'),
+                        },
+                    },
+                    { transaction: t }
+                );
+                if (updateRecurringPayment) {
+                    await updateRecurringPayment.update(
+                        {
+                            updatedAt: new Date(),
+                            startDate: remoteData['startDate'],
+                            endDate: remoteData['endDate'],
+                            value: remoteData['value'],
+                            purpose: remoteData['purpose'],
+                            interval: remoteData['interval'],
+                            categoryId: remoteData['categoryId'],
+                        },
                         {
                             where: {
                                 id: recurringPaymentId,
-                                householdId: self.param('hid'),
                             },
                         },
-                        { transaction: t }
+                        { transaction: t, lock: true }
                     );
-                    if (updateRecurringPayment) {
-                        await updateRecurringPayment.update(
-                            {
-                                updatedAt: new Date(),
-                                startDate: remoteData['startDate'],
-                                endDate: remoteData['endDate'],
-                                value: remoteData['value'],
-                                purpose: remoteData['purpose'],
-                                interval: remoteData['interval'],
-                                categoryId: remoteData['categoryId'],
-                            },
-                            {
-                                where: {
-                                    id: recurringPaymentId,
-                                },
-                            },
-                            { transaction: t, lock: true }
-                        );
-                    }
-
-                    return updateRecurringPayment;
                 }
-            );
+
+                return updateRecurringPayment;
+            });
 
             if (!recurringPayment) {
-                throw new ApiError(
-                    'RecurringPayment could not be updated',
-                    404
-                );
+                throw new ApiError('RecurringPayment could not be updated', 404);
             }
         } catch (err) {
             error = err;
@@ -227,26 +214,21 @@ class ApiRecurringPaymentsController extends Controller {
                 throw new ApiError('No id given', 400);
             }
 
-            recurringPayment = await self.db.sequelize.transaction(
-                async (t) => {
-                    recurringPayment = await self.db.RecurringPayment.destroy(
-                        {
-                            where: {
-                                id: self.param('id'),
-                            },
+            recurringPayment = await self.db.sequelize.transaction(async (t) => {
+                recurringPayment = await self.db.RecurringPayment.destroy(
+                    {
+                        where: {
+                            id: self.param('id'),
                         },
-                        { transaction: t, lock: true }
-                    );
+                    },
+                    { transaction: t, lock: true }
+                );
 
-                    return recurringPayment;
-                }
-            );
+                return recurringPayment;
+            });
             // if no category was found with this id throw an error
             if (!recurringPayment) {
-                throw new ApiError(
-                    'Found no recurringPayment for given id',
-                    404
-                );
+                throw new ApiError('Found no recurringPayment for given id', 404);
             }
         } catch (err) {
             error = err;

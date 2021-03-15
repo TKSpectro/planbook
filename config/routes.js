@@ -125,11 +125,6 @@ let routes = {
                 method: 'GET',
             },
             {
-                path: '/api/payments/:id',
-                action: 'getOne',
-                method: 'GET',
-            },
-            {
                 path: '/api/payments',
                 action: 'create',
                 method: 'POST',
