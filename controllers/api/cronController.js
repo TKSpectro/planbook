@@ -29,31 +29,34 @@ class ApiCronController extends Controller {
         const self = this;
         let error;
 
-        // calculate the signature
-        const expectedSignature =
-            'sha1=' +
-            crypto
-                .createHmac('sha1', 'githubDeploy')
-                .update(JSON.stringify(self.req.body))
-                .digest('hex');
-
-        // compare the signature against the one in the request
-        const signature = self.req.headers['x-hub-signature'];
-        if (signature !== expectedSignature) {
-            throw new Error('Invalid signature.');
-        }
-
-        const exec = require('child_process').exec;
-        const shellScript = exec('sh /root/updatePlanbook.sh');
-
-        shellScript.stdout.on('data', (data) => {
-            console.log(data);
-        });
-        shellScript.stderr.on('data', (data) => {
-            console.error(data);
-        });
-
         try {
+            if (process.env.URL !== 'http://www.planbook.online/') {
+                console.log('webhook triggered');
+            } else {
+                // calculate the signature
+                const expectedSignature =
+                    'sha1=' +
+                    crypto
+                        .createHmac('sha1', 'githubDeploy')
+                        .update(JSON.stringify(self.req.body))
+                        .digest('hex');
+
+                // compare the signature against the one in the request
+                const signature = self.req.headers['x-hub-signature'];
+                if (signature !== expectedSignature) {
+                    throw new Error('Invalid signature.');
+                }
+
+                const exec = require('child_process').exec;
+                const shellScript = exec('sh /root/updatePlanbook.sh');
+
+                shellScript.stdout.on('data', (data) => {
+                    console.log(data);
+                });
+                shellScript.stderr.on('data', (data) => {
+                    console.error(data);
+                });
+            }
         } catch (err) {
             error = err;
         }
