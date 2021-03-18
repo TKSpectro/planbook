@@ -31,7 +31,7 @@ class ApiCronController extends Controller {
 
         try {
             if (process.env.URL !== 'http://www.planbook.online/') {
-                console.log('webhook triggered');
+                console.log('webhook triggered but wrong url');
             } else {
                 // calculate the signature
                 const expectedSignature =
