@@ -11,7 +11,7 @@ class ApiCronController extends Controller {
         self.format = Controller.HTTP_FORMAT_JSON;
 
         // users have to be signed in else they a 401 Unauthorized response
-        self.before(['*'], function (next) {
+        self.before(['bookRecurringPayments'], function (next) {
             if (self.param('cron_password') === process.env.CRON_PASSWORD) {
                 next();
             } else {
@@ -23,6 +23,29 @@ class ApiCronController extends Controller {
                 );
             }
         });
+    }
+
+    async actionDeploy() {
+        const self = this;
+        let error;
+
+        console.log('test');
+
+        try {
+        } catch (err) {
+            error = err;
+        }
+
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {},
+                {
+                    statusCode: 200,
+                }
+            );
+        }
     }
 
     async actionBookRecurringPayments() {
