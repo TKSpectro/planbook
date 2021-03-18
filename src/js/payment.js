@@ -101,6 +101,7 @@ function refreshChart(payments) {
             payment.category.name,
             paymentValueString,
             recurringPaymentString,
+            new Date(payment.createdAt).toDateString(),
         ]);
     });
 
