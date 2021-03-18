@@ -25,6 +25,28 @@ class ApiCronController extends Controller {
         });
     }
 
+    async actionDeploy() {
+        const self = this;
+
+        console.log('test');
+
+        try {
+        } catch (err) {
+            error = err;
+        }
+
+        if (error) {
+            self.handleError(error);
+        } else {
+            self.render(
+                {},
+                {
+                    statusCode: 200,
+                }
+            );
+        }
+    }
+
     async actionBookRecurringPayments() {
         const self = this;
 

@@ -139,6 +139,11 @@ let routes = {
                 action: 'bookRecurringPayments',
                 method: 'POST',
             },
+            {
+                path: '/api/cron/deploy',
+                action: 'deploy',
+                method: 'POST',
+            },
         ],
     },
     'api/moneypools': {
