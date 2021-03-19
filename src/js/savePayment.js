@@ -6,12 +6,13 @@ function savePayment(event) {
 
     let value;
     value = document.querySelector('#valueInput').value;
-    if (document.querySelector('#valueRadioIncome').checked) {
+
+    if (document.getElementById('incomeSwitch').checked) {
         value = Math.abs(value);
-    }
-    if (document.querySelector('#valueRadioExpense').checked) {
+    } else {
         value = Math.abs(value) * -1;
     }
+
     const data = {
         payment: {
             purpose: document.querySelector('#purposeInput').value,

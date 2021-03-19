@@ -131,10 +131,18 @@ function saveRecurringPayment(event, form = '') {
     const sel = document.querySelector('#' + form + 'CategorySelect');
     const categoryId = sel.options[sel.selectedIndex].getAttribute('data-tokens').split('/')[1];
 
+    let value = document.querySelector('#' + form + 'ValueInput').value;
+
+    if (document.getElementById('incomeSwitch').checked) {
+        value = Math.abs(value);
+    } else {
+        value = Math.abs(value) * -1;
+    }
+
     const data = {
         recurringPayment: {
             purpose: document.querySelector('#' + form + 'PurposeInput').value,
-            value: document.querySelector('#' + form + 'ValueInput').value,
+            value: value,
             categoryId: categoryId,
             startDate: document.querySelector('#' + form + 'StartDateInput').value,
             endDate: document.querySelector('#' + form + 'EndDateInput').value,
@@ -143,7 +151,11 @@ function saveRecurringPayment(event, form = '') {
     };
 
     putRecurringPayment(url, data, method).then((data) => {
-        showAlert('The recurring payment was updated.', 'success');
+        if (form === 'edit') {
+            showAlert('The recurring payment was updated.', 'success');
+        } else {
+            showAlert('The recurring payment was saved.', 'success');
+        }
         $('#addRecurringPaymentModal').modal('hide');
         $('#editRecurringPaymentModal').modal('hide');
         refreshPage();

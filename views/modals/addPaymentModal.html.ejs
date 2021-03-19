@@ -29,39 +29,32 @@
                     </div>
                     <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label"> Value </label>
-                        <div class="input-group col-sm-10">
+                        <div class="input-group col-sm-6">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
-                            <input id="valueInput" type="number" class="form-control" required />
-                        </div>
-                    </div>
-                    <!-- // TODO Use a switch instead of an this -->
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
                             <input
-                                class="custom-control-input"
-                                type="radio"
-                                name="valueRadio"
-                                id="valueRadioIncome"
-                                value="income"
-                                checked
+                                id="valueInput"
+                                type="number"
+                                class="form-control"
+                                min="0"
+                                required
                             />
-                            <label class="custom-control-label" for="valueRadioIncome">
-                                Income
-                            </label>
                         </div>
-                        <div class="custom-control custom-radio">
-                            <input
-                                class="custom-control-input"
-                                type="radio"
-                                name="valueRadio"
-                                id="valueRadioExpense"
-                                value="expense"
-                            />
-                            <label class="custom-control-label" for="valueRadioExpense">
-                                Expense
-                            </label>
+                        <div class="col-sm-4">
+                            <div class="onoffswitch">
+                                <input
+                                    type="checkbox"
+                                    name="onoffswitch"
+                                    class="onoffswitch-checkbox"
+                                    id="incomeSwitch"
+                                    checked
+                                />
+                                <label class="onoffswitch-label" for="incomeSwitch">
+                                    <div class="onoffswitch-inner"></div>
+                                    <div class="onoffswitch-switch"></div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">

@@ -68,7 +68,7 @@
                     <!-- Value Input -->
                     <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label"> Value </label>
-                        <div class="input-group col-sm-10">
+                        <div class="input-group col-sm-6">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
@@ -76,9 +76,24 @@
                                 id="addValueInput"
                                 type="number"
                                 class="form-control"
-                                placeholder=""
+                                min="0"
                                 required
                             />
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="onoffswitch">
+                                <input
+                                    type="checkbox"
+                                    name="onoffswitch"
+                                    class="onoffswitch-checkbox"
+                                    id="incomeSwitch"
+                                    checked
+                                />
+                                <label class="onoffswitch-label" for="incomeSwitch">
+                                    <div class="onoffswitch-inner"></div>
+                                    <div class="onoffswitch-switch"></div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <!-- Start Date Input -->
