@@ -138,11 +138,7 @@ class ApiInvitesController extends Controller {
 
             // SEND OUT AN EMAIL
             // The email account used to invite other users has to be given in the .env file
-            if (
-                process.env.MAIL_NAME &&
-                process.env.MAIL_PASSWORD &&
-                !process.env.MAIL_SEND
-            ) {
+            if (process.env.MAIL_NAME && process.env.MAIL_PASSWORD && !process.env.MAIL_SEND) {
                 //Send an email to the invited person
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
@@ -156,14 +152,7 @@ class ApiInvitesController extends Controller {
                     from: process.env.MAIL_NAME,
                     to: invite.invitedEmail,
                     subject: 'Invite for Planbook',
-                    text:
-                        'Greetings from Planbook. You just have been invited by ' +
-                        self.req.user.firstName +
-                        ' ' +
-                        self.req.user.lastName +
-                        ' to join their household\nFor that you need to just register with this inviteCode ' +
-                        invite.link +
-                        ' on the website',
+                    html: `Greetings from Planbook. You just have been invited by ${self.req.user.firstName} ${self.req.user.lastName} to join their household. For that you need to register at <a href="https://www.planbook.online">planbook.online</a>, click on use invite code and then enter this code: <h3>${invite.link}</h3>`,
                 };
 
                 transporter.sendMail(mailOptions, function (error, info) {
@@ -220,10 +209,7 @@ class ApiInvitesController extends Controller {
                 );
 
                 if (!updateInvite) {
-                    throw new ApiError(
-                        'There is no invite existing with this link',
-                        400
-                    );
+                    throw new ApiError('There is no invite existing with this link', 400);
                 }
 
                 //Check if the invite was already used
@@ -256,10 +242,7 @@ class ApiInvitesController extends Controller {
             }
 
             if (invite.invitedEmail != self.req.user.email) {
-                throw new ApiError(
-                    'This invite was not created for you account email.',
-                    400
-                );
+                throw new ApiError('This invite was not created for you account email.', 400);
             }
 
             const alreadyInHousehold = await self.db.HouseholdUser.findOne({
@@ -269,36 +252,28 @@ class ApiInvitesController extends Controller {
                 },
             });
             if (alreadyInHousehold) {
-                throw new ApiError(
-                    'Invite was used but you were already in this household',
-                    400
-                );
+                throw new ApiError('Invite was used but you were already in this household', 400);
             }
 
-            let householdUser = await self.db.sequelize.transaction(
-                async (t) => {
-                    let newHouseholdUser = self.db.HouseholdUser.build();
+            let householdUser = await self.db.sequelize.transaction(async (t) => {
+                let newHouseholdUser = self.db.HouseholdUser.build();
 
-                    let data = {
-                        timeJoined: new Date(),
-                        householdId: invite.householdId,
-                        userId: self.req.user.id,
-                    };
+                let data = {
+                    timeJoined: new Date(),
+                    householdId: invite.householdId,
+                    userId: self.req.user.id,
+                };
 
-                    newHouseholdUser.writeRemotes(data);
-                    await newHouseholdUser.save({
-                        transaction: t,
-                        lock: true,
-                    });
-                    if (!newHouseholdUser) {
-                        throw new ApiError(
-                            'Could not associate user with household',
-                            404
-                        );
-                    }
-                    return newHouseholdUser.householdId;
+                newHouseholdUser.writeRemotes(data);
+                await newHouseholdUser.save({
+                    transaction: t,
+                    lock: true,
+                });
+                if (!newHouseholdUser) {
+                    throw new ApiError('Could not associate user with household', 404);
                 }
-            );
+                return newHouseholdUser.householdId;
+            });
         } catch (err) {
             error = err;
         }
