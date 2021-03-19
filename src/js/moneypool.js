@@ -36,7 +36,7 @@ function refreshPage() {
 function refreshNameAndDescription(moneypool) {
     document.getElementById('moneypoolName').innerHTML = moneypool.name;
     document.getElementById('moneypoolNeededMoney').innerHTML =
-        moneypool.totalNeededMoney.toFixed(2) + '€';
+        'Target: ' + moneypool.totalNeededMoney.toFixed(2) + '€';
     document.getElementById('moneypoolDescription').innerHTML = moneypool.description;
 }
 
