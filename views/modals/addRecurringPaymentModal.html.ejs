@@ -104,7 +104,9 @@
                                 id="addStartDateInput"
                                 type="date"
                                 class="form-control"
-                                placeholder=""
+                                value="<%=new Date().getFullYear().toString() + '-' + 
+                                        (new Date().getMonth() + 1).toString().padStart(2, 0) +
+                                        '-' + new Date().getDate().toString().padStart(2, 0)%>"
                                 required
                             />
                         </div>
