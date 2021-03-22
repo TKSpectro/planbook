@@ -1,10 +1,8 @@
 const Controller = require('../mainController.js');
 const ApiError = require('../../core/error.js');
 require('dotenv').config();
-const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
-const { up } = require('../../src/db/migrations/1501-create-invite.js');
 
 class ApiInvitesController extends Controller {
     constructor(...args) {
