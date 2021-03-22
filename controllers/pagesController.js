@@ -62,13 +62,10 @@ class PagesController extends Controller {
         self.css('custom');
         self.js('index');
 
-        const users = await self.db.User.findAll();
-
         self.render({
             title: 'Home',
             urlHouseholdId: self.param('hid'),
             isOwner: isOwner,
-            users: users,
         });
     }
 
@@ -162,9 +159,6 @@ class PagesController extends Controller {
     async actionPayments() {
         const self = this;
 
-        // Choose between dashboardChooser and dashboardView for one household
-        // based on the set hid - householdId parameter
-
         self.css('custom');
         self.js('Chart');
         self.js('payment');
@@ -193,26 +187,12 @@ class PagesController extends Controller {
         self.js('helper');
         self.js('recurringPayment');
 
-        const householdId = self.param('hid');
-        const household = await self.db.Household.findByPk(householdId);
-
-        // Get all the recurringPayments from the household in reverse order -> newest is first
-        const recurringPayments = await self.db.RecurringPayment.findAll({
-            include: self.db.RecurringPayment.extendInclude,
-            order: [['createdAt', 'DESC']],
-            where: {
-                householdId: householdId,
-            },
-        });
-
         const categories = await self.db.Category.findAll();
 
         self.render({
             title: 'Payments',
             urlHouseholdId: self.param('hid'),
             isOwner: isOwner,
-            household: household,
-            recurringPayments: recurringPayments,
             categories: categories,
         });
     }
@@ -238,30 +218,11 @@ class PagesController extends Controller {
         self.js('helper');
         self.js('member');
 
-        const invites = await self.db.Invite.findAll({
-            where: {
-                householdId: self.param('hid'),
-            },
-        });
-
-        const householdUsers = await self.db.HouseholdUser.findAll({
-            include: self.db.HouseholdUser.extendInclude,
-            where: {
-                householdId: self.param('hid'),
-            },
-        });
-
-        const members = [];
-        householdUsers.forEach((data) => {
-            members.push(data.user);
-        });
-
         self.render({
             title: 'Members',
             urlHouseholdId: self.param('hid'),
             isOwner: isOwner,
-            members: members,
-            invites: invites,
+            household: household,
         });
     }
 
