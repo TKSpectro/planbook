@@ -29,10 +29,6 @@ module.exports = (sequelize, DataTypes) => {
             as: 'entries',
             foreignKey: 'householdId',
         });
-        Household.hasMany(models.Todo, {
-            as: 'todos',
-            foreignKey: 'householdId',
-        });
         Household.hasMany(models.Invite, {
             as: 'invites',
             foreignKey: 'householdId',

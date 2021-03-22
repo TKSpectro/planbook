@@ -289,27 +289,6 @@ class PagesController extends Controller {
             isMoneypoolChooser: isMoneypoolChooser,
         });
     }
-
-    async actionTodo() {
-        const self = this;
-
-        self.css('custom');
-        self.js('todo');
-
-        const todos = await self.db.Todo.findAll({
-            where: {
-                householdId: self.req.user.id,
-            },
-            include: self.db.Todo.extendInclude,
-        });
-
-        self.render({
-            title: 'Todo',
-            urlHouseholdId: self.param('hid'),
-            isOwner: isOwner,
-            todos: todos,
-        });
-    }
 }
 
 module.exports = PagesController;

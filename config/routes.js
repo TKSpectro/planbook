@@ -5,7 +5,6 @@ const ApiCategoriesController = require('../controllers/api/categoriesController
 const ApiHouseholdsController = require('../controllers/api/householdsController.js');
 const ApiHouseholdsUsersController = require('../controllers/api/householdsUsersController.js');
 const ApiRecurringPaymentsController = require('../controllers/api/recurringPaymentsController.js');
-const ApiTodosController = require('../controllers/api/todosController.js');
 const ApiPaymentsController = require('../controllers/api/paymentsController.js');
 const ApiCronController = require('../controllers/api/cronController.js');
 const ApiMoneypoolsController = require('../controllers/api/moneypoolsController.js');
@@ -20,7 +19,6 @@ let routes = {
             { path: '/login', action: 'login', method: 'get' },
             { path: '/register', action: 'register', method: 'get' },
             { path: '/dashboard', action: 'dashboard', method: 'get' },
-            { path: '/todo', action: 'todo', method: 'get' },
             { path: '/payments', action: 'payments', method: 'get' },
             {
                 path: '/recurringPayments',
@@ -104,16 +102,6 @@ let routes = {
                 action: 'delete',
                 method: 'DELETE',
             },
-        ],
-    },
-    'api/todos': {
-        controller: ApiTodosController,
-        actions: [
-            { path: '/api/todos', action: 'getAll', method: 'GET' },
-            { path: '/api/todos/:id', action: 'getOne', method: 'GET' },
-            { path: '/api/todos', action: 'create', method: 'POST' },
-            { path: '/api/todos/:id', action: 'update', method: 'PUT' },
-            { path: '/api/todos/:id', action: 'delete', method: 'DELETE' },
         ],
     },
     'api/payments': {

@@ -11,9 +11,7 @@ module.exports = function (grunt) {
                     'assets/js/helper.min.js': 'src/js/helper.js',
                     'assets/js/dashboard.min.js': 'src/js/dashboard.js',
                     'assets/js/dashboardList.min.js': 'src/js/dashboardList.js',
-                    'assets/js/todo.min.js': 'src/js/todo.js',
-                    'assets/js/recurringPayment.min.js':
-                        'src/js/recurringPayment.js',
+                    'assets/js/recurringPayment.min.js': 'src/js/recurringPayment.js',
                     'assets/js/payment.min.js': 'src/js/payment.js',
                     'assets/js/member.min.js': 'src/js/member.js',
                     'assets/js/savePayment.min.js': 'src/js/savePayment.js',
@@ -52,17 +50,13 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: [
-                            './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-                        ],
+                        src: ['./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'],
                         dest: './assets/js',
                     },
                     {
                         expand: true,
                         flatten: true,
-                        src: [
-                            './node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
-                        ],
+                        src: ['./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map'],
                         dest: './assets/js',
                     },
 
@@ -76,9 +70,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         flatten: true,
-                        src: [
-                            './node_modules/chartjs-plugin-datalabels/dist/*.js',
-                        ],
+                        src: ['./node_modules/chartjs-plugin-datalabels/dist/*.js'],
                         dest: './assets/js',
                     },
                     // copy non minified js for development

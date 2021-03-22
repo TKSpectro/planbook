@@ -166,13 +166,6 @@ class ApiHouseholdsController extends Controller {
                     { transaction: t, lock: true }
                 );
 
-                await self.db.Todo.destroy(
-                    {
-                        where: { householdId: householdId },
-                    },
-                    { transaction: t, lock: true }
-                );
-
                 await self.db.Moneypool.destroy(
                     {
                         where: { householdId: householdId },
@@ -194,7 +187,10 @@ class ApiHouseholdsController extends Controller {
             });
             // if no household was found with this id throw an error
             if (!household) {
-                throw new ApiError('Found no household with given id or you do not have permissions', 404);
+                throw new ApiError(
+                    'Found no household with given id or you do not have permissions',
+                    404
+                );
             }
         } catch (err) {
             error = err;
