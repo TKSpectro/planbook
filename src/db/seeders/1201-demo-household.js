@@ -13,13 +13,13 @@ module.exports = {
                 {
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    name: 'Haushaltsbuch - Bilal',
+                    name: 'Haushaltsbuch - Paul',
                     ownerId: 3,
                 },
                 {
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    name: 'Haushaltsbuch - Olga',
+                    name: 'Haushaltsbuch - Merton',
                     ownerId: 4,
                 },
                 {
