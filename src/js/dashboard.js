@@ -2,6 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 function refreshPage() {
+    // Fetch all needed api endpoints for the needed data
     fetch(`/api/payments?hid=${householdId}&moneypoolId=null`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
@@ -43,6 +44,7 @@ function refreshHouseholdFixValues(data) {
     let householdIncome = 0;
     let householdExpenses = 0;
 
+    // go through all payments and calculate all incomes and all expenses
     data.forEach((payment) => {
         householdSaldo += payment.value;
 
@@ -56,15 +58,18 @@ function refreshHouseholdFixValues(data) {
         }
     });
 
+    // if the value is negative give the text a red color
     if (householdSaldo < 0) {
         document.getElementById('householdSaldo').classList.add('text-complementary');
     }
 
+    // update the elements with the correct values
     document.getElementById('householdSaldo').innerHTML = householdSaldo.toFixed(2) + '€';
     document.getElementById('householdIncome').innerHTML = householdIncome.toFixed(2) + '€';
     document.getElementById('householdExpenses').innerHTML = householdExpenses.toFixed(2) + '€';
 }
 
+// Use the last 5 payments and add them to the list
 function refreshLastPayments(data) {
     for (let i = 0; i < 5; i++) {
         if (data[i]) {
@@ -88,18 +93,21 @@ function refreshLastPayments(data) {
     }
 }
 
+// Calculates the next time a day happens in the week (mon, tue, and so on)
 function nextWeekdayDate(date, day_in_week) {
     let result = new Date(date || new Date());
     result.setDate(result.getDate() + ((day_in_week - 1 - result.getDay() + 7) % 7) + 1);
     return result;
 }
 
+// Calculates the next time a specific day happens either this or next month
 function nextDayInMonthDate(date, day_in_month) {
     let result = new Date(date || new Date());
     result.setDate(result.getDate() + ((day_in_month - result.getDate() + 31) % 31));
     return result;
 }
 
+// Calculates the next time a specific day happens either this or next year
 function getDayOfYear(date) {
     const now = new Date(date || new Date());
     const start = new Date(now.getFullYear(), 0, 0);
@@ -124,6 +132,7 @@ function nextDayInYearDate(date, startDate) {
     return result;
 }
 
+// Refresh the recurringPayments Preview list
 function refreshPreviewRecurringPayments(data) {
     data.forEach((recurringPayment) => {
         const startDate = new Date(recurringPayment.startDate);
@@ -272,7 +281,7 @@ function refreshThisMonthsPaymentsChart(data) {
             },
         },
     };
-
+    // Create or update the chart if it already exists
     if (!window.thisMonthChart.config) {
         window.thisMonthChart = new Chart(ctx, config);
     } else {

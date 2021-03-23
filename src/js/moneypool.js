@@ -3,6 +3,7 @@ const householdId = urlParams.get('hid');
 const moneypoolId = urlParams.get('id');
 
 function refreshPage() {
+    // Fetch all needed api endpoints for the needed data
     fetch(`/api/moneypools?hid=${householdId}&id=${moneypoolId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {

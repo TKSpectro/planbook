@@ -3,12 +3,14 @@ function refreshPage() {
 }
 
 function getPayments() {
+    // Get all the parameters for the api request
     const householdId = new URLSearchParams(window.location.search).get('hid');
     const startDate = document.getElementById('startDateInput').value;
     const endDate = new Date(document.getElementById('endDateInput').value);
     endDate.setHours(new Date().getHours());
     endDate.setMinutes(new Date().getMinutes() + 5);
 
+    // Fetch the api and give the returned data to our refresh function
     fetch(
         `/api/payments?hid=${householdId}&start=${startDate}&end=${endDate.toISOString()}&moneypoolId=null`
     )
@@ -73,7 +75,7 @@ function refreshChart(payments) {
     payments.forEach((payment) => {
         currentValue += payment.value;
     });
-
+    // Go through all payments and add them to the chart and the tableData
     payments.forEach((payment) => {
         // Write data for chart
         config.data.labels.push(payment.createdAt);
@@ -107,6 +109,7 @@ function refreshChart(payments) {
         ]);
     });
 
+    // Create or update the chart if it already exists
     if (!window.paymentHistoryChart.config) {
         window.paymentHistoryChart = new Chart(chartElement, config);
     } else {

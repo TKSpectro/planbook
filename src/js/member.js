@@ -2,6 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 function refreshPage() {
+    // Fetch all the needed data and then call the refreshFunctions for it
     fetch(`/api/householdsUsers?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
@@ -139,6 +140,7 @@ function refreshMembersTable(data) {
     } else {
         let tableData = [];
         let i = 1;
+        // Update the selectable elements in the form
         selectElement = document.getElementById('chooseNewOwnerSelect');
         data.households.forEach((household) => {
             if (household.userId !== household.household.ownerId) {

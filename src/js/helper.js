@@ -1,3 +1,4 @@
+// This functions shows a custom alert with the specified values
 function showAlert(message = '', alertType = '') {
     const alertPlaceholder = document.getElementById('alertPlaceholder');
 
@@ -14,6 +15,7 @@ function showAlert(message = '', alertType = '') {
     }, 5000);
 }
 
+// This function can be used to refresh any kind of standard table, even with hidden data
 function refreshTable(tableIdString = '', tableData = []) {
     const table = document.getElementById(tableIdString);
 
@@ -35,9 +37,7 @@ function refreshTable(tableIdString = '', tableData = []) {
                 const cell = document.createElement('td');
                 cell.classList.add('d-none');
                 cell.appendChild(
-                    document.createTextNode(
-                        cellData.toString().replace('hidden/', '')
-                    )
+                    document.createTextNode(cellData.toString().replace('hidden/', ''))
                 );
                 row.appendChild(cell);
             } else {
@@ -92,8 +92,7 @@ function sortTable(n, isNumber, tableIdString) {
             if (dir == 'asc') {
                 if (isNumber) {
                     if (
-                        Number(x.innerHTML.replace('€', '')) >
-                        Number(y.innerHTML.replace('€', ''))
+                        Number(x.innerHTML.replace('€', '')) > Number(y.innerHTML.replace('€', ''))
                     ) {
                         shouldSwitch = true;
                         break;
@@ -108,8 +107,7 @@ function sortTable(n, isNumber, tableIdString) {
             } else if (dir == 'desc') {
                 if (isNumber) {
                     if (
-                        Number(x.innerHTML.replace('€', '')) <
-                        Number(y.innerHTML.replace('€', ''))
+                        Number(x.innerHTML.replace('€', '')) < Number(y.innerHTML.replace('€', ''))
                     ) {
                         shouldSwitch = true;
                         break;

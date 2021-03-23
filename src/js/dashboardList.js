@@ -1,4 +1,5 @@
 function refreshHouseholdList() {
+    // Fetch all the households a user is in and display them
     fetch('/api/householdsUsers')
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {

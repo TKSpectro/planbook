@@ -2,6 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const householdId = urlParams.get('hid');
 
 function refreshPage() {
+    // Fetch the needed api endpoint
     fetch(`/api/recurringPayments?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {
@@ -24,6 +25,7 @@ function refreshCalculations(data) {
             weekly = 0,
             monthly = 0,
             yearly = 0;
+        // Go through all recurringPayments and calculate daily,weekly... values
         data.recurringPayments.forEach((recurringPayment) => {
             if (recurringPayment.interval === 'daily') {
                 daily += recurringPayment.value;

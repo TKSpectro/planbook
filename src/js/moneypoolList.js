@@ -6,6 +6,7 @@ function refreshPage() {
 }
 
 function refreshMoneypoolList() {
+    // Fetch all needed api endpoints and build the moneypool list
     fetch(`/api/moneypools?hid=${householdId}`)
         .then((response) => {
             if (response.status >= 200 && response.status < 400) {

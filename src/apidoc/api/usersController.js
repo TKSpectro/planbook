@@ -14,8 +14,6 @@
  * @apiSuccess {String}     users.user.email            Users email.
  * @apiSuccess {String}     users.user.createdAt        Date of creation.
  * @apiSuccess {String}     users.user.updatedAt        Date of last update.
- * @apiSuccess {Object[]}   users.user.taskCreated      Array of tasks which the user created.
- * @apiSuccess {Object[]}   users.user.tasksAssignedTo  Array of tasks which are assigned to the user.
  *
  * @apiSuccessExample Success-Response:
  *  HTTP/1.1 200 OK
@@ -27,21 +25,7 @@
  *              "lastName": "lastName",
  *              "email": "email@mail.com",
  *              "createdAt": "2020-06-16T16:00:04.000Z",
- *              "updatedAt": "2020-06-16T16:00:04.000Z",
- *              "taskCreated": [
- *                  {
- *                      "id": 1,
- *                      "name": "First Task",
- *                      "text": "This is the first Task"
- *                  }
- *              ],
- *              "tasksAssignedTo": [
- *                  {
- *                      "id": 1,
- *                      "name": "First Task",
- *                      "text": "This is the first Task"
- *                  }
- *              ]
+ *              "updatedAt": "2020-06-16T16:00:04.000Z"
  *          },
  *          {
  *              "id": 2,
@@ -49,9 +33,7 @@
  *              "lastName": "lastName2",
  *              "email": "email2@mail.com",
  *              "createdAt": "2020-06-16T16:00:04.000Z",
- *              "updatedAt": "2020-06-16T16:00:04.000Z",
- *              "taskCreated": [],
- *              "tasksAssignedTo": []
+ *              "updatedAt": "2020-06-16T16:00:04.000Z"
  *          }
  *      ]
  *  }
@@ -75,8 +57,6 @@
  * @apiSuccess {String}     user.email              Users email.
  * @apiSuccess {String}     user.createdAt          Date of creation.
  * @apiSuccess {String}     user.updatedAt          Date of last update.
- * @apiSuccess {Object[]}   user.taskCreated        Array of tasks which the user created.
- * @apiSuccess {Object[]}   user.tasksAssignedTo    Array of tasks which are assigned to the user.
  *
  * @apiSuccessExample Success-Response:
  *  HTTP/1.1 200 OK
@@ -88,20 +68,6 @@
  *          "email": "email@mail.com",
  *          "createdAt": "2020-06-16T16:00:04.000Z",
  *          "updatedAt": "2020-06-16T16:00:04.000Z",
- *          "taskCreated": [
- *              {
- *                  "id": 1,
- *                  "name": "First Task",
- *                  "text": "This is the first Task"
- *              }
- *          ],
- *          "tasksAssignedTo": [
- *              {
- *                  "id": 1,
- *                  "name": "First Task",
- *                  "text": "This is the first Task"
- *              }
- *          ]
  *      }
  *  }
  *
@@ -123,21 +89,17 @@
  *              "lastName": "lastName",
  *              "email": "email@mail.com",
  *              "passwordHash": "alreadyHashed",
- *              "permission": 0
  *          }
  *      }
  *
  * @apiSuccess {Object} user                One user from the array.
  *
- * @apiSuccess {Number}     user.permission         Users permission.
  * @apiSuccess {Number}     user.id                 Users unique id.
  * @apiSuccess {String}     user.firstName          Users firstname.
  * @apiSuccess {String}     user.lastName           Users lastname.
  * @apiSuccess {String}     user.email              Users email.
  * @apiSuccess {String}     user.createdAt          Date of creation.
  * @apiSuccess {String}     user.updatedAt          Date of last update.
- * @apiSuccess {Object[]}   user.taskCreated        Array of tasks which the user created.
- * @apiSuccess {Object[]}   user.tasksAssignedTo    Array of tasks which are assigned to the user.
  *
  * @apiSuccessExample Success-Response:
  *  HTTP/1.1 201 OK
@@ -162,8 +124,6 @@
  * @apiName UpdateUserWithId
  * @apiGroup Users
  *
- * @apiPermission canUpdateUser
- *
  * @apiExample {json} Request (example):
  *      json-body:
  *      {
@@ -172,7 +132,6 @@
  *              "lastName": "lastName",
  *              "email": "email@mail.com",
  *              "passwordHash": "newPasswordHash",
- *              "permission": 0
  *          }
  *      }
  *
@@ -182,7 +141,6 @@
  * @apiSuccess {String} user.firstName      Users firstname.
  * @apiSuccess {String} user.lastName       Users lastname.
  * @apiSuccess {String} user.email          Users email.
- * @apiSuccess {Number} user.permissio      Users permission.
  * @apiSuccess {String} user.createdAt      Date of creation.
  * @apiSuccess {String} user.updatedAt      Date of last update.
  *
@@ -211,8 +169,6 @@
  * @api {delete} /users/:id Delete user with id
  * @apiName DeleteUser
  * @apiGroup Users
- *
- * @apiPermission canDeleteUser
  *
  * @apiSuccess 204 User was deleted and no content is returned
  *
@@ -266,7 +222,6 @@
  *
  * @apiSuccess {Object} user                One user from the array.
  *
- * @apiSuccess {Number} user.permission          Users permission.
  * @apiSuccess {Number} user.id                  Users unique id.
  * @apiSuccess {String} user.firstName           Users firstname.
  * @apiSuccess {String} user.lastName            Users lastname.
@@ -278,7 +233,6 @@
  *  HTTP/1.1 201 OK
  *  {
  *      "user": {
- *          "permission": 0,
  *          "id": 3,
  *          "firstName": "Post",
  *          "lastName": "Man",
