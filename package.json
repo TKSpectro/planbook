@@ -25,7 +25,6 @@
     "homepage": "https://github.com/TKSpectro/planbook#readme",
     "apidoc": {
         "title": "apiDoc - Planbook",
-        "url": "https://www.planbook.online/api",
         "header": {
             "title": "General",
             "filename": "./src/apidoc/general.md"
