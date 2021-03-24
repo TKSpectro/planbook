@@ -93,10 +93,18 @@ function clickHandler() {
         .replace('\n', '')
         .trim();
 
+    if (this.children[5].innerText.replace('€', '') < 0) {
+        console.log('test');
+        document.getElementById('editIncomeSwitch').checked = false;
+    } else {
+        document.getElementById('editIncomeSwitch').checked = true;
+    }
+
     // Set the value -> need to remove the '€' from the string
     document.querySelector('#editValueInput').value = this.children[5].innerText
         .replace('€', '')
-        .replace('+', '');
+        .replace('+', '')
+        .replace('-', '');
 
     // Set the start and end dates -> use the HTMLDateToJSDate function
     document.querySelector('#editStartDateInput').value = convertHTMLDateToJSDate(
@@ -135,7 +143,7 @@ function saveRecurringPayment(event, form = '') {
 
     let value = document.querySelector('#' + form + 'ValueInput').value;
 
-    if (document.getElementById('incomeSwitch').checked) {
+    if (document.querySelector('#' + form + 'IncomeSwitch').checked) {
         value = Math.abs(value);
     } else {
         value = Math.abs(value) * -1;
